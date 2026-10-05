@@ -20,19 +20,23 @@ var xp_value := 0.0
 var lifetime := -1.0
 var champion := false
 var revived := false
+var nocturnal := false  # only exists at night; hidden outside light
 var leech := 0.0
 var slow_on_hit := 0.0
 var poison_on_hit := 0.0
 var aura_dps := 0.0
 var aura_radius := 0.0
+var glow_radius := 0.0  # emits light (fire creatures)
 
 var _think := 0.0
 var _repath := 0.0
 var _aura_tick := 0.0
 var _wander := 0.0
 var _wander_to := Vector2.ZERO
+var _light_check := 0.0
 var home := Vector2.ZERO
 var follow_offset := Vector2.ZERO
+var _glow: PointLight2D = null
 
 
 func setup(s: Dictionary, p_team: int, p_leader) -> void:
@@ -63,16 +67,19 @@ func setup(s: Dictionary, p_team: int, p_leader) -> void:
 	xp_value = float(s.get("xp", 0.0))
 	champion = s.get("champion", false)
 	revived = s.get("revived", false)
+	nocturnal = s.get("nocturnal", false)
 	leech = float(s.get("leech", 0.0))
 	slow_on_hit = float(s.get("slow_on_hit", 0.0))
 	poison_on_hit = float(s.get("poison_on_hit", 0.0))
 	aura_dps = float(s.get("aura_dps", 0.0))
 	aura_radius = float(s.get("aura_radius", 0.0))
 	thorns = float(s.get("thorns", 0.0))
+	glow_radius = float(s.get("glow", 0.0))
 	head_y = float(s.get("head_y", -36.0))
 	sprite_key = s.get("sprite", kind)
 	for k in s.get("res", {}):
 		resist[k] = float(s["res"][k])
+	base_modulate = Color.WHITE
 	if champion:
 		base_modulate = Color(0.75, 0.85, 1.25)
 	if revived:
@@ -82,8 +89,37 @@ func setup(s: Dictionary, p_team: int, p_leader) -> void:
 	attack_timer = randf() * 0.5
 
 
+func _ready() -> void:
+	super._ready()
+	if glow_radius > 0.0:
+		_glow = Lighting.make_light(glow_radius, color.lightened(0.3), 0.8)
+		_glow.position = Vector2(0, -18)
+		add_child(_glow)
+		Game.light_sources.append(self)
+
+
+func _exit_tree() -> void:
+	Game.light_sources.erase(self)
+	super._exit_tree()
+
+
+func light_radius_px() -> float:
+	return glow_radius
+
+
+func light_pos() -> Vector2:
+	return global_position
+
+
 func kind_is_fire() -> bool:
 	return kind == "fire_golem"
+
+
+func damage_taken_mult(_dtype: String) -> float:
+	# shades are creatures of darkness: light hurts them
+	if nocturnal and Game.light_at(global_position) > 0.4:
+		return 1.5
+	return 1.0
 
 
 func _physics_process(delta: float) -> void:
@@ -96,6 +132,18 @@ func _physics_process(delta: float) -> void:
 	tick_status(delta)
 	if dead:
 		return
+	if _glow:
+		_glow.energy = 0.8 * Game.light_visual()
+	if nocturnal:
+		_light_check -= delta
+		if _light_check <= 0.0:
+			_light_check = 0.2
+			invisible = Game.light_at(global_position) < 0.4
+			if Game.daylight() > 0.65:
+				Game.fx(global_position + Vector2(0, -14), "burst", Color(0.3, 0.2, 0.4), 20.0, 0.5)
+				queue_free()  # shades melt away at dawn, no corpse
+				dead = true
+				return
 	if lifetime > 0.0:
 		lifetime -= delta
 		if lifetime <= 0.0:
@@ -105,6 +153,9 @@ func _physics_process(delta: float) -> void:
 	_think -= delta
 	_repath -= delta
 	moving = false
+	if stun_time > 0.0:
+		_separate(delta)
+		return
 	if _think <= 0.0:
 		_think = randf_range(0.2, 0.35)
 		_choose_target()
@@ -116,10 +167,7 @@ func _physics_process(delta: float) -> void:
 				if u.team != team:
 					u.take_damage(aura_dps * 0.5, "fire", self, false, true)
 
-	if curse_id == "terror" and p != null:
-		var away: Vector2 = (global_position - p.global_position).normalized()
-		move_towards(global_position + away * 40.0, delta)
-	elif target != null and is_instance_valid(target) and not target.dead:
+	if target != null and is_instance_valid(target) and not target.dead:
 		var tpos: Vector2 = target.global_position
 		var d := global_position.distance_to(tpos)
 		var reach: float = attack_range + radius + target.radius
@@ -191,26 +239,10 @@ func _separate(delta: float) -> void:
 
 
 func _choose_target() -> void:
-	if curse_id == "confuse":
-		var best = null
-		var best_d := 350.0
-		for u in Game.units:
-			if u == self or u.dead:
-				continue
-			var d: float = u.global_position.distance_to(global_position)
-			if d < best_d:
-				best = u
-				best_d = d
-		target = best
-		return
 	if role == "monster" and not revived:
-		for u in Game.units:
-			if u != self and not u.dead and u.team == team and u.curse_id == "attract" \
-					and u.global_position.distance_to(global_position) < 450.0:
-				target = u
-				return
-		var rng := aggro_range * (0.12 if curse_id == "dim_vision" else 1.0)
-		if target != null and is_instance_valid(target) and not target.dead and target.team != team \
+		# at night, monsters spot lit targets from further away
+		var rng := aggro_range * (1.3 if Game.is_night() else 1.0)
+		if target != null and is_instance_valid(target) and not target.dead \
 				and target.global_position.distance_to(global_position) < rng * 1.6:
 			return
 		target = Game.nearest_hostile(global_position, team, rng)
@@ -222,13 +254,13 @@ func _choose_target() -> void:
 		if global_position.distance_to(anchor) > 520.0:
 			target = null
 			return
-	if target != null and is_instance_valid(target) and not target.dead and target.team != team \
+	if target != null and is_instance_valid(target) and not target.dead and not target.invisible \
 			and target.global_position.distance_to(anchor) < 420.0:
 		return
 	target = null
 	var best_d := INF
 	for u in Game.units:
-		if u.dead or u.team == team:
+		if u.dead or u.team == team or u.invisible:
 			continue
 		if u.global_position.distance_to(anchor) > 320.0:
 			continue
@@ -241,20 +273,25 @@ func _choose_target() -> void:
 func _attack() -> void:
 	attack_timer = attack_cd
 	attack_anim = 0.3
-	var dmg := randf_range(dmg_min, dmg_max) * damage_mult_out()
+	var dmg := randf_range(dmg_min, dmg_max)
+	# monsters hit harder against targets standing in darkness
+	if team == 1 and Game.light_at(target.global_position) < 0.35:
+		dmg *= 1.35
 	if ranged:
 		var dir: Vector2 = (target.global_position - global_position).normalized()
 		var pcol := color2
 		if proj_style == "arrow":
 			pcol = Color(0.85, 0.75, 0.55)
 		Game.spawn_projectile({
-			"pos": global_position, "vel": dir * proj_speed, "team": -1 if curse_id == "confuse" else team,
-			"owner": self, "only_target": target, "dmg": Vector2(dmg, dmg), "dtype": dmg_type,
+			"pos": global_position, "vel": dir * proj_speed, "team": team,
+			"owner": self, "dmg": Vector2(dmg, dmg), "dtype": dmg_type,
 			"range": attack_range + 120.0, "style": proj_style, "radius": 5.0, "color": pcol,
 			"poison": poison_on_hit, "slow": slow_on_hit,
 		})
 		return
 	var dealt: float = target.take_damage(dmg, dmg_type, self, true)
+	if not is_instance_valid(target) or target.dead:
+		return
 	if slow_on_hit > 0.0:
 		target.apply_slow(slow_on_hit, 2.0)
 	if poison_on_hit > 0.0:
@@ -263,8 +300,6 @@ func _attack() -> void:
 		heal(dealt * leech)
 		if leader != null and is_instance_valid(leader):
 			leader.heal(dealt * leech * 0.5)
-	if curse_id == "iron_maiden" and dealt > 0.0:
-		take_damage(dealt * SkillDB.iron_maiden_mult(curse_level), "physical", null)
 
 
 func _on_death(_killer) -> void:

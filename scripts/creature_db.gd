@@ -16,7 +16,11 @@ const MONSTERS := {
 		"hp": 28.0, "dmg": [4.0, 8.0], "speed": 72.0, "range": 10.0, "cd": 1.2, "radius": 12.0, "xp": 20.0, "res": {"poison": 50.0, "cold": 25.0}},
 	"wisp": {"name": "Fire Wisp", "shape": "wisp", "color": Color(1.0, 0.55, 0.2), "color2": Color(1.0, 0.95, 0.6),
 		"hp": 13.0, "dmg": [3.0, 6.0], "dmg_type": "fire", "speed": 95.0, "range": 200.0, "cd": 1.5, "radius": 9.0, "xp": 17.0,
-		"res": {"fire": 75.0, "lightning": 25.0}, "ranged": true, "proj_speed": 300.0, "proj_style": "fire"},
+		"res": {"fire": 75.0, "lightning": 25.0}, "ranged": true, "proj_speed": 300.0, "proj_style": "fire", "glow": 80.0},
+	# Night only. Nearly invisible outside light and takes +50% damage inside it.
+	"shade": {"name": "Shade", "shape": "shade", "color": Color(0.22, 0.16, 0.32), "color2": Color(0.75, 0.55, 1.0),
+		"hp": 20.0, "dmg": [4.0, 8.0], "dmg_type": "cold", "speed": 105.0, "range": 8.0, "cd": 1.1, "radius": 11.0, "xp": 24.0,
+		"res": {"poison": 75.0, "cold": 50.0}, "aggro": 340.0, "nocturnal": true},
 }
 
 

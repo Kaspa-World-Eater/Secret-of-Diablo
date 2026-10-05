@@ -4,12 +4,17 @@ extends Node2D
 const WorldScript := preload("res://scripts/world.gd")
 const PlayerScript := preload("res://scripts/player.gd")
 const HudScript := preload("res://scripts/ui/hud.gd")
+const DayNightScript := preload("res://scripts/day_night.gd")
+const LanternScript := preload("res://scripts/lantern.gd")
+const CampfireScript := preload("res://scripts/campfire.gd")
 
 const TARGET_MONSTERS := 150
 
 var world
 var player
 var _respawn_check := 10.0
+var _night_check := 5.0
+const MAX_SHADES := 24
 
 
 func _ready() -> void:
@@ -17,6 +22,9 @@ func _ready() -> void:
 	world = WorldScript.new()
 	add_child(world)
 	world.generate(randi())
+	var dn = DayNightScript.new()
+	add_child(dn)
+	Game.day_night = dn
 
 	var ground := Node2D.new()
 	add_child(ground)
@@ -35,6 +43,10 @@ func _ready() -> void:
 	Game.proj_layer = proj
 	Game.fx_layer = fx
 
+	var fire = CampfireScript.new()
+	fire.position = world.center_of(world.spawn_cell) + Vector2(0, -40)
+	units.add_child(fire)
+
 	player = PlayerScript.new()
 	player.position = world.center_of(world.spawn_cell)
 	player.spawn_point = player.position
@@ -51,6 +63,12 @@ func _ready() -> void:
 	cam.limit_bottom = world.H * world.TILE
 	player.add_child(cam)
 	cam.make_current()
+
+	var lantern = LanternScript.new()
+	lantern.owner_p = player
+	lantern.position = player.position + Vector2(-20, 10)
+	player.lantern = lantern
+	units.add_child(lantern)
 
 	Game.spawn_merc(player.position + Vector2(40, 24))
 	for i in TARGET_MONSTERS / 4:
@@ -72,6 +90,30 @@ func _process(delta: float) -> void:
 		if n < TARGET_MONSTERS:
 			for i in 3:
 				_spawn_pack(1000.0)
+	_night_check -= delta
+	if _night_check <= 0.0:
+		_night_check = 12.0
+		if Game.is_night():
+			var shades := 0
+			for u in Game.units:
+				if u.get("nocturnal"):
+					shades += 1
+			if shades < MAX_SHADES:
+				_spawn_shades()
+
+
+func _spawn_shades() -> void:
+	## Shades rise out of the dark somewhere near (but not on top of) the player.
+	for attempt in 30:
+		var p: Vector2 = player.global_position + Vector2.from_angle(randf() * TAU) * randf_range(450.0, 850.0)
+		if not world.is_walkable_px(p) or Game.light_at(p) > 0.3:
+			continue
+		var lvl := 2 + int(world.dist_tiles_from_spawn(p) / 7.0)
+		for i in randi_range(2, 4):
+			var sp := p + Vector2(randf_range(-40, 40), randf_range(-40, 40))
+			if world.is_walkable_px(sp):
+				Game.spawn_creature(CreatureDB.monster_stats("shade", lvl, false), 1, sp, null)
+		return
 
 
 func _spawn_pack(min_dist_from_player: float) -> void:

@@ -1,11 +1,12 @@
 class_name Unit
 extends Node2D
 ## Base for the player, monsters, minions and the mercenary.
-## Handles health, damage types, curses, poison, movement and placeholder art.
+## Handles health, damage types, poison, stun, knockback, movement and placeholder art.
 
 signal died(unit)
 
 const OUTLINE := Color(0.1, 0.07, 0.08)
+const KNOCK_DECAY := 900.0
 
 var team := 1
 var display_name := "Unit"
@@ -34,9 +35,10 @@ var sprite_key := ""
 var sprite: AnimatedSprite2D = null
 
 # status effects
-var curse_id := ""
-var curse_level := 0
-var curse_time := 0.0
+var stun_time := 0.0
+var knock := Vector2.ZERO  # knockback velocity, decays
+var dmg_reduction := 0.0
+var invisible := false  # untargetable (e.g. shades outside the light)
 var poison_dps := 0.0
 var poison_time := 0.0
 var poison_source = null
@@ -69,19 +71,12 @@ func _exit_tree() -> void:
 # ---------------------------------------------------------------- combat
 
 func speed_mult() -> float:
-	var m := 1.0
 	if slow_time > 0.0:
-		m *= 1.0 - slow_amount
-	if curse_id == "decrepify":
-		m *= 0.5
-	return m
+		return 1.0 - slow_amount
+	return 1.0
 
 
-func damage_mult_out() -> float:
-	if curse_id == "weaken":
-		return 0.67
-	if curse_id == "decrepify":
-		return 0.5
+func damage_taken_mult(_dtype: String) -> float:
 	return 1.0
 
 
@@ -89,16 +84,9 @@ func take_damage(amount: float, dtype: String, source = null, melee := false, si
 	if dead or amount <= 0.0:
 		return 0.0
 	var a := amount
-	var res: float = resist.get(dtype, 0.0)
-	if curse_id == "lower_resist" and dtype != "physical" and dtype != "magic":
-		res -= SkillDB.lower_resist_amount(curse_level)
-	if dtype == "physical":
-		if curse_id == "amplify_damage":
-			a *= 2.0
-		elif curse_id == "decrepify":
-			a *= 1.5
-	res = clamp(res, -100.0, 95.0)
+	var res: float = clamp(resist.get(dtype, 0.0), -100.0, 95.0)
 	a *= 1.0 - res / 100.0
+	a *= (1.0 - dmg_reduction) * damage_taken_mult(dtype)
 	if dtype == "physical" and bone_armor > 0.0:
 		var absorbed: float = min(bone_armor, a)
 		bone_armor -= absorbed
@@ -113,8 +101,6 @@ func take_damage(amount: float, dtype: String, source = null, melee := false, si
 		if team != 0 and a >= 1.0:
 			Game.float_text(global_position + Vector2(0, head_y + 20), str(int(a)), _dmg_color(dtype))
 	if source != null and is_instance_valid(source) and not source.dead:
-		if curse_id == "life_tap" and source.team != team:
-			source.heal(a * 0.5)
 		if melee and thorns > 0.0:
 			source.take_damage(amount * thorns, "physical", null)
 	if hp <= 0.0:
@@ -137,10 +123,15 @@ func heal(amount: float) -> void:
 		hp = min(max_hp, hp + amount)
 
 
-func apply_curse(id: String, lvl: int, duration: float) -> void:
-	curse_id = id
-	curse_level = lvl
-	curse_time = duration
+func apply_stun(duration: float) -> void:
+	stun_time = max(stun_time, duration)
+
+
+func apply_knockback(dir: Vector2, distance: float) -> void:
+	## Pushes the unit roughly `distance` pixels (velocity decays at KNOCK_DECAY).
+	if distance <= 0.0:
+		return
+	knock = dir.normalized() * sqrt(2.0 * KNOCK_DECAY * distance)
 
 
 func apply_poison(total: float, duration: float, source) -> void:
@@ -161,10 +152,13 @@ func tick_status(delta: float) -> void:
 	anim_time += delta
 	hurt_flash = max(0.0, hurt_flash - delta)
 	attack_anim = max(0.0, attack_anim - delta)
-	if curse_time > 0.0:
-		curse_time -= delta
-		if curse_time <= 0.0:
-			curse_id = ""
+	if stun_time > 0.0:
+		stun_time -= delta
+	if knock.length_squared() > 4.0:
+		try_move(knock * delta)
+		knock = knock.move_toward(Vector2.ZERO, KNOCK_DECAY * delta)
+	else:
+		knock = Vector2.ZERO
 	if slow_time > 0.0:
 		slow_time -= delta
 	if poison_time > 0.0:
@@ -245,6 +239,8 @@ func _process(_delta: float) -> void:
 		m = m * Color(0.7, 1.2, 0.6)
 	elif slow_time > 0.0:
 		m = m * Color(0.7, 0.85, 1.3)
+	if invisible:
+		m.a = 0.12
 	modulate = m
 	if sprite:
 		var state := "attack" if attack_anim > 0.0 else ("walk" if moving else "idle")
@@ -269,6 +265,7 @@ func draw_figure() -> void:
 		"blob": _draw_blob()
 		"mushroom": _draw_mushroom()
 		"wisp": _draw_wisp()
+		"shade": _draw_shade()
 		"golem": _draw_golem()
 		"skeleton": _draw_humanoid(color, color, Color(0, 0, 0, 0), weapon, false, 1.0, true)
 		"goblin": _draw_humanoid(color, color2, Color(0, 0, 0, 0), weapon, false, 0.85)
@@ -278,11 +275,10 @@ func draw_figure() -> void:
 
 
 func _draw_overlays() -> void:
-	if curse_id != "":
-		var cc: Color = SkillDB.CURSE_COLORS.get(curse_id, Color.WHITE)
-		var p := Vector2(0, head_y - 6)
-		draw_colored_polygon(PackedVector2Array([p + Vector2(-5, -4), p + Vector2(5, -4), p + Vector2(0, 4)]), cc)
-		draw_polyline(PackedVector2Array([p + Vector2(-5, -4), p + Vector2(5, -4), p + Vector2(0, 4), p + Vector2(-5, -4)]), OUTLINE, 1.0)
+	if stun_time > 0.0:
+		for i in 3:
+			var a := anim_time * 6.0 + TAU * i / 3.0
+			draw_circle(Vector2(cos(a) * 9.0, head_y - 4 + sin(a) * 3.0), 2.2, Color(1, 0.95, 0.4))
 	if bone_armor > 0.0:
 		draw_arc(Vector2(0, -14), radius + 6.0, 0, TAU, 24, Color(0.95, 0.92, 0.8, 0.55), 2.0)
 	if team == 0 and self != Game.player:
@@ -393,6 +389,39 @@ func _draw_weapon(weap: String, hand: Vector2, wdir: Vector2, s: float) -> void:
 			draw_line(hand - wdir * 4, hand + wdir * 16 * s, OUTLINE, 3.0)
 			draw_line(hand - wdir * 4, hand + wdir * 16 * s, Color(0.45, 0.35, 0.25), 1.5)
 			draw_circle(hand + wdir * 17 * s, 3.5, color2)
+		"bone_sword":
+			draw_line(hand, hand + wdir * 18 * s, OUTLINE, 5.0)
+			draw_line(hand, hand + wdir * 18 * s, Color(0.95, 0.93, 0.85), 3.0)
+			draw_circle(hand + wdir * 2, 3.0, Color(0.85, 0.82, 0.72))
+		"maul":
+			draw_line(hand, hand + wdir * 16 * s, OUTLINE, 4.0)
+			draw_line(hand, hand + wdir * 16 * s, Color(0.9, 0.88, 0.8), 2.5)
+			_blob(hand + wdir * 18 * s, 5.5 * s, 5.5 * s, Color(0.95, 0.93, 0.85))
+			draw_circle(hand + wdir * 18 * s + Vector2(-1.5, 0), 1.2, OUTLINE)
+			draw_circle(hand + wdir * 18 * s + Vector2(1.5, 0), 1.2, OUTLINE)
+		"scythe":
+			draw_line(hand - wdir * 6, hand + wdir * 20 * s, OUTLINE, 4.0)
+			draw_line(hand - wdir * 6, hand + wdir * 20 * s, Color(0.9, 0.88, 0.8), 2.0)
+			var o := wdir.orthogonal()
+			var tip := hand + wdir * 20 * s
+			draw_colored_polygon(PackedVector2Array([tip, tip + o * 14 + wdir * 3, tip + o * 10 - wdir * 2]), Color(0.95, 0.93, 0.85))
+		"whip":
+			var pts := PackedVector2Array()
+			var o := wdir.orthogonal()
+			var reach := 14.0 + attack_anim * 60.0
+			for i in 8:
+				var k := i / 7.0
+				pts.append(hand + wdir * reach * k + o * sin(k * PI * 2.0 + anim_time * 10.0) * 3.0)
+			draw_polyline(pts, OUTLINE, 3.5)
+			draw_polyline(pts, Color(0.92, 0.9, 0.8), 2.0)
+		"bone_spear":
+			draw_line(hand - wdir * 8, hand + wdir * 26 * s, OUTLINE, 3.5)
+			draw_line(hand - wdir * 8, hand + wdir * 26 * s, Color(0.92, 0.9, 0.8), 2.0)
+			draw_colored_polygon(PackedVector2Array([hand + wdir * 33 * s, hand + wdir * 24 * s + wdir.orthogonal() * 4, hand + wdir * 24 * s - wdir.orthogonal() * 4]), Color(0.97, 0.95, 0.88))
+		"shield":
+			_blob(hand + wdir * 6, 6.0 * s, 8.0 * s, Color(0.9, 0.88, 0.8))
+			for i in 3:
+				draw_line(hand + wdir * 6 + Vector2(-4, -4 + i * 4), hand + wdir * 6 + Vector2(4, -4 + i * 4), OUTLINE, 1.0)
 		"bow":
 			var o := wdir.orthogonal()
 			var pts := PackedVector2Array()
@@ -439,6 +468,23 @@ func _draw_wisp() -> void:
 	draw_circle(c, 4.5, color2)
 	draw_circle(c + Vector2(-2, -1), 1.2, OUTLINE)
 	draw_circle(c + Vector2(2, -1), 1.2, OUTLINE)
+
+
+func _draw_shade() -> void:
+	var fl := sin(anim_time * 3.0) * 2.0
+	var c := Vector2(0, -16 + fl)
+	var pts := PackedVector2Array()
+	for i in 12:
+		var a := PI + PI * i / 11.0
+		pts.append(c + Vector2(cos(a) * 10.0, sin(a) * 14.0))
+	for i in 5:
+		var x := 10.0 - i * 5.0
+		pts.append(c + Vector2(x, 12.0 + sin(anim_time * 8.0 + i) * 3.0 + (i % 2) * 4.0))
+	draw_colored_polygon(pts, Color(color, 0.85))
+	draw_polyline(pts, Color(color2, 0.5), 1.0)
+	if facing.y > -0.5:
+		draw_circle(c + Vector2(-3 + _side() * 2, -4), 1.8, color2)
+		draw_circle(c + Vector2(3 + _side() * 2, -4), 1.8, color2)
 
 
 func _draw_golem() -> void:

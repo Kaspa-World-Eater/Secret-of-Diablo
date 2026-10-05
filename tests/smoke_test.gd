@@ -58,9 +58,8 @@ func _run() -> void:
 		p.global_position = m.global_position
 	await _frames(30)
 
-	var order := ["amplify_damage", "teeth", "bone_spear", "bone_spirit", "poison_nova", "bone_armor",
-		"clay_golem", "blood_golem", "iron_golem", "fire_golem", "bone_wall", "bone_prison",
-		"dim_vision", "weaken", "iron_maiden", "terror", "confuse", "life_tap", "attract", "decrepify", "lower_resist"]
+	var order := ["teeth", "bone_spear", "bone_spirit", "poison_nova", "bone_armor",
+		"clay_golem", "blood_golem", "iron_golem", "fire_golem", "bone_wall", "bone_prison", "ossuary_avatar"]
 	for id in order:
 		m = _nearest_monster(p)
 		p.mana = p.max_mana
@@ -91,8 +90,100 @@ func _run() -> void:
 	# melee: attack and poison dagger
 	m = _nearest_monster(p)
 	p.global_position = m.global_position + Vector2(20, 0)
-	p._swing(m, "poison_dagger")
+	for i in 5:
+		p._swing(m, "poison_dagger")
+		if m.dead or m.poison_time > 0.0:
+			break
 	_check(m.dead or m.poison_time > 0.0, "poison dagger poisons")
+
+	# bone melee: every charge skill at every charge level (4 = avatar-empowered)
+	_check(p.avatar_time > 0.0, "ossuary avatar active")
+	for id in ["bone_blade", "bone_lash", "skull_crusher", "bone_scythe", "grave_spear", "ribcage_guard"]:
+		p.skills[id] = 8
+	for id in ["bone_blade", "bone_lash", "skull_crusher", "bone_scythe", "grave_spear", "ribcage_guard"]:
+		_check(SkillDB.max_charge(p, id) == 4, "max charge with avatar for " + id)
+		for lvl in 5:
+			m = _nearest_monster(p)
+			if m == null:
+				break
+			p.global_position = m.global_position + Vector2(40, 0)
+			if not Game.world.is_walkable_px(p.global_position):
+				p.global_position = m.global_position
+			p.mana = p.max_mana
+			p.stamina = 1.0
+			p.action_lock = 0.0
+			var before: float = p.mana
+			p._strike(id, lvl, m.global_position)
+			_check(p.mana < before and p.stamina == 0.0, "%s charge %d" % [id, lvl])
+			await _frames(25)
+	# real hold-to-charge flow (at the camp, away from monsters)
+	var fight_pos: Vector2 = p.global_position
+	p.global_position = p.spawn_point
+	for u in Game.units:
+		if u.team == 1:
+			u.set_physics_process(false)
+	p.stamina = 1.0
+	p.action_lock = 0.0
+	p.stagger = 0.0
+	p._begin_charge("bone_blade", "right")
+	await _frames(int(SkillDB.CHARGE_TIME * 60 * 2.2))
+	_check(p.charge_level() >= 2, "charging builds levels (%d)" % p.charge_level())
+	p._release_charge()
+	_check(p.charging == "" and p.stamina == 0.0, "release performs strike")
+	await _frames(40)
+	# a solid hit staggers and breaks a charge
+	p.stamina = 1.0
+	p.action_lock = 0.0
+	p.guard_time = 0.0
+	p._begin_charge("bone_blade", "right")
+	p.bone_armor = 0.0
+	p.take_damage(p.max_hp * 0.3, "physical", null, true)
+	_check(p.charging == "" and p.stagger > 0.0, "hit breaks charge")
+	p.hp = p.max_hp
+	p.global_position = fight_pos
+	for u in Game.units:
+		if u.team == 1:
+			u.set_physics_process(true)
+	# parry
+	p.guard_mode = "parry"
+	p.guard_time = 1.0
+	m = _nearest_monster(p)
+	var hp_before: float = p.hp
+	p.take_damage(10.0, "physical", m, true)
+	_check(p.hp >= hp_before, "parry negates melee hit")
+	# corpse splinter
+	m = _nearest_monster(p)
+	m.take_damage(99999.0, "magic", p)
+	await _frames(2)
+	var cc = Game.find_corpse(p.global_position, 99999.0)
+	p.global_position = cc.global_position + Vector2(30, 0)
+	p.stamina = 1.0
+	var mb: float = p.mana
+	p._strike("corpse_splinter", 2, cc.global_position)
+	_check(p.mana < mb, "corpse splinter")
+	await _frames(20)
+
+	# lantern + day/night + shades
+	_check(p.lantern != null, "lantern bearer exists")
+	_check(Game.light_at(p.lantern.light_pos()) >= 0.99, "lit at lantern")
+	p.lantern.toggle_plant(p.global_position)
+	_check(p.lantern.planted, "lantern planted")
+	p.lantern.toggle_plant(p.global_position)
+	_check(not p.lantern.planted, "lantern recalled")
+	Game.day_night.time_of_day = 0.0
+	Game.day_night.advance(0.0)
+	_check(Game.is_night(), "night")
+	_check(Game.light_at(p.global_position + Vector2(3000, 0)) < 0.2, "dark far from lights")
+	var main = get_child(0)
+	main._spawn_shades()
+	await _frames(30)
+	var shades := Game.units.filter(func(u): return u.get("nocturnal"))
+	_check(shades.size() > 0, "shades spawn at night (%d)" % shades.size())
+	Game.day_night.time_of_day = 0.5
+	Game.day_night.advance(0.0)
+	await _frames(30)
+	shades = Game.units.filter(func(u): return u.get("nocturnal"))
+	_check(shades.size() == 0, "shades melt at day (%d left)" % shades.size())
 
 	# let the fight play out
 	await _frames(600)

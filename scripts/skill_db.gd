@@ -2,8 +2,8 @@ extends Node
 ## Necromancer skill data and formulas, modelled on Diablo 2.
 ## All numbers live here so balance can be tuned without touching gameplay code.
 
-const TREES := ["Summoning", "Poison & Bone", "Curses"]
-const TREE_COLORS := [Color(0.32, 0.55, 0.3), Color(0.72, 0.68, 0.5), Color(0.55, 0.28, 0.62)]
+const TREES := ["Summoning", "Poison & Bone", "Bone Melee"]
+const TREE_COLORS := [Color(0.32, 0.55, 0.3), Color(0.72, 0.68, 0.5), Color(0.62, 0.55, 0.42)]
 const MAX_LEVEL := 20
 
 # tree: -1 = not in a tree. row 0..5 maps to required level 1/6/12/18/24/30.
@@ -55,34 +55,27 @@ const SKILLS := {
 	"bone_spirit": {"name": "Bone Spirit", "tree": 1, "row": 5, "col": 1, "pre": ["bone_spear"], "passive": false, "mana": [12, 0.5], "icon": "Sp",
 		"desc": "A spirit that hunts down its target and deals magic damage."},
 
-	# --- Curses ---
-	"amplify_damage": {"name": "Amplify Damage", "tree": 2, "row": 0, "col": 1, "pre": [], "passive": false, "mana": [4, 1], "icon": "AD",
-		"desc": "Cursed monsters take double physical damage."},
-	"dim_vision": {"name": "Dim Vision", "tree": 2, "row": 1, "col": 0, "pre": ["amplify_damage"], "passive": false, "mana": [9, 0], "icon": "DV",
-		"desc": "Cursed monsters can barely see."},
-	"weaken": {"name": "Weaken", "tree": 2, "row": 1, "col": 2, "pre": ["amplify_damage"], "passive": false, "mana": [4, 0.5], "icon": "We",
-		"desc": "Cursed monsters deal 33% less damage."},
-	"iron_maiden": {"name": "Iron Maiden", "tree": 2, "row": 2, "col": 1, "pre": ["amplify_damage"], "passive": false, "mana": [5, 0.5], "icon": "IM",
-		"desc": "Cursed monsters take their own melee damage back."},
-	"terror": {"name": "Terror", "tree": 2, "row": 2, "col": 2, "pre": ["weaken"], "passive": false, "mana": [7, 0], "icon": "Tr",
-		"desc": "Cursed monsters flee in fear."},
-	"confuse": {"name": "Confuse", "tree": 2, "row": 3, "col": 0, "pre": ["dim_vision"], "passive": false, "mana": [13, 0], "icon": "Cf",
-		"desc": "Cursed monsters attack anything nearby, including each other."},
-	"life_tap": {"name": "Life Tap", "tree": 2, "row": 3, "col": 1, "pre": ["iron_maiden"], "passive": false, "mana": [9, 0], "icon": "LT",
-		"desc": "Attacks on cursed monsters heal the attacker for 50% of damage."},
-	"attract": {"name": "Attract", "tree": 2, "row": 4, "col": 0, "pre": ["confuse"], "passive": false, "mana": [17, 0], "icon": "At",
-		"desc": "Other monsters turn on the cursed target."},
-	"decrepify": {"name": "Decrepify", "tree": 2, "row": 4, "col": 2, "pre": ["terror"], "passive": false, "mana": [11, 0], "icon": "De",
-		"desc": "Cursed monsters are slowed, weakened and take more physical damage."},
-	"lower_resist": {"name": "Lower Resist", "tree": 2, "row": 5, "col": 1, "pre": ["life_tap", "decrepify"], "passive": false, "mana": [11, 0], "icon": "LR",
-		"desc": "Lowers the elemental and poison resistances of cursed monsters."},
-}
-
-const CURSE_COLORS := {
-	"amplify_damage": Color(1.0, 0.35, 0.2), "dim_vision": Color(0.3, 0.3, 0.45), "weaken": Color(0.7, 0.7, 0.3),
-	"iron_maiden": Color(0.75, 0.75, 0.8), "terror": Color(0.9, 0.9, 1.0), "confuse": Color(0.9, 0.4, 0.9),
-	"life_tap": Color(0.9, 0.1, 0.2), "attract": Color(0.3, 0.9, 0.9), "decrepify": Color(0.5, 0.35, 0.2),
-	"lower_resist": Color(0.6, 0.2, 0.9),
+	# --- Bone Melee (replaces Curses). Charge skills: hold the button, release to strike. ---
+	"marrow_mastery": {"name": "Marrow Mastery", "tree": 2, "row": 0, "col": 0, "pre": [], "passive": true, "mana": [0, 0], "icon": "MM",
+		"desc": "Passive: bone weapons deal more damage, hit more often and your stamina gauge refills faster."},
+	"bone_blade": {"name": "Bone Blade", "tree": 2, "row": 0, "col": 1, "pre": [], "passive": false, "charge": true, "mana": [2, 0.2], "icon": "Bl",
+		"desc": "Conjure a fast bone sword. Charge: Wide Slash, Triple Slash, Lunging Cleave."},
+	"bone_lash": {"name": "Bone Lash", "tree": 2, "row": 1, "col": 0, "pre": ["bone_blade"], "passive": false, "charge": true, "mana": [3, 0.2], "icon": "La",
+		"desc": "A long vertebrae whip. Charge: Crack, Yank (pull an enemy to you), Grave Yank (also drags corpses to you)."},
+	"skull_crusher": {"name": "Skull Crusher", "tree": 2, "row": 1, "col": 2, "pre": ["bone_blade"], "passive": false, "charge": true, "mana": [4, 0.25], "icon": "SC",
+		"desc": "A slow, heavy bone maul. Charge: Heavy Blow, Ground Slam, Stunning Shockwave."},
+	"bone_scythe": {"name": "Bone Scythe", "tree": 2, "row": 2, "col": 0, "pre": ["bone_lash"], "passive": false, "charge": true, "mana": [4, 0.25], "icon": "Sy",
+		"desc": "Wide sweeps that hit groups. Charge: Reaping Arc, Double Reap, Death Spin."},
+	"ribcage_guard": {"name": "Ribcage Guard", "tree": 2, "row": 2, "col": 2, "pre": ["skull_crusher"], "passive": false, "charge": true, "mana": [3, 0.2], "icon": "RG",
+		"desc": "A bone shield stance against melee. Charge: Long Guard, Parry & Riposte, Shard Reflection."},
+	"grave_spear": {"name": "Grave Spear", "tree": 2, "row": 3, "col": 0, "pre": ["bone_lash"], "passive": false, "charge": true, "mana": [3, 0.25], "icon": "GS",
+		"desc": "A thrusting bone spear. Charge: Long Thrust, Piercing Dash, Pinning Strike."},
+	"marrow_drain": {"name": "Marrow Drain", "tree": 2, "row": 3, "col": 2, "pre": ["ribcage_guard"], "passive": true, "mana": [0, 0], "icon": "MD",
+		"desc": "Passive: bone melee hits steal life and mana."},
+	"corpse_splinter": {"name": "Corpse Splinter", "tree": 2, "row": 4, "col": 1, "pre": ["bone_scythe", "grave_spear"], "passive": false, "charge": true, "mana": [6, 0.5], "icon": "CS",
+		"desc": "Strike a corpse near you so it bursts into bone shrapnel. Charge: Wide Cone, Shrapnel Ring, Seeking Shards."},
+	"ossuary_avatar": {"name": "Ossuary Avatar", "tree": 2, "row": 5, "col": 1, "pre": ["corpse_splinter", "ribcage_guard"], "passive": false, "self": true, "mana": [40, 2], "icon": "OA",
+		"desc": "Encase yourself in a bone exoskeleton: bigger, 25% damage reduction and +1 charge level for all bone melee."},
 }
 
 
@@ -90,8 +83,8 @@ func is_melee(id: String) -> bool:
 	return SKILLS[id].get("melee", false)
 
 
-func is_curse(id: String) -> bool:
-	return SKILLS[id]["tree"] == 2
+func is_charge(id: String) -> bool:
+	return SKILLS[id].get("charge", false)
 
 
 func req_level(id: String) -> int:
@@ -184,36 +177,65 @@ func poison_nova_poison(l: int, p) -> float:
 	return (50.0 + 22.0 * (l - 1)) * syn(p, ["poison_dagger", "poison_explosion"], 0.1)
 
 
-# ---------------------------------------------------------------- Curses
+# ---------------------------------------------------------------- Bone Melee
 
-func curse_radius(id: String, l: int) -> float:
-	match id:
-		"attract": return 40.0
-		"amplify_damage", "lower_resist", "dim_vision": return 70.0 + 12.0 * l
-	return 65.0 + 10.0 * l
+const CHARGE_TIME := 0.55  # seconds of holding per charge level
 
-
-func curse_duration(id: String, l: int) -> float:
-	match id:
-		"amplify_damage": return 8.0 + 3.0 * l
-		"dim_vision": return 7.0 + 2.0 * l
-		"weaken": return 14.0 + 2.0 * l
-		"iron_maiden": return 12.0 + 2.4 * l
-		"terror": return 8.0 + 1.0 * l
-		"confuse": return 10.0 + 1.0 * l
-		"life_tap": return 13.0 + 2.6 * l
-		"attract": return 12.0 + 3.6 * l
-		"decrepify": return 4.0 + 0.6 * l
-		"lower_resist": return 20.0 + 2.0 * l
-	return 10.0
+# recover: seconds for the stamina gauge to refill after a swing (SoM style)
+const BONE_WEAPONS := {
+	"bone_blade": {"recover": 0.8, "reach": 34.0, "weapon": "bone_sword"},
+	"bone_lash": {"recover": 1.0, "reach": 110.0, "weapon": "whip"},
+	"skull_crusher": {"recover": 1.5, "reach": 34.0, "weapon": "maul"},
+	"bone_scythe": {"recover": 1.1, "reach": 46.0, "weapon": "scythe"},
+	"ribcage_guard": {"recover": 0.8, "reach": 0.0, "weapon": "shield"},
+	"grave_spear": {"recover": 1.0, "reach": 70.0, "weapon": "bone_spear"},
+	"corpse_splinter": {"recover": 1.0, "reach": 110.0, "weapon": "maul"},
+}
 
 
-func iron_maiden_mult(l: int) -> float:
-	return 2.0 + 0.25 * (l - 1)
+func max_charge(p, id: String) -> int:
+	var l: int = p.skill_level(id)
+	if l <= 0 or not is_charge(id):
+		return 0
+	var c := 1 if l < 4 else (2 if l < 8 else 3)
+	if p.avatar_time > 0.0:
+		c += 1
+	return c
 
 
-func lower_resist_amount(l: int) -> float:
-	return min(70.0, 25.0 + 3.0 * (l - 1))
+func bone_weapon_dmg(p, id: String) -> Vector2:
+	var l: int = max(1, p.skill_level(id))
+	var mm: int = p.skill_level("marrow_mastery")
+	var m = (1.0 + 0.12 * (l - 1)) * (1.0 + 0.15 * mm) * (1.0 + p.strength * 0.01)
+	m *= syn(p, ["bone_armor", "bone_spear", "bone_wall"], 0.04)
+	return Vector2(4, 9) * m
+
+
+func attack_rating(p) -> float:
+	return 40.0 + p.dexterity * 5.0 + p.level * 4.0 + 20.0 * p.skill_level("marrow_mastery")
+
+
+func hit_chance(p, target) -> float:
+	var ar := attack_rating(p) * (1.25 if p.stamina >= 1.0 else 1.0)
+	var def: float = (10.0 + target.level * 8.0) * (1.3 if target.get("champion") else 1.0)
+	var c = 2.0 * ar / (ar + def) * float(p.level) / (p.level + target.level)
+	return clamp(c, 0.05, 0.95)
+
+
+func stamina_recover(p, id: String) -> float:
+	var base: float = BONE_WEAPONS.get(id, {"recover": 0.9})["recover"]
+	return base / (1.0 + 0.03 * p.skill_level("marrow_mastery") + p.dexterity * 0.002)
+
+
+func leech(p) -> Vector2:
+	var l: int = p.skill_level("marrow_drain")
+	if l == 0:
+		return Vector2.ZERO
+	return Vector2(0.02 + 0.005 * l, 0.01 + 0.003 * l)
+
+
+func avatar_duration(l: int) -> float:
+	return 20.0 + 2.0 * l
 
 
 # ---------------------------------------------------------------- Summoning
@@ -279,7 +301,7 @@ func golem_stats(id: String, l: int, p) -> Dictionary:
 			var res: Dictionary = s["res"].duplicate()
 			res["fire"] = 95.0
 			s.merge({"name": "Fire Golem", "hp": (400.0 + 60.0 * (l - 1)) * hp_mult, "dmg_min": 10.0 + 6.0 * (l - 1), "dmg_max": 27.0 + 8.0 * (l - 1),
-				"dmg_type": "fire", "aura_dps": 6.0 + 4.0 * (l - 1), "aura_radius": 110.0, "color": Color(1.0, 0.45, 0.1), "res": res}, true)
+				"dmg_type": "fire", "aura_dps": 6.0 + 4.0 * (l - 1), "aura_radius": 110.0, "glow": 150.0, "color": Color(1.0, 0.45, 0.1), "res": res}, true)
 	return s
 
 
@@ -340,11 +362,14 @@ func describe(id: String, l: int, p) -> String:
 		"bone_spirit":
 			var d := bone_spirit_dmg(l, p)
 			return "Magic damage: %d-%d (seeks target)" % [d.x, d.y]
-	if is_curse(id):
-		var t := "Radius: %.1f yards  Duration: %d s" % [curse_radius(id, l) / 32.0, int(curse_duration(id, l))]
-		if id == "iron_maiden":
-			t += "\nReturns %d%% melee damage" % int(iron_maiden_mult(l) * 100)
-		if id == "lower_resist":
-			t += "\nResistances -%d%%" % int(lower_resist_amount(l))
-		return t
+	if id == "marrow_mastery":
+		return "Bone melee damage +%d%%, attack rating +%d, stamina refill +%d%%" % [15 * l, 20 * l, 3 * l]
+	if id == "marrow_drain":
+		return "Life steal %.1f%%, mana steal %.1f%%" % [2.0 + 0.5 * l, 1.0 + 0.3 * l]
+	if id == "ossuary_avatar":
+		return "Duration: %d seconds" % int(avatar_duration(l))
+	if is_charge(id):
+		var charges := 1 if l < 4 else (2 if l < 8 else 3)
+		var base := Vector2(4, 9) * (1.0 + 0.12 * (l - 1))
+		return "Damage %d-%d, %d charge level%s" % [base.x, base.y, charges, "" if charges == 1 else "s"]
 	return ""

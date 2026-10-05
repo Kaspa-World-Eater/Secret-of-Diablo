@@ -16,6 +16,8 @@ var ground_layer: Node2D
 var proj_layer: Node2D
 var fx_layer: Node2D
 
+var day_night = null
+var light_sources: Array = []  # nodes with light_radius_px() and light_pos()
 var units: Array = []
 var corpses: Array = []
 var merc = null
@@ -31,19 +33,45 @@ func _setup_input() -> void:
 	var keys := {
 		"skill_tree": [KEY_T], "stats": [KEY_A, KEY_C], "automap": [KEY_TAB], "help": [KEY_H],
 		"potion_1": [KEY_1], "potion_2": [KEY_2], "potion_3": [KEY_3], "potion_4": [KEY_4],
-		"debug_level": [KEY_EQUAL], "close_panels": [KEY_ESCAPE],
+		"debug_level": [KEY_EQUAL], "debug_time": [KEY_N], "close_panels": [KEY_ESCAPE], "lantern": [KEY_L],
 	}
 	var fkeys := [KEY_F1, KEY_F2, KEY_F3, KEY_F4, KEY_F5, KEY_F6, KEY_F7, KEY_F8]
 	for i in fkeys.size():
 		keys["hotkey_%d" % (i + 1)] = [fkeys[i]]
 	for action in keys:
-		if InputMap.has_action(action):
-			continue
-		InputMap.add_action(action)
+		_add_action(action)
 		for k in keys[action]:
 			var ev := InputEventKey.new()
 			ev.keycode = k
 			InputMap.action_add_event(action, ev)
+	# controller
+	var pad := {
+		"pad_left": JOY_BUTTON_A, "pad_right": JOY_BUTTON_X, "pad_cycle": JOY_BUTTON_B, "lantern": JOY_BUTTON_Y,
+		"pad_potion_hp": JOY_BUTTON_LEFT_SHOULDER, "pad_potion_mp": JOY_BUTTON_RIGHT_SHOULDER,
+		"skill_tree": JOY_BUTTON_START, "stats": JOY_BUTTON_BACK, "automap": JOY_BUTTON_DPAD_UP,
+	}
+	for action in pad:
+		_add_action(action)
+		var jb := InputEventJoypadButton.new()
+		jb.button_index = pad[action]
+		InputMap.action_add_event(action, jb)
+	var axes := {
+		"pad_move_left": [JOY_AXIS_LEFT_X, -1.0], "pad_move_right": [JOY_AXIS_LEFT_X, 1.0],
+		"pad_move_up": [JOY_AXIS_LEFT_Y, -1.0], "pad_move_down": [JOY_AXIS_LEFT_Y, 1.0],
+		"pad_aim_left": [JOY_AXIS_RIGHT_X, -1.0], "pad_aim_right": [JOY_AXIS_RIGHT_X, 1.0],
+		"pad_aim_up": [JOY_AXIS_RIGHT_Y, -1.0], "pad_aim_down": [JOY_AXIS_RIGHT_Y, 1.0],
+	}
+	for action in axes:
+		_add_action(action)
+		var jm := InputEventJoypadMotion.new()
+		jm.axis = axes[action][0]
+		jm.axis_value = axes[action][1]
+		InputMap.action_add_event(action, jm)
+
+
+func _add_action(action: String) -> void:
+	if not InputMap.has_action(action):
+		InputMap.add_action(action, 0.2)
 
 
 func _process(delta: float) -> void:
@@ -75,7 +103,7 @@ func unit_at(pos: Vector2, team: int):
 	var best = null
 	var best_d := INF
 	for u in units:
-		if u.dead or u.team == team:
+		if u.dead or u.team == team or u.invisible:
 			continue
 		var c: Vector2 = u.global_position + Vector2(0, -12)
 		var d := pos.distance_to(c)
@@ -97,7 +125,7 @@ func nearest_hostile(pos: Vector2, team: int, max_d: float):
 	var best = null
 	var best_d := max_d
 	for u in units:
-		if u.dead or u.team == team:
+		if u.dead or u.team == team or u.invisible:
 			continue
 		var d: float = u.global_position.distance_to(pos)
 		if d < best_d:
@@ -117,6 +145,31 @@ func find_corpse(pos: Vector2, r: float):
 			best = c
 			best_d = d
 	return best
+
+
+# ---------------------------------------------------------------- light
+
+func daylight() -> float:
+	return day_night.daylight if day_night else 1.0
+
+
+func light_visual() -> float:
+	## Visual strength of light sources: invisible at noon, full at night.
+	return clamp(1.15 - daylight(), 0.0, 1.0)
+
+
+func is_night() -> bool:
+	return day_night != null and day_night.is_night()
+
+
+func light_at(pos: Vector2) -> float:
+	## 0 = pitch dark, 1 = fully lit (daylight or a nearby light source).
+	var l := daylight()
+	if l >= 1.0:
+		return 1.0
+	for s in light_sources:
+		l = max(l, Lighting.falloff(pos.distance_to(s.light_pos()), s.light_radius_px()))
+	return l
 
 
 # ---------------------------------------------------------------- spawning
@@ -160,15 +213,16 @@ func spawn_projectile(p: Dictionary) -> void:
 	pr.pierce = p.get("pierce", false)
 	pr.homing = p.get("homing", false)
 	pr.target = p.get("target", null)
-	pr.only_target = p.get("only_target", null)
 	pr.poison_total = p.get("poison", 0.0)
 	pr.slow = p.get("slow", 0.0)
 	proj_layer.add_child(pr)
 
 
-func fx(pos: Vector2, kind: String, color: Color, radius: float, duration: float) -> void:
+func fx(pos: Vector2, kind: String, color: Color, radius: float, duration: float, dir := Vector2.RIGHT, arc_deg := 0.0) -> void:
 	var f = FxScript.new()
 	f.position = pos
+	f.dir = dir
+	f.arc = deg_to_rad(arc_deg)
 	f.kind = kind
 	f.color = color
 	f.radius = radius
@@ -216,7 +270,7 @@ func on_merc_died() -> void:
 func _drop_loot(pos: Vector2, lvl: int, champion: bool) -> void:
 	var rolls := 3 if champion else 1
 	for i in rolls:
-		var r := randf()
+		var r := randf() / (1.5 if is_night() else 1.0)  # better drops at night
 		var kind := ""
 		var amount := 0
 		if r < 0.12:

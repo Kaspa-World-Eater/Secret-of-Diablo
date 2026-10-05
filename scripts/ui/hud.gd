@@ -153,6 +153,7 @@ func _build_stats_panel() -> void:
 		var b := _text_button("+")
 		b.position = Vector2(270, r[1] - 2)
 		b.size = Vector2(28, 20)
+		b.focus_mode = Control.FOCUS_ALL
 		b.pressed.connect(_on_stat.bind(r[0]))
 		stats_panel.add_child(b)
 		stat_plus[r[0]] = b
@@ -199,6 +200,7 @@ func _build_tree_panel() -> void:
 		var b := _text_button(SkillDB.TREES[i])
 		b.position = Vector2(12 + i * 137, 38)
 		b.size = Vector2(132, 26)
+		b.focus_mode = Control.FOCUS_ALL
 		b.pressed.connect(_set_tab.bind(i))
 		tree_panel.add_child(b)
 		tree_tabs.append(b)
@@ -216,13 +218,16 @@ func _build_tree_panel() -> void:
 		b.size = Vector2(122, 58)
 		b.add_theme_font_size_override("font_size", 11)
 		b.clip_text = true
+		b.focus_mode = Control.FOCUS_ALL
+		b.focus_entered.connect(_show_skill_info.bind(id))
 		b.pressed.connect(_on_learn.bind(id))
 		b.mouse_entered.connect(_show_skill_info.bind(id))
 		_skill_style(b, id)
 		tree_panel.add_child(b)
 		tree_buttons[id] = b
-	tree_info = _label(tree_panel, "Hover a skill for details. Click to spend a point.", Vector2(14, 540), 12)
-	tree_info.size = Vector2(400, 140)
+	tree_info = _label(tree_panel, "Hover a skill for details. Click to spend a point.", Vector2(14, 534), 11)
+	tree_info.size = Vector2(404, 150)
+	tree_info.clip_text = true
 	tree_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_set_tab(0)
 
@@ -381,25 +386,44 @@ func _input(event: InputEvent) -> void:
 # ---------------------------------------------------------------- help / toggles
 
 func _build_help() -> void:
-	help = _panel(Vector2(520, 300))
+	help = _panel(Vector2(560, 440))
 	help.visible = true
 	var t := "\n".join([
 		"SECRET OF DIABLO  -  Necromancer sandbox",
 		"",
 		"Left-click: move / attack        Shift + Left-click: attack in place",
-		"Right-click: cast your right skill (hold to keep casting)",
+		"Right-click: use your right skill (hold to keep casting)",
 		"Click the skill icons by the orbs to choose left / right skills.",
 		"   While choosing, hover a skill and press F1-F8 to bind it.",
 		"F1-F8: switch right skill     1-2: Healing potion     3-4: Mana potion",
-		"T: Skill tree     A: Character     Tab: Automap     H: This help",
-		"=: (debug) gain a level",
+		"T: Skill tree   A: Character   Tab: Automap   L: Plant/recall lantern   H: Help",
+		"Debug:  = gain a level    N: skip 3 hours",
 		"",
-		"Kill monsters to leave corpses. Raise Skeleton, Skeletal Mage,",
-		"Revive and Corpse Explosion all need a corpse under the cursor.",
-		"Monsters get stronger the further you travel from the camp.",
+		"BONE MELEE (Secret of Mana style): each swing empties the stamina bar",
+		"under your feet - wait for it to refill for full damage. At full stamina,",
+		"HOLD the skill button to charge (pips fill), RELEASE to unleash.",
+		"",
+		"LIGHT: night falls every 20 minutes. Monsters hit harder in darkness,",
+		"Shades only appear at night and are hidden outside your light.",
+		"Your lantern bearer carries your light - plant it to hold ground.",
+		"",
+		"Controller: L-stick move, R-stick aim, A left skill, X right skill (hold),",
+		"B cycle skills, Y lantern, LB/RB potions, Start skills, Back character.",
 	])
 	var l := _label(help, t, Vector2(16, 12), 13)
-	l.size = Vector2(490, 280)
+	l.size = Vector2(530, 420)
+
+
+func _focus_first_tree_button() -> void:
+	for id in tree_buttons:
+		var b: Button = tree_buttons[id]
+		if b.visible:
+			b.grab_focus()
+			return
+
+
+func pad_menu_open() -> bool:
+	return tree_panel.visible or stats_panel.visible
 
 
 func _toggle(c: Control) -> void:
@@ -412,17 +436,19 @@ func _toggle(c: Control) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not (event is InputEventKey and event.pressed and not event.echo):
+	if event.is_echo():
 		return
-	if event.is_action("skill_tree"):
+	if event.is_action_pressed("skill_tree"):
 		_toggle(tree_panel)
-	elif event.is_action("stats"):
+		if tree_panel.visible and event is InputEventJoypadButton:
+			_focus_first_tree_button()
+	elif event.is_action_pressed("stats"):
 		_toggle(stats_panel)
-	elif event.is_action("automap"):
+	elif event.is_action_pressed("automap"):
 		automap.visible = not automap.visible
-	elif event.is_action("help"):
+	elif event.is_action_pressed("help"):
 		_toggle(help)
-	elif event.is_action("close_panels"):
+	elif event.is_action_pressed("close_panels"):
 		for c in [stats_panel, tree_panel, picker, help]:
 			c.visible = false
 	else:
@@ -533,7 +559,7 @@ func _draw_bar() -> void:
 		p.revives.size(), golem, merc], 11, Color(0.7, 0.85, 0.7), true)
 
 	# hovered monster
-	var hv = Game.unit_at(p.get_global_mouse_position(), 0)
+	var hv = p.hover_target()
 	if hv != null:
 		var name_col := Color(0.5, 0.65, 1.0) if hv.champion else TEXT
 		var w := 220.0
@@ -541,10 +567,24 @@ func _draw_bar() -> void:
 		bar.draw_rect(Rect2(cx - w / 2, 8, w * clamp(hv.hp / hv.max_hp, 0.0, 1.0), 22), Color(0.75, 0.1, 0.1, 0.9))
 		bar.draw_rect(Rect2(cx - w / 2, 8, w, 22), GOLD.darkened(0.3), false, 1.0)
 		var label: String = hv.display_name
-		if hv.curse_id != "":
-			label += "  (" + SkillDB.SKILLS[hv.curse_id]["name"] + ")"
+		if hv.stun_time > 0.0:
+			label += "  (Stunned)"
 		_text(Vector2(cx, 24), label, 13, name_col, true)
 		_text(Vector2(cx, 44), "Level %d" % hv.level, 11, Color(0.8, 0.8, 0.8), true)
+
+	# clock
+	if Game.day_night:
+		var dn = Game.day_night
+		var clock: String = dn.clock_text()
+		var cxr := s.x - 110.0
+		var sun_a: float = dn.time_of_day * TAU + PI / 2
+		bar.draw_circle(Vector2(cxr - 70, 22), 9, Color(0, 0, 0, 0.6))
+		var icon_col := Color(1, 0.85, 0.3) if dn.daylight > 0.5 else Color(0.75, 0.8, 1.0)
+		bar.draw_circle(Vector2(cxr - 70, 22) + Vector2.from_angle(sun_a) * 4.0, 4.0, icon_col)
+		_text(Vector2(cxr, 27), clock, 13, TEXT, true)
+		var lan := "Lantern: planted" if p.lantern != null and p.lantern.planted else ""
+		if lan != "":
+			_text(Vector2(cxr, 45), lan, 11, Color(1, 0.85, 0.5), true)
 
 	if _msg_time > 0.0:
 		_text(Vector2(cx, h * 0.3), _msg, 16, Color(1, 0.9, 0.6, min(1.0, _msg_time)), true)

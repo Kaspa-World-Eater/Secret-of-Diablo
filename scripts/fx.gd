@@ -1,10 +1,12 @@
 extends Node2D
-## Short-lived visual effects (rings, bursts, poison clouds, curse marks).
+## Short-lived visual effects (rings, bursts, poison clouds, weapon swings).
 
 var kind := "ring"
 var color := Color.WHITE
 var radius := 40.0
 var duration := 0.4
+var dir := Vector2.RIGHT
+var arc := 0.0
 var _t := 0.0
 
 
@@ -27,6 +29,20 @@ func _draw() -> void:
 			for i in 7:
 				var a := TAU * i / 7.0 + k
 				draw_circle(Vector2.from_angle(a) * radius * 0.55 * (0.5 + k * 0.5), radius * 0.45, Color(color, 0.22 * (1.0 - k)))
-		"curse":
-			draw_circle(Vector2.ZERO, radius, Color(color, 0.12 * (1.0 - k)))
-			draw_arc(Vector2.ZERO, radius, 0, TAU, 48, Color(color, 0.8 * (1.0 - k)), 2.0)
+		"arc":
+			# weapon swing: a crescent sweeping across the arc
+			var a0 := dir.angle() - arc * 0.5
+			var sweep: float = arc * min(1.0, k * 1.6)
+			var lift := Vector2(0, -12)
+			draw_arc(lift, radius * 0.92, a0, a0 + sweep, 24, Color(color, 0.85 * (1.0 - k)), 6.0)
+			draw_arc(lift, radius * 0.7, a0, a0 + sweep, 24, Color(color, 0.35 * (1.0 - k)), 3.0)
+		"line":
+			var lift := Vector2(0, -12)
+			var half := dir * radius * 0.5
+			draw_line(lift - half, lift - half + dir * radius * min(1.0, k * 2.0), Color(color, 0.9 * (1.0 - k)), 4.0)
+		"pin":
+			var lift := Vector2(0, -6)
+			for i in 3:
+				var off := Vector2((i - 1) * 6.0, 0)
+				draw_line(lift + off + Vector2(0, 6), lift + off + Vector2(0, -16), Color(0.1, 0.07, 0.08, 1.0 - k), 4.0)
+				draw_line(lift + off + Vector2(0, 6), lift + off + Vector2(0, -16), Color(color, 1.0 - k), 2.0)

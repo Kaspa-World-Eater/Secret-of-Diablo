@@ -47,8 +47,6 @@ static func cast(p, id: String, lvl: int, pos: Vector2, hover) -> bool:
 			return _bone_wall(p, lvl, pos)
 		"bone_prison":
 			return _bone_prison(p, pos, hover)
-	if SkillDB.is_curse(id):
-		return _curse(p, id, lvl, pos, hover)
 	return false
 
 
@@ -196,20 +194,3 @@ static func _bone_prison(p, pos: Vector2, hover) -> bool:
 			if c != tc and c != w.cell_of(p.global_position):
 				cells.append(c)
 	return w.add_bones(cells, 24.0) > 0
-
-
-static func _curse(p, id: String, lvl: int, pos: Vector2, hover) -> bool:
-	var r := SkillDB.curse_radius(id, lvl)
-	var dur := SkillDB.curse_duration(id, lvl)
-	var targets := []
-	if id == "attract":
-		var t = hover if hover != null else Game.nearest_hostile(pos, 0, 60.0)
-		if t != null:
-			targets.append(t)
-	else:
-		targets = _enemies_near(pos, r)
-	for u in targets:
-		if u.role == "monster" and not u.revived:
-			u.apply_curse(id, lvl, dur)
-	Game.fx(pos, "curse", SkillDB.CURSE_COLORS[id], r, 0.6)
-	return true

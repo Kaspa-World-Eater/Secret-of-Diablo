@@ -6,9 +6,8 @@ const LIFT := Vector2(0, -14)
 
 var vel := Vector2.ZERO
 var speed := 300.0
-var team := 0  # -1 hits everyone except the owner
+var team := 0
 var owner_unit = null
-var only_target = null
 var dmg_min := 0.0
 var dmg_max := 0.0
 var dtype := "magic"
@@ -58,10 +57,6 @@ func _physics_process(delta: float) -> void:
 
 
 func _can_hit(u) -> bool:
-	if team == -1:
-		return true
-	if only_target != null and is_instance_valid(only_target) and u == only_target:
-		return true
 	return u.team != team
 
 
