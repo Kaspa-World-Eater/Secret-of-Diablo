@@ -158,6 +158,8 @@ func roll_damage() -> float:
 	Combat.striker = self   # the blow about to land knows whose it is (the deeds: Thirsting, Nail-Fisted)
 	Combat.striker_frame = Engine.get_physics_frames()
 	var weak := 0.6 if float(get_meta("k_weak", -1.0)) > Time.get_ticks_msec() / 1000.0 else 1.0   # the Pinch drains it
+	if float(get_meta("o_weigh", -1.0)) > Time.get_ticks_msec() / 1000.0:   # (Secret of Diablo) The Weighing: lighter per notch
+		weak *= 1.0 - 0.04 * mini(9, int(get_meta("notch", 0)))
 	return randf_range(dmg.x, dmg.y) * hour_mult() * weak
 
 func hour_mult() -> float:
@@ -204,6 +206,8 @@ func damage_taken_mult(elem: String, from: Vector2, opts: Dictionary) -> float:
 		k *= 1.0 + float(h.st.fate["raised"]) / 100.0
 	if marked > 0.0:
 		k *= 1.3
+	if float(get_meta("o_crushed", -1.0)) > Time.get_ticks_msec() / 1000.0:   # (Secret of Diablo) Marrow Crush: +25% from everything
+		k *= 1.25
 	if brain:
 		k *= brain.damage_taken_mult(self, elem, from, opts)
 	return k

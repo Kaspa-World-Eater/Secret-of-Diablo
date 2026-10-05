@@ -1,11 +1,13 @@
-extends "res://skills/ossumancer/tree_count.gd"
+extends "res://skills/ossumancer/tree_count2.gd"
 ## The Ossuarch (class id "ossumancer"), part 5 of 5: casting (which skill runs what), the hooks the shared game calls,
 ## and the frame (tick). The state, numbers and helpers are in skills/ossumancer/base.gd (its header tells how the
 ## Mantle works); each tree's skills are in skills/ossumancer/tree_*.gd.
 ## Ported so far: the Ossuary and Carapace trees, Bone Blade. The Count follows.
 
 const DONE := ["aura", "spear", "raise", "blade", "barmor", "siphon", "ribcage", "ossify", "spikes", "sstorm", "bonerain", "spirit",
-	"offering", "unearth", "horn", "colossus", "host"]
+	"offering", "unearth", "horn", "colossus", "host",
+	# (Secret of Diablo) the Count tree and the old Necromancer's melee (skills/ossumancer/tree_count2.gd)
+	"crush", "bscythe", "lash", "gcharge", "leap", "opencount", "fewer", "weighing", "ninthstair", "csplinter", "rguard", "avatar"]
 
 var mantle_set := false
 
@@ -70,6 +72,20 @@ func _cast(id: String, a: Vector2, target) -> bool:
 			return press_host()
 		"spirit":
 			return cast_lord(a)
+		"crush", "bscythe", "lash", "gcharge", "csplinter", "rguard":
+			return press_held(id, a, target)
+		"leap":
+			return cast_leap(a)
+		"opencount":
+			return cast_open_count(a)
+		"fewer":
+			return cast_fewer(a)
+		"weighing":
+			return cast_weighing(a)
+		"ninthstair":
+			return cast_stair(a, target)
+		"avatar":
+			return cast_avatar()
 	if _cast_bone(id, a):
 		echo(id, a)
 		return true
@@ -90,13 +106,18 @@ func hud_gauge() -> Dictionary:
 		extra = " · COLOSSUS %d" % colossus.n
 	elif int(host.get("n", 0)) > 0:
 		extra = " · HOST %d" % int(host["n"])
-	return {"text": "SHARDS %d/%d · DEAD %d%s" % [int(shards), mantle_cap(), skels.size(), extra], "pips": skels.size(), "max": skel_max(), "col": BONE}
+	if avatar_t > 0.0:
+		extra += " · FRAME %d" % int(ceil(avatar_t))
+	return {"text": "SHARDS %d/%d · DEAD %d%s · SWING %d%%" % [int(shards), mantle_cap(), skels.size(), extra, int(round(swing * 100.0))], "pips": skels.size(), "max": skel_max(), "col": BONE}
 
 func before_hit(d: float, _elem: String, _from: Vector2, opts: Dictionary) -> float:
 	# Bone Spurs (the Mantle at 5): a creature that strikes him in melee is cut by his shards
 	var by = opts.get("by", Combat.striker if Combat.striker_frame == Engine.get_physics_frames() else null)
 	if K("spurs") > 0 and shards >= 1.0 and by != null and is_instance_valid(by) and by.tp.distance_to(hero.tp) < 2.2:
 		hurt(by, spurs_dmg(), "aura", {"poise": 0.0})
+	d = guard_blow(d, by)            # (Secret of Diablo) Ribcage Guard
+	if avatar_t > 0.0:               # Ossuary Avatar: a quarter turned
+		d *= 0.75
 	return d
 
 func on_lantern() -> void:
@@ -125,6 +146,7 @@ func _on_kill(m) -> void:
 		return
 	ossified_death(m)
 	spiked_death(m)
+	on_count_kill(m)
 	# Grave Tithe: the slain give up bone (always two from champions and uniques with Full Tithe)
 	if K("tithe") > 0:
 		var big: bool = K("tithemore") > 0 and m.rank in ["champion", "unique"]
@@ -157,6 +179,7 @@ func tick(dt: float) -> void:
 	tick_dead(dt)
 	tick_charge(dt)
 	tick_blade(dt)
+	tick_count2(dt)
 	for f in blade_fx:
 		f["t"] += dt
 	blade_fx = blade_fx.filter(func(f): return f["t"] < 0.5)

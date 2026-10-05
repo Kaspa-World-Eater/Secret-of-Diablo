@@ -9,6 +9,12 @@ func table(name: String) -> Variant:
 	if not _json.has(name):
 		var f := FileAccess.open("res://data/%s.json" % name, FileAccess.READ)
 		_json[name] = JSON.parse_string(f.get_as_text()) if f else {}
+		# (Secret of Diablo): this game's additions to a table live beside it, in data/<name>_sod.json
+		var fx := FileAccess.open("res://data/%s_sod.json" % name, FileAccess.READ)
+		if fx and _json[name] is Dictionary:
+			var add = JSON.parse_string(fx.get_as_text())
+			if add is Dictionary and add.get("skills") is Array:
+				_json[name]["skills"].append_array(add["skills"])
 	return _json[name]
 
 func zone_index() -> Dictionary:

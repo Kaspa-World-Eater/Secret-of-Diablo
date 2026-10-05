@@ -1,0 +1,177 @@
+{
+ "_about": "Secret of Diablo additions to the skill trees (merged into skills.json at load by core/data.gd)",
+ "skills": [
+  {
+   "id": "rguard",
+   "class": "ossumancer",
+   "name": "Ribcage Guard",
+   "tab": 2,
+   "tree": "Count",
+   "row": 3,
+   "col": 1,
+   "required_level": 12,
+   "prerequisites": [
+    "gcharge"
+   ],
+   "prerequisite_names": [
+    "Grinding Charge"
+   ],
+   "max_hard_level": 20,
+   "kind": "cast",
+   "cast_type": "self",
+   "kind_text": "cast",
+   "cost": {
+    "resource": null,
+    "base": 0,
+    "per_level_pct": 0,
+    "arcana_mult": 1,
+    "shards": 0,
+    "poise": 4,
+    "jp": null,
+    "mutation_slot": null
+   },
+   "description": "Raise a cage of ribs before you. Held: the longer you hold it, the stronger the guard. A short guard turns most of a blow; a long one turns nearly all; a full one parries, and the striker is answered with a blow of its own. [Poise: 4]",
+   "lore": "",
+   "perks": [],
+   "synergies": [],
+   "levels": null,
+   "info_template": [],
+   "cost_by_level": null,
+   "formulas": null,
+   "flags": {},
+   "cast_type_basis": "heuristic (kind + description text)",
+   "tooltip_full_L1": "",
+   "code_refs": [],
+   "synergy_targets": []
+  },
+  {
+   "id": "csplinter",
+   "class": "ossumancer",
+   "name": "Corpse Splinter",
+   "tab": 2,
+   "tree": "Count",
+   "row": 5,
+   "col": 3,
+   "required_level": 24,
+   "prerequisites": [
+    "lash"
+   ],
+   "prerequisite_names": [
+    "Spine Lash"
+   ],
+   "max_hard_level": 20,
+   "kind": "cast",
+   "cast_type": "target",
+   "kind_text": "cast",
+   "cost": {
+    "resource": null,
+    "base": 0,
+    "per_level_pct": 0,
+    "arcana_mult": 1,
+    "shards": 0,
+    "poise": 6,
+    "jp": null,
+    "mutation_slot": null
+   },
+   "description": "Strike a corpse near you and it bursts into bone shrapnel. Held: a cone, then a ring, then splinters that find their own marks. [Poise: 6]",
+   "lore": "",
+   "perks": [],
+   "synergies": [],
+   "levels": null,
+   "info_template": [],
+   "cost_by_level": null,
+   "formulas": null,
+   "flags": {},
+   "cast_type_basis": "heuristic (kind + description text)",
+   "tooltip_full_L1": "",
+   "code_refs": [],
+   "synergy_targets": []
+  },
+  {
+   "id": "avatar",
+   "class": "ossumancer",
+   "name": "Ossuary Avatar",
+   "tab": 2,
+   "tree": "Count",
+   "row": 6,
+   "col": 3,
+   "required_level": 30,
+   "prerequisites": [
+    "ninthstair"
+   ],
+   "prerequisite_names": [
+    "The Ninth Stair"
+   ],
+   "max_hard_level": 20,
+   "kind": "cast",
+   "cast_type": "self",
+   "kind_text": "cast",
+   "cost": {
+    "resource": "Marrow",
+    "base": 24.0,
+    "per_level_pct": 5,
+    "arcana_mult": 1,
+    "shards": 0,
+    "poise": 0,
+    "jp": null,
+    "mutation_slot": null
+   },
+   "description": "Close yourself in a frame of bone for a while: blows against you are turned by a quarter, your held strikes fill faster and land harder.",
+   "lore": "",
+   "perks": [],
+   "synergies": [],
+   "levels": null,
+   "info_template": [],
+   "cost_by_level": null,
+   "formulas": null,
+   "flags": {},
+   "cast_type_basis": "heuristic (kind + description text)",
+   "tooltip_full_L1": "",
+   "code_refs": [],
+   "synergy_targets": []
+  },
+  {
+   "id": "mdrain",
+   "class": "ossumancer",
+   "name": "Marrow Drain",
+   "tab": 2,
+   "tree": "Count",
+   "row": 6,
+   "col": 1,
+   "required_level": 30,
+   "prerequisites": [
+    "leap"
+   ],
+   "prerequisite_names": [
+    "Grave Leap"
+   ],
+   "max_hard_level": 20,
+   "kind": "passive",
+   "cast_type": "passive",
+   "kind_text": "passive",
+   "cost": {
+    "resource": null,
+    "base": 0,
+    "per_level_pct": 0,
+    "arcana_mult": 1,
+    "shards": 0,
+    "poise": 0,
+    "jp": null,
+    "mutation_slot": null
+   },
+   "description": "[Passive] Your blows in close draw life and Marrow out of what they strike.",
+   "lore": "",
+   "perks": [],
+   "synergies": [],
+   "levels": null,
+   "info_template": [],
+   "cost_by_level": null,
+   "formulas": null,
+   "flags": {},
+   "cast_type_basis": "heuristic (kind + description text)",
+   "tooltip_full_L1": "",
+   "code_refs": [],
+   "synergy_targets": []
+  }
+ ]
+}

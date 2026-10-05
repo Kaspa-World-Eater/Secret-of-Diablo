@@ -25,7 +25,8 @@ const SKEL_COST := 5          # shards each standing skeleton holds
 const DR_PER := 0.006         # of a blow turned per shard
 const DR_CAP := 0.45
 ## the pose each skill strikes (art/sprites/ossumancer.json has idle, walk, atk, cast, hit, death)
-const POSE := {"blade": "atk", "aura": "cast", "spear": "cast"}
+const POSE := {"blade": "atk", "aura": "cast", "spear": "cast", "crush": "atk", "bscythe": "atk2", "lash": "atk2",
+	"gcharge": "atk2", "leap": "atk", "csplinter": "atk", "rguard": "cast"}
 ## the melee strikes walk you in, then strike (reach added to the weapon's)
 const MELEE := {"blade": 0.45}
 ## the loadouts the dead rise with, in turn (f_bone.js SL: life, damage, reach, time between blows, damage turned)
@@ -199,7 +200,13 @@ func held(id: String) -> bool:
 		return true
 	if hero.skills.right == id and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		return true
-	return hero.skills.left == id and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+	if hero.skills.left == id and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		return true
+	# (Secret of Diablo) a held strike bound to a key is held while the key is down
+	for k in hero.skills.keys:
+		if hero.skills.keys[k] == id and Input.is_key_pressed(OS.find_keycode_from_string(String(k).to_upper())):
+			return true
+	return false
 
 func _los_point(a: Vector2) -> Vector2:
 	var d := a.distance_to(hero.tp)
