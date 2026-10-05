@@ -35,8 +35,13 @@ Current state: a playable **Necromancer sandbox** — one large open zone, the D
 - **World**: a 200×200-tile procedural zone (forests, lakes, roads, bridges), camp in the centre, monsters get stronger with distance, champion packs, automap with fog of war.
 - **Loot (minimal)**: gold and potions. Itemization comes later.
 
-## Art
-Everything is drawn with placeholder art in a SoM-like style. To use real sprites, see `assets/sprites/README.md` — drop in a sheet + small JSON and that unit switches over automatically.
+## Art & imported areas
+Everything is drawn with placeholder art in a SoM-like style until real art is imported.
+- **Your own game exports** → `assets/rip/` (step-by-step guide in `assets/rip/README.md`), then
+  `godot --headless --path . --script res://tools/import_rip.gd` builds zones in `assets/zones/` and sprite sheets in `assets/sprites/`.
+- **F10** travels between the procedural wilderness and imported zones (your character comes along).
+- **F9** in a zone opens the collision painter: drag to paint solid / walkable, Shift+click marks a tile type solid everywhere, P sets the spawn; F9 again saves.
+- Hand-made sprite sheets: see `assets/sprites/README.md`.
 
 ## Code map
 | File | Purpose |
@@ -52,6 +57,8 @@ Everything is drawn with placeholder art in a SoM-like style. To use real sprite
 | `scripts/creature.gd` | AI for monsters, minions, merc |
 | `scripts/unit.gd` | Shared health/damage/curses/poison/movement + placeholder art |
 | `scripts/world.gd` | Map generation, collision, pathfinding, bone walls, automap |
+| `scripts/zone_editor.gd` | F9 collision painter for imported zones |
+| `tools/import_rip.gd` | Importer: map layer PNGs → zones, screenshots/sheets → sprite sheets |
 | `scripts/ui/hud.gd` | Orbs, skill bar, skill tree, character screen, automap |
 
 ## Tests

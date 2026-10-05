@@ -386,7 +386,7 @@ func _input(event: InputEvent) -> void:
 # ---------------------------------------------------------------- help / toggles
 
 func _build_help() -> void:
-	help = _panel(Vector2(560, 440))
+	help = _panel(Vector2(560, 470))
 	help.visible = true
 	var t := "\n".join([
 		"SECRET OF DIABLO  -  Necromancer sandbox",
@@ -398,6 +398,7 @@ func _build_help() -> void:
 		"F1-F8: switch right skill     1-2: Healing potion     3-4: Mana potion",
 		"T: Skill tree   A: Character   Tab: Automap   L: Plant/recall lantern   H: Help",
 		"Debug:  = gain a level    N: skip 3 hours",
+		"F10: travel to the next imported zone    F9: paint collision (in zones)",
 		"",
 		"BONE MELEE (Secret of Mana style): each swing empties the stamina bar",
 		"under your feet - wait for it to refill for full damage. At full stamina,",
@@ -411,7 +412,7 @@ func _build_help() -> void:
 		"B cycle skills, Y lantern, LB/RB potions, Start skills, Back character.",
 	])
 	var l := _label(help, t, Vector2(16, 12), 13)
-	l.size = Vector2(530, 420)
+	l.size = Vector2(530, 450)
 
 
 func _focus_first_tree_button() -> void:

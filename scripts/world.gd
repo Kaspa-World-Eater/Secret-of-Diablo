@@ -3,8 +3,13 @@ extends Node2D
 ## temporary bone walls and the explored-map image used by the automap.
 
 const TILE := 32
-const W := 200
-const H := 200
+var W := 200
+var H := 200
+var zone := ""  # "" = procedural wilderness, else an imported zone in assets/zones/
+var zone_level := 1
+var zone_data := {}
+var collision := {"solid_tiles": [], "solid_cells": [], "open_cells": [], "spawn": null}
+var zone_layers: Array = []  # per layer PackedInt32Array of atlas indices (-1 empty)
 
 enum T { GRASS0, GRASS1, GRASS2, GRASS3, FLOWERS, DIRT, WATER, TREE, ROCK, BRIDGE, CAMP, FOREST }
 const TILE_COUNT := 12
@@ -15,7 +20,7 @@ var tiles := PackedByteArray()
 var solid := PackedByteArray()
 var explored := PackedByteArray()
 var reachable_cells: Array[Vector2i] = []
-var spawn_cell := Vector2i(W / 2, H / 2)
+var spawn_cell := Vector2i(100, 100)
 var bone_cells := {}  # Vector2i -> expiry time
 var astar := AStarGrid2D.new()
 var tilemap: TileMapLayer
@@ -39,6 +44,7 @@ func generate(seed_value: int) -> void:
 	var detail := FastNoiseLite.new()
 	detail.seed = seed_value + 2
 	detail.frequency = 0.15
+	spawn_cell = Vector2i(W / 2, H / 2)
 
 	tiles.resize(W * H)
 	solid.resize(W * H)
@@ -105,9 +111,178 @@ func generate(seed_value: int) -> void:
 	_build_astar()
 	_build_tilemap(rng)
 	_build_map_image()
+	_make_bone_layer()
 
+
+func _make_bone_layer() -> void:
 	bone_layer = Node2D.new()
 	bone_layer.draw.connect(_draw_bones)
+
+
+# ---------------------------------------------------------------- imported zones
+
+static func zone_dir(z: String) -> String:
+	return "res://assets/zones/%s/" % z
+
+
+static func list_zones() -> Array:
+	var out := []
+	var d := DirAccess.open("res://assets/zones")
+	if d:
+		for n in d.get_directories():
+			if FileAccess.file_exists(zone_dir(n) + "map.json"):
+				out.append(n)
+	out.sort()
+	return out
+
+
+func load_zone(z: String) -> bool:
+	var data = JSON.parse_string(FileAccess.get_file_as_string(zone_dir(z) + "map.json"))
+	if typeof(data) != TYPE_DICTIONARY:
+		push_warning("World: cannot read zone " + z)
+		return false
+	zone = z
+	zone_data = data
+	W = int(data["w"])
+	H = int(data["h"])
+	zone_level = int(data.get("level", 1))
+	zone_layers.clear()
+	for l in data["layers"]:
+		zone_layers.append(PackedInt32Array(l))
+	var cpath := zone_dir(z) + "collision.json"
+	if FileAccess.file_exists(cpath):
+		var c = JSON.parse_string(FileAccess.get_file_as_string(cpath))
+		if typeof(c) == TYPE_DICTIONARY:
+			collision.merge(c, true)
+	# JSON numbers load as floats; keep everything as ints so lookups match
+	for k in ["solid_cells", "open_cells"]:
+		var fixed := []
+		for v in collision[k]:
+			fixed.append([int(v[0]), int(v[1])])
+		collision[k] = fixed
+	var st := []
+	for t in collision["solid_tiles"]:
+		st.append(int(t))
+	collision["solid_tiles"] = st
+	tiles.resize(W * H)
+	solid.resize(W * H)
+	explored.resize(W * H)
+	explored.fill(0)
+	_recompute_zone_solid()
+	var sp = collision.get("spawn")
+	spawn_cell = Vector2i(int(sp[0]), int(sp[1])) if sp != null else Vector2i(W / 2, H / 2)
+	spawn_cell = nearest_walkable(spawn_cell, max(W, H))
+	if spawn_cell.x < 0:
+		spawn_cell = Vector2i(W / 2, H / 2)
+	_flood_reachable()
+	_build_astar()
+	_build_zone_tilemaps()
+	_build_map_image()
+	_make_bone_layer()
+	return true
+
+
+func top_tile(c: Vector2i) -> int:
+	for li in range(zone_layers.size() - 1, -1, -1):
+		var t: int = zone_layers[li][c.y * W + c.x]
+		if t >= 0:
+			return t
+	return -1
+
+
+func cell_solid_by_rules(c: Vector2i) -> bool:
+	var key := [c.x, c.y]
+	if collision["open_cells"].has(key):
+		return false
+	if collision["solid_cells"].has(key):
+		return true
+	var st: Array = collision["solid_tiles"]
+	for l in zone_layers:
+		var t: int = l[c.y * W + c.x]
+		if t >= 0 and st.has(t):
+			return true
+	return false
+
+
+func _recompute_zone_solid() -> void:
+	var st := {}
+	for t in collision["solid_tiles"]:
+		st[int(t)] = true
+	var sc := {}
+	for c in collision["solid_cells"]:
+		sc[Vector2i(int(c[0]), int(c[1]))] = true
+	var oc := {}
+	for c in collision["open_cells"]:
+		oc[Vector2i(int(c[0]), int(c[1]))] = true
+	for y in H:
+		for x in W:
+			var i := y * W + x
+			var c := Vector2i(x, y)
+			var s := false
+			if oc.has(c):
+				s = false
+			elif sc.has(c):
+				s = true
+			else:
+				for l in zone_layers:
+					if st.has(l[i]):
+						s = true
+						break
+			solid[i] = 1 if s else 0
+			tiles[i] = T.ROCK if s else T.GRASS0
+
+
+func set_cell_solid(c: Vector2i, s: bool) -> void:
+	## Live edit from the collision painter.
+	if not in_bounds(c):
+		return
+	var i := c.y * W + c.x
+	solid[i] = 1 if s else 0
+	tiles[i] = T.ROCK if s else T.GRASS0
+	astar.set_point_solid(c, s)
+
+
+func refresh_zone_collision() -> void:
+	_recompute_zone_solid()
+	for y in H:
+		for x in W:
+			astar.set_point_solid(Vector2i(x, y), solid[y * W + x] == 1)
+	_flood_reachable()
+
+
+func save_zone_collision() -> void:
+	var f := FileAccess.open(ProjectSettings.globalize_path(zone_dir(zone) + "collision.json"), FileAccess.WRITE)
+	if f:
+		f.store_string(JSON.stringify(collision, "\t"))
+		f.close()
+
+
+func _build_zone_tilemaps() -> void:
+	var tp := int(zone_data["tile"])
+	var cols := int(zone_data.get("cols", 32))
+	var img := Image.load_from_file(ProjectSettings.globalize_path(zone_dir(zone) + "atlas.png"))
+	var tex := ImageTexture.create_from_image(img)
+	var ts := TileSet.new()
+	ts.tile_size = Vector2i(tp, tp)
+	var src := TileSetAtlasSource.new()
+	src.texture = tex
+	src.texture_region_size = Vector2i(tp, tp)
+	var count := int(zone_data["count"])
+	for i in count:
+		src.create_tile(Vector2i(i % cols, i / cols))
+	ts.add_source(src, 0)
+	for l in zone_layers:
+		var tm := TileMapLayer.new()
+		tm.tile_set = ts
+		tm.scale = Vector2.ONE * (float(TILE) / tp)
+		add_child(tm)
+		for y in H:
+			for x in W:
+				var t: int = l[y * W + x]
+				if t >= 0:
+					tm.set_cell(Vector2i(x, y), 0, Vector2i(t % cols, t / cols))
+		if tilemap == null:
+			tilemap = tm
 
 
 func _flood_reachable() -> void:
@@ -260,6 +435,8 @@ func _draw_bones() -> void:
 # ---------------------------------------------------------------- automap
 
 func _map_color(t: int) -> Color:
+	if zone != "":
+		return Color(0, 0, 0)
 	match t:
 		T.WATER: return Color(0.2, 0.35, 0.75)
 		T.TREE: return Color(0.08, 0.25, 0.1)
@@ -268,6 +445,15 @@ func _map_color(t: int) -> Color:
 		T.CAMP: return Color(0.85, 0.8, 0.6)
 		T.FOREST: return Color(0.2, 0.38, 0.18)
 	return Color(0.28, 0.5, 0.24)
+
+
+func _zone_map_color(c: Vector2i) -> Color:
+	var t := top_tile(c)
+	if t < 0:
+		return Color(0, 0, 0, 0)
+	var col: Array = zone_data["colors"][t]
+	var cc := Color(col[0], col[1], col[2])
+	return cc.darkened(0.35) if solid[c.y * W + c.x] == 1 else cc
 
 
 func _build_map_image() -> void:
@@ -288,7 +474,7 @@ func reveal(p: Vector2, r: int) -> void:
 			if (x - c.x) * (x - c.x) + (y - c.y) * (y - c.y) > r * r:
 				continue
 			explored[i] = 1
-			map_image.set_pixel(x, y, _map_color(tiles[i]))
+			map_image.set_pixel(x, y, _zone_map_color(Vector2i(x, y)) if zone != "" else _map_color(tiles[i]))
 			map_dirty = true
 	if map_dirty:
 		map_texture.update(map_image)

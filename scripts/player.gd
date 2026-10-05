@@ -157,6 +157,34 @@ func learn(id: String) -> bool:
 	return true
 
 
+func to_dict() -> Dictionary:
+	return {"level": level, "xp": xp, "str": strength, "dex": dexterity, "vit": vitality, "ene": energy,
+		"stat_points": stat_points, "skill_points": skill_points, "skills": skills.duplicate(),
+		"hotkeys": hotkeys.duplicate(), "left": left_skill, "right": right_skill, "gold": gold,
+		"hp_potions": hp_potions, "mp_potions": mp_potions}
+
+
+func from_dict(d: Dictionary) -> void:
+	level = d["level"]
+	xp = d["xp"]
+	strength = d["str"]
+	dexterity = d["dex"]
+	vitality = d["vit"]
+	energy = d["ene"]
+	stat_points = d["stat_points"]
+	skill_points = d["skill_points"]
+	skills = d["skills"]
+	hotkeys = d["hotkeys"]
+	left_skill = d["left"]
+	right_skill = d["right"]
+	gold = d["gold"]
+	hp_potions = d["hp_potions"]
+	mp_potions = d["mp_potions"]
+	recalc()
+	hp = max_hp
+	mana = max_mana
+
+
 # ---------------------------------------------------------------- aiming
 
 func aim_point() -> Vector2:
@@ -201,7 +229,7 @@ func hover_target():
 # ---------------------------------------------------------------- input
 
 func _unhandled_input(event: InputEvent) -> void:
-	if dead:
+	if dead or Game.editing:
 		return
 	if event is InputEventMouseButton:
 		using_pad = false

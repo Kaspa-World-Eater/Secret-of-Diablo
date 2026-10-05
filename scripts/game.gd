@@ -22,6 +22,9 @@ var units: Array = []
 var corpses: Array = []
 var merc = null
 var merc_respawn := -1.0
+var current_zone := ""  # "" = procedural wilderness
+var editing := false     # collision painter active
+var saved_player := {}   # carried across zone travel
 var kills := 0
 
 
@@ -80,6 +83,21 @@ func _process(delta: float) -> void:
 		if merc_respawn <= 0.0:
 			spawn_merc(player.global_position + Vector2(30, 30))
 			message("Your mercenary has returned.")
+
+
+# ---------------------------------------------------------------- zones
+
+func travel(z: String) -> void:
+	if player:
+		saved_player = player.to_dict()
+	current_zone = z
+	units.clear()
+	corpses.clear()
+	light_sources.clear()
+	merc = null
+	merc_respawn = -1.0
+	editing = false
+	get_tree().reload_current_scene()
 
 
 # ---------------------------------------------------------------- registry
