@@ -1,0 +1,2123 @@
+{
+ "meta": {
+  "source_html": "/tmp/ossport/x71.html",
+  "source_bytes": 15603075,
+  "exported_at": "2026-09-30T01:35:30.214Z",
+  "exporter": "/tmp/gd/tools/export_data.js",
+  "reference_hero": "fresh level-1 character of each order via startGame(\"new\"): Vitality 15, Essence 25, Constitution 15, starting kit, daytime, no Reading, no Arcana",
+  "page_errors": [],
+  "counts": {
+   "bases": 19,
+   "affixes": 38,
+   "lantern_affixes": 7,
+   "uniques": 6
+  }
+ },
+ "bases": {
+  "wand": {
+   "id": "wand",
+   "name": "Bone Wand",
+   "slot": "weapon",
+   "grid": [
+    1,
+    2
+   ],
+   "damage": [
+    2,
+    5
+   ],
+   "armor": null,
+   "item_level": 1,
+   "class_lock": null,
+   "icon": "wand",
+   "claw": false,
+   "extra": {}
+  },
+  "dagger": {
+   "id": "dagger",
+   "name": "Ritual Knife",
+   "slot": "weapon",
+   "grid": [
+    1,
+    2
+   ],
+   "damage": [
+    3,
+    7
+   ],
+   "armor": null,
+   "item_level": 3,
+   "class_lock": null,
+   "icon": "dagger",
+   "claw": false,
+   "extra": {}
+  },
+  "staff": {
+   "id": "staff",
+   "name": "Grave Staff",
+   "slot": "weapon",
+   "grid": [
+    1,
+    3
+   ],
+   "damage": [
+    5,
+    10
+   ],
+   "armor": null,
+   "item_level": 6,
+   "class_lock": null,
+   "icon": "staff",
+   "claw": false,
+   "extra": {}
+  },
+  "claw": {
+   "id": "claw",
+   "name": "Vharn Claws",
+   "slot": "weapon",
+   "grid": [
+    1,
+    2
+   ],
+   "damage": [
+    3,
+    6
+   ],
+   "armor": null,
+   "item_level": 1,
+   "class_lock": "miasmancer",
+   "icon": "claw",
+   "claw": true,
+   "extra": {}
+  },
+  "talons": {
+   "id": "talons",
+   "name": "Grave-Hooks",
+   "slot": "weapon",
+   "grid": [
+    1,
+    3
+   ],
+   "damage": [
+    6,
+    11
+   ],
+   "armor": null,
+   "item_level": 6,
+   "class_lock": "miasmancer",
+   "icon": "talons",
+   "claw": true,
+   "extra": {}
+  },
+  "relic": {
+   "id": "relic",
+   "name": "Skull Relic",
+   "slot": "offhand",
+   "grid": [
+    2,
+    2
+   ],
+   "damage": null,
+   "armor": [
+    2,
+    5
+   ],
+   "item_level": 1,
+   "class_lock": null,
+   "icon": "relic",
+   "claw": false,
+   "extra": {}
+  },
+  "hood": {
+   "id": "hood",
+   "name": "Mourning Hood",
+   "slot": "head",
+   "grid": [
+    2,
+    2
+   ],
+   "damage": null,
+   "armor": [
+    3,
+    6
+   ],
+   "item_level": 1,
+   "class_lock": null,
+   "icon": "hood",
+   "claw": false,
+   "extra": {}
+  },
+  "mask": {
+   "id": "mask",
+   "name": "Bone Mask",
+   "slot": "head",
+   "grid": [
+    2,
+    2
+   ],
+   "damage": null,
+   "armor": [
+    7,
+    11
+   ],
+   "item_level": 5,
+   "class_lock": null,
+   "icon": "mask",
+   "claw": false,
+   "extra": {}
+  },
+  "robe": {
+   "id": "robe",
+   "name": "Ash Robe",
+   "slot": "body",
+   "grid": [
+    2,
+    3
+   ],
+   "damage": null,
+   "armor": [
+    6,
+    12
+   ],
+   "item_level": 1,
+   "class_lock": null,
+   "icon": "robe",
+   "claw": false,
+   "extra": {}
+  },
+  "mail": {
+   "id": "mail",
+   "name": "Grave Mail",
+   "slot": "body",
+   "grid": [
+    2,
+    3
+   ],
+   "damage": null,
+   "armor": [
+    15,
+    24
+   ],
+   "item_level": 6,
+   "class_lock": null,
+   "icon": "mail",
+   "claw": false,
+   "extra": {}
+  },
+  "gloves": {
+   "id": "gloves",
+   "name": "Wrappings",
+   "slot": "hands",
+   "grid": [
+    2,
+    2
+   ],
+   "damage": null,
+   "armor": [
+    1,
+    3
+   ],
+   "item_level": 1,
+   "class_lock": null,
+   "icon": "gloves",
+   "claw": false,
+   "extra": {}
+  },
+  "boots": {
+   "id": "boots",
+   "name": "Grave Boots",
+   "slot": "feet",
+   "grid": [
+    2,
+    2
+   ],
+   "damage": null,
+   "armor": [
+    2,
+    4
+   ],
+   "item_level": 1,
+   "class_lock": null,
+   "icon": "boots",
+   "claw": false,
+   "extra": {}
+  },
+  "belt": {
+   "id": "belt",
+   "name": "Cord Belt",
+   "slot": "waist",
+   "grid": [
+    2,
+    1
+   ],
+   "damage": null,
+   "armor": [
+    1,
+    3
+   ],
+   "item_level": 1,
+   "class_lock": null,
+   "icon": "belt",
+   "claw": false,
+   "extra": {}
+  },
+  "amulet": {
+   "id": "amulet",
+   "name": "Amulet",
+   "slot": "neck",
+   "grid": [
+    1,
+    1
+   ],
+   "damage": null,
+   "armor": null,
+   "item_level": 3,
+   "class_lock": null,
+   "icon": "amulet",
+   "claw": false,
+   "extra": {}
+  },
+  "ring": {
+   "id": "ring",
+   "name": "Ring",
+   "slot": "ring",
+   "grid": [
+    1,
+    1
+   ],
+   "damage": null,
+   "armor": null,
+   "item_level": 2,
+   "class_lock": null,
+   "icon": "ring",
+   "claw": false,
+   "extra": {}
+  },
+  "wraps": {
+   "id": "wraps",
+   "name": "Fist Wraps",
+   "slot": "weapon",
+   "grid": [
+    1,
+    2
+   ],
+   "damage": [
+    3,
+    6
+   ],
+   "armor": null,
+   "item_level": 1,
+   "class_lock": "monk",
+   "icon": "wraps",
+   "claw": false,
+   "extra": {
+    "fist": true
+   }
+  },
+  "iwraps": {
+   "id": "iwraps",
+   "name": "Sutra-Bound Wraps",
+   "slot": "weapon",
+   "grid": [
+    1,
+    2
+   ],
+   "damage": [
+    6,
+    11
+   ],
+   "armor": null,
+   "item_level": 8,
+   "class_lock": "monk",
+   "icon": "iwraps",
+   "claw": false,
+   "extra": {
+    "fist": true
+   }
+  },
+  "spade": {
+   "id": "spade",
+   "name": "Gravedigger's Spade",
+   "slot": "weapon",
+   "grid": [
+    1,
+    3
+   ],
+   "damage": [
+    5,
+    11
+   ],
+   "armor": null,
+   "item_level": 4,
+   "class_lock": "monk",
+   "icon": "spade",
+   "claw": false,
+   "extra": {
+    "spade": true
+   }
+  },
+  "shakujo": {
+   "id": "shakujo",
+   "name": "Ringed Staff",
+   "slot": "weapon",
+   "grid": [
+    1,
+    3
+   ],
+   "damage": [
+    6,
+    12
+   ],
+   "armor": null,
+   "item_level": 6,
+   "class_lock": "monk",
+   "icon": "shakujo",
+   "claw": false,
+   "extra": {}
+  }
+ },
+ "base_drop_rule": "a base can drop when base.item_level <= ilvl + 1 and it has no class lock or the lock is the hero's order",
+ "rarities": {
+  "colours": {
+   "normal": "#d6d2c8",
+   "magic": "#8b95ff",
+   "rare": "#f1e05a",
+   "unique": "#c9a45a",
+   "potion": "#d6d2c8"
+  },
+  "roll": {
+   "unique_below": 0.012,
+   "rare_below": 0.075,
+   "magic_below": 0.36,
+   "scaled_by": "(1 + mf/100)",
+   "expr": "r<0.012m ? unique : r<0.075m ? rare : r<0.36m ? magic : normal  (m = 1 + mf/100)"
+  },
+  "wrappers_in_order": [
+   "c_game rollItem: tiers above; magic = 70% a prefix, then a suffix if no prefix or 60%; rare = 3..min(6, 3+floor(ilvl/3)) affixes alternating prefix/suffix, no stat twice, dmg capped at 15, armour x1.15; unique = random UNIQUES with lvl <= ilvl+2 (else rare), armour x1.3",
+   "zz_tune_batch_c: half of magic and rare drops downgrade to normal (stats cleared)",
+   "zz_pace_and_density: magic filled to 2 affixes, rare to 6 (random from the eligible pool, no stat twice)",
+   "zz_tune_batch_e: a rare or unique is re-rolled into something lesser 30% of the time (up to 10 tries)"
+  ],
+  "magic_affixes": 2,
+  "rare_affixes": 6,
+  "rare_name": "RARE_A word + RARE_B[slot] word",
+  "unique_armor_x": 1.3,
+  "rare_armor_x": 1.15,
+  "rare_skill_damage_cap": 15,
+  "rare_names": {
+   "A": [
+    "Grim",
+    "Ash",
+    "Hollow",
+    "Dread",
+    "Pale",
+    "Carrion",
+    "Bone",
+    "Mourn",
+    "Wraith",
+    "Cinder"
+   ],
+   "B": {
+    "weapon": [
+     "Whisper",
+     "Spike",
+     "Call"
+    ],
+    "offhand": [
+     "Ward",
+     "Idol",
+     "Eye"
+    ],
+    "head": [
+     "Cowl",
+     "Visage",
+     "Crown"
+    ],
+    "body": [
+     "Shroud",
+     "Hide",
+     "Shell"
+    ],
+    "hands": [
+     "Grip",
+     "Claw",
+     "Touch"
+    ],
+    "feet": [
+     "Stride",
+     "Tread",
+     "Path"
+    ],
+    "waist": [
+     "Cord",
+     "Coil",
+     "Lash"
+    ],
+    "neck": [
+     "Charm",
+     "Heart",
+     "Knot"
+    ],
+    "ring": [
+     "Loop",
+     "Band",
+     "Coil"
+    ]
+   }
+  },
+  "sets_sockets_runes_charms": false
+ },
+ "affixes": [
+  {
+   "index": 0,
+   "name": "Sturdy",
+   "prefix": true,
+   "stat": "life",
+   "range": [
+    5,
+    15
+   ],
+   "item_level": 1,
+   "rare_only": false,
+   "weight": 1,
+   "slots": null,
+   "text": "+# to Life"
+  },
+  {
+   "index": 1,
+   "name": "Stalwart",
+   "prefix": true,
+   "stat": "life",
+   "range": [
+    16,
+    32
+   ],
+   "item_level": 6,
+   "rare_only": false,
+   "weight": 1,
+   "slots": null,
+   "text": "+# to Life"
+  },
+  {
+   "index": 2,
+   "name": "Lucid",
+   "prefix": true,
+   "stat": "mana",
+   "range": [
+    5,
+    12
+   ],
+   "item_level": 1,
+   "rare_only": false,
+   "weight": 1,
+   "slots": null,
+   "text": "+# to Maximum Essence"
+  },
+  {
+   "index": 3,
+   "name": "Brimming",
+   "prefix": true,
+   "stat": "mana",
+   "range": [
+    13,
+    26
+   ],
+   "item_level": 6,
+   "rare_only": false,
+   "weight": 1,
+   "slots": null,
+   "text": "+# to Maximum Essence"
+  },
+  {
+   "index": 4,
+   "name": "Keen",
+   "prefix": true,
+   "stat": "dmg",
+   "range": [
+    3,
+    8
+   ],
+   "item_level": 1,
+   "rare_only": true,
+   "weight": 0.12,
+   "slots": null,
+   "text": "+#% Skill Damage"
+  },
+  {
+   "index": 5,
+   "name": "Cruel",
+   "prefix": true,
+   "stat": "dmg",
+   "range": [
+    9,
+    15
+   ],
+   "item_level": 8,
+   "rare_only": true,
+   "weight": 0.06,
+   "slots": null,
+   "text": "+#% Skill Damage"
+  },
+  {
+   "index": 6,
+   "name": "Warded",
+   "prefix": true,
+   "stat": "armor",
+   "range": [
+    5,
+    15
+   ],
+   "item_level": 1,
+   "rare_only": false,
+   "weight": 1,
+   "slots": null,
+   "text": "+# Armor"
+  },
+  {
+   "index": 7,
+   "name": "Bulwark",
+   "prefix": true,
+   "stat": "armor",
+   "range": [
+    16,
+    30
+   ],
+   "item_level": 6,
+   "rare_only": false,
+   "weight": 1,
+   "slots": null,
+   "text": "+# Armor"
+  },
+  {
+   "index": 8,
+   "name": "Haunted",
+   "prefix": true,
+   "stat": "wisp",
+   "range": [
+    1,
+    1
+   ],
+   "item_level": 5,
+   "rare_only": true,
+   "weight": 1,
+   "slots": [
+    "weapon",
+    "offhand",
+    "neck",
+    "head"
+   ],
+   "text": "+# to Maximum Wisps"
+  },
+  {
+   "index": 9,
+   "name": "Legion",
+   "prefix": true,
+   "stat": "wisp",
+   "range": [
+    1,
+    2
+   ],
+   "item_level": 10,
+   "rare_only": true,
+   "weight": 1,
+   "slots": [
+    "weapon",
+    "offhand",
+    "neck"
+   ],
+   "text": "+# to Maximum Wisps"
+  },
+  {
+   "index": 10,
+   "name": "of the Mountain",
+   "prefix": false,
+   "stat": "con",
+   "range": [
+    2,
+    5
+   ],
+   "item_level": 1,
+   "rare_only": false,
+   "weight": 1,
+   "slots": null,
+   "text": "+# to Constitution"
+  },
+  {
+   "index": 11,
+   "name": "of the Yoke",
+   "prefix": false,
+   "stat": "vit",
+   "range": [
+    2,
+    6
+   ],
+   "item_level": 1,
+   "rare_only": false,
+   "weight": 1,
+   "slots": null,
+   "text": "+# to Vitality"
+  },
+  {
+   "index": 12,
+   "name": "of Essence",
+   "prefix": false,
+   "stat": "spi",
+   "range": [
+    2,
+    6
+   ],
+   "item_level": 1,
+   "rare_only": false,
+   "weight": 1,
+   "slots": null,
+   "text": "+# to Essence"
+  },
+  {
+   "index": 13,
+   "name": "of Speed",
+   "prefix": false,
+   "stat": "frw",
+   "range": [
+    5,
+    15
+   ],
+   "item_level": 1,
+   "rare_only": false,
+   "weight": 1,
+   "slots": [
+    "feet"
+   ],
+   "text": "+#% Faster Movement"
+  },
+  {
+   "index": 14,
+   "name": "of Incantation",
+   "prefix": false,
+   "stat": "fcr",
+   "range": [
+    10,
+    20
+   ],
+   "item_level": 2,
+   "rare_only": false,
+   "weight": 1,
+   "slots": [
+    "weapon",
+    "offhand",
+    "neck",
+    "ring",
+    "hands"
+   ],
+   "text": "+#% Faster Cast Rate"
+  },
+  {
+   "index": 15,
+   "name": "of Regrowth",
+   "prefix": false,
+   "stat": "regen",
+   "range": [
+    10,
+    30
+   ],
+   "item_level": 3,
+   "rare_only": false,
+   "weight": 1,
+   "slots": null,
+   "text": "+#% Faster Wisp Regrowth"
+  },
+  {
+   "index": 16,
+   "name": "of Warding",
+   "prefix": false,
+   "stat": "res",
+   "range": [
+    5,
+    15
+   ],
+   "item_level": 1,
+   "rare_only": false,
+   "weight": 1,
+   "slots": null,
+   "text": "+#% Magic Resist"
+  },
+  {
+   "index": 17,
+   "name": "of Fortune",
+   "prefix": false,
+   "stat": "mf",
+   "range": [
+    5,
+    20
+   ],
+   "item_level": 1,
+   "rare_only": false,
+   "weight": 1,
+   "slots": null,
+   "text": "+#% Better Chance of Magic Items"
+  },
+  {
+   "index": 18,
+   "name": "of the Open Vein",
+   "prefix": false,
+   "stat": "lok",
+   "range": [
+    1,
+    3
+   ],
+   "item_level": 2,
+   "rare_only": false,
+   "weight": 1,
+   "slots": null,
+   "text": "+# Life after each Kill"
+  },
+  {
+   "index": 19,
+   "name": "Adept",
+   "prefix": true,
+   "stat": "skt0",
+   "range": [
+    1,
+    1
+   ],
+   "item_level": 6,
+   "rare_only": false,
+   "weight": 1,
+   "slots": [
+    "weapon",
+    "offhand",
+    "head",
+    "neck"
+   ],
+   "text": null
+  },
+  {
+   "index": 20,
+   "name": "Scholarly",
+   "prefix": true,
+   "stat": "skt1",
+   "range": [
+    1,
+    1
+   ],
+   "item_level": 6,
+   "rare_only": false,
+   "weight": 1,
+   "slots": [
+    "weapon",
+    "offhand",
+    "head",
+    "neck"
+   ],
+   "text": null
+  },
+  {
+   "index": 21,
+   "name": "Hierophantic",
+   "prefix": true,
+   "stat": "skt2",
+   "range": [
+    1,
+    1
+   ],
+   "item_level": 6,
+   "rare_only": false,
+   "weight": 1,
+   "slots": [
+    "weapon",
+    "offhand",
+    "head",
+    "neck"
+   ],
+   "text": null
+  },
+  {
+   "index": 22,
+   "name": "Exalted",
+   "prefix": true,
+   "stat": "skall",
+   "range": [
+    1,
+    1
+   ],
+   "item_level": 12,
+   "rare_only": true,
+   "weight": 1,
+   "slots": [
+    "weapon",
+    "neck"
+   ],
+   "text": "+# to All Skills"
+  },
+  {
+   "index": 23,
+   "name": "of Embers",
+   "prefix": false,
+   "stat": "fire",
+   "range": [
+    2,
+    5
+   ],
+   "item_level": 1,
+   "rare_only": false,
+   "weight": 1,
+   "slots": [
+    "weapon",
+    "hands",
+    "ring",
+    "neck"
+   ],
+   "text": "+# Fire Damage to weapon attacks (burns)"
+  },
+  {
+   "index": 24,
+   "name": "of the Pyre",
+   "prefix": false,
+   "stat": "fire",
+   "range": [
+    6,
+    12
+   ],
+   "item_level": 8,
+   "rare_only": false,
+   "weight": 1,
+   "slots": [
+    "weapon",
+    "hands",
+    "ring",
+    "neck"
+   ],
+   "text": "+# Fire Damage to weapon attacks (burns)"
+  },
+  {
+   "index": 25,
+   "name": "of Frost",
+   "prefix": false,
+   "stat": "cold",
+   "range": [
+    2,
+    4
+   ],
+   "item_level": 1,
+   "rare_only": false,
+   "weight": 1,
+   "slots": [
+    "weapon",
+    "hands",
+    "ring",
+    "neck"
+   ],
+   "text": "+# Cold Damage to weapon attacks (chills)"
+  },
+  {
+   "index": 26,
+   "name": "of Rime",
+   "prefix": false,
+   "stat": "cold",
+   "range": [
+    5,
+    10
+   ],
+   "item_level": 8,
+   "rare_only": false,
+   "weight": 1,
+   "slots": [
+    "weapon",
+    "hands",
+    "ring",
+    "neck"
+   ],
+   "text": "+# Cold Damage to weapon attacks (chills)"
+  },
+  {
+   "index": 27,
+   "name": "of Venom",
+   "prefix": false,
+   "stat": "psn",
+   "range": [
+    3,
+    8
+   ],
+   "item_level": 1,
+   "rare_only": false,
+   "weight": 1,
+   "slots": [
+    "weapon",
+    "hands",
+    "ring",
+    "neck"
+   ],
+   "text": "+# Miasma Damage over 3 s to weapon attacks"
+  },
+  {
+   "index": 28,
+   "name": "of the Plague",
+   "prefix": false,
+   "stat": "psn",
+   "range": [
+    9,
+    18
+   ],
+   "item_level": 8,
+   "rare_only": false,
+   "weight": 1,
+   "slots": [
+    "weapon",
+    "hands",
+    "ring",
+    "neck"
+   ],
+   "text": "+# Miasma Damage over 3 s to weapon attacks"
+  },
+  {
+   "index": 29,
+   "name": "of Wisps",
+   "prefix": false,
+   "stat": "magic",
+   "range": [
+    1,
+    6
+   ],
+   "item_level": 1,
+   "rare_only": false,
+   "weight": 1,
+   "slots": [
+    "weapon",
+    "hands",
+    "ring",
+    "neck"
+   ],
+   "text": null
+  },
+  {
+   "index": 30,
+   "name": "of the Aether",
+   "prefix": false,
+   "stat": "magic",
+   "range": [
+    4,
+    14
+   ],
+   "item_level": 8,
+   "rare_only": false,
+   "weight": 1,
+   "slots": [
+    "weapon",
+    "hands",
+    "ring",
+    "neck"
+   ],
+   "text": null
+  },
+  {
+   "index": 31,
+   "name": "Bright",
+   "prefix": true,
+   "stat": "lrad",
+   "range": [
+    10,
+    25
+   ],
+   "item_level": 1,
+   "rare_only": false,
+   "weight": 1,
+   "slots": null,
+   "text": "+#% Lantern Light Radius"
+  },
+  {
+   "index": 32,
+   "name": "Blazing",
+   "prefix": true,
+   "stat": "lrad",
+   "range": [
+    26,
+    45
+   ],
+   "item_level": 9,
+   "rare_only": true,
+   "weight": 1,
+   "slots": null,
+   "text": "+#% Lantern Light Radius"
+  },
+  {
+   "index": 33,
+   "name": "of the Ghostlight",
+   "prefix": false,
+   "stat": "lblue",
+   "range": [
+    8,
+    20
+   ],
+   "item_level": 2,
+   "rare_only": false,
+   "weight": 0.7,
+   "slots": null,
+   "text": "Ghostlight wick: creatures fear your lantern light (#% chance a second to shy away)"
+  },
+  {
+   "index": 34,
+   "name": "of the Hearth-wick",
+   "prefix": false,
+   "stat": "lamber",
+   "range": [
+    1,
+    3
+   ],
+   "item_level": 2,
+   "rare_only": false,
+   "weight": 0.7,
+   "slots": null,
+   "text": "Hearth wick: regenerate # Life a second"
+  },
+  {
+   "index": 35,
+   "name": "of the Pale Flame",
+   "prefix": false,
+   "stat": "lwhite",
+   "range": [
+    10,
+    22
+   ],
+   "item_level": 3,
+   "rare_only": false,
+   "weight": 0.7,
+   "slots": null,
+   "text": "Pale wick: creatures in your lantern light are slowed #%"
+  },
+  {
+   "index": 36,
+   "name": "of the Green Taper",
+   "prefix": false,
+   "stat": "lgreen",
+   "range": [
+    1,
+    2
+   ],
+   "item_level": 4,
+   "rare_only": false,
+   "weight": 0.6,
+   "slots": null,
+   "text": "Green taper: regenerate # Essence a second"
+  },
+  {
+   "index": 37,
+   "name": "of the Violet Wick",
+   "prefix": false,
+   "stat": "lviolet",
+   "range": [
+    1,
+    3
+   ],
+   "item_level": 5,
+   "rare_only": false,
+   "weight": 0.5,
+   "slots": null,
+   "text": "Violet wick: regain # Essence when a creature dies in your lantern light"
+  }
+ ],
+ "stat_text": {
+  "life": "+# to Life",
+  "mana": "+# to Maximum Essence",
+  "dmg": "+#% Skill Damage",
+  "armor": "+# Armor",
+  "wisp": "+# to Maximum Wisps",
+  "con": "+# to Constitution",
+  "dex": "+# to Constitution",
+  "vit": "+# to Vitality",
+  "ene": "+# to Essence",
+  "spi": "+# to Essence",
+  "frw": "+#% Faster Movement",
+  "fcr": "+#% Faster Cast Rate",
+  "fire": "+# Fire Damage to weapon attacks (burns)",
+  "cold": "+# Cold Damage to weapon attacks (chills)",
+  "ltng": "+# Magic Damage to weapon attacks",
+  "psn": "+# Miasma Damage over 3 s to weapon attacks",
+  "skall": "+# to All Skills",
+  "regen": "+#% Faster Wisp Regrowth",
+  "res": "+#% Magic Resist",
+  "mf": "+#% Better Chance of Magic Items",
+  "lok": "+# Life after each Kill",
+  "lrad": "+#% Lantern Light Radius",
+  "lblue": "Ghostlight wick: creatures fear your lantern light (#% chance a second to shy away)",
+  "lamber": "Hearth wick: regenerate # Life a second",
+  "lwhite": "Pale wick: creatures in your lantern light are slowed #%",
+  "lgreen": "Green taper: regenerate # Essence a second",
+  "lviolet": "Violet wick: regain # Essence when a creature dies in your lantern light"
+ },
+ "uniques": [
+  {
+   "name": "Lanternkeeper's Hood",
+   "base": "hood",
+   "stats": {
+    "life": 20,
+    "wisp": 1,
+    "res": 10
+   },
+   "lvl": 3
+  },
+  {
+   "name": "The Hollow Choir",
+   "base": "amulet",
+   "stats": {
+    "wisp": 1,
+    "regen": 30,
+    "spi": 5
+   },
+   "lvl": 5
+  },
+  {
+   "name": "Warden's Ribcage",
+   "base": "mail",
+   "stats": {
+    "armor": 40,
+    "life": 30,
+    "frw": -5
+   },
+   "lvl": 7
+  },
+  {
+   "name": "Whisperbone",
+   "base": "wand",
+   "stats": {
+    "dmg": 12,
+    "fcr": 20,
+    "wisp": 1
+   },
+   "lvl": 3
+  },
+  {
+   "name": "Grave-Walkers",
+   "base": "boots",
+   "stats": {
+    "frw": 25,
+    "con": 5,
+    "res": 10
+   },
+   "lvl": 4
+  },
+  {
+   "name": "Knot of Sorrows",
+   "base": "ring",
+   "stats": {
+    "mana": 20,
+    "lok": 3,
+    "dmg": 6
+   },
+   "lvl": 4
+  }
+ ],
+ "lantern": {
+  "perks": [
+   {
+    "n": "Bright",
+    "p": 1,
+    "s": "lrad",
+    "r": [
+     10,
+     25
+    ],
+    "l": 1
+   },
+   {
+    "n": "Blazing",
+    "p": 1,
+    "s": "lrad",
+    "r": [
+     26,
+     45
+    ],
+    "l": 9,
+    "rare": true
+   },
+   {
+    "n": "of the Ghostlight",
+    "p": 0,
+    "s": "lblue",
+    "r": [
+     8,
+     20
+    ],
+    "l": 2,
+    "w": 0.7
+   },
+   {
+    "n": "of the Hearth-wick",
+    "p": 0,
+    "s": "lamber",
+    "r": [
+     1,
+     3
+    ],
+    "l": 2,
+    "w": 0.7
+   },
+   {
+    "n": "of the Pale Flame",
+    "p": 0,
+    "s": "lwhite",
+    "r": [
+     10,
+     22
+    ],
+    "l": 3,
+    "w": 0.7
+   },
+   {
+    "n": "of the Green Taper",
+    "p": 0,
+    "s": "lgreen",
+    "r": [
+     1,
+     2
+    ],
+    "l": 4,
+    "w": 0.6
+   },
+   {
+    "n": "of the Violet Wick",
+    "p": 0,
+    "s": "lviolet",
+    "r": [
+     1,
+     3
+    ],
+    "l": 5,
+    "w": 0.5
+   }
+  ],
+  "wick_rgb": {
+   "lblue": "150,200,255",
+   "lamber": "255,176,96",
+   "lwhite": "236,236,228",
+   "lgreen": "170,230,150",
+   "lviolet": "200,160,255"
+  },
+  "base_rgb": {
+   "hemomancer": "242,214,168",
+   "animancer": "150,196,255",
+   "ossumancer": "240,228,204",
+   "miasmancer": "255,210,150"
+  },
+  "affixes": [
+   {
+    "index": 31,
+    "name": "Bright",
+    "prefix": true,
+    "stat": "lrad",
+    "range": [
+     10,
+     25
+    ],
+    "item_level": 1,
+    "rare_only": false,
+    "weight": 1,
+    "slots": null,
+    "text": "+#% Lantern Light Radius"
+   },
+   {
+    "index": 32,
+    "name": "Blazing",
+    "prefix": true,
+    "stat": "lrad",
+    "range": [
+     26,
+     45
+    ],
+    "item_level": 9,
+    "rare_only": true,
+    "weight": 1,
+    "slots": null,
+    "text": "+#% Lantern Light Radius"
+   },
+   {
+    "index": 33,
+    "name": "of the Ghostlight",
+    "prefix": false,
+    "stat": "lblue",
+    "range": [
+     8,
+     20
+    ],
+    "item_level": 2,
+    "rare_only": false,
+    "weight": 0.7,
+    "slots": null,
+    "text": "Ghostlight wick: creatures fear your lantern light (#% chance a second to shy away)"
+   },
+   {
+    "index": 34,
+    "name": "of the Hearth-wick",
+    "prefix": false,
+    "stat": "lamber",
+    "range": [
+     1,
+     3
+    ],
+    "item_level": 2,
+    "rare_only": false,
+    "weight": 0.7,
+    "slots": null,
+    "text": "Hearth wick: regenerate # Life a second"
+   },
+   {
+    "index": 35,
+    "name": "of the Pale Flame",
+    "prefix": false,
+    "stat": "lwhite",
+    "range": [
+     10,
+     22
+    ],
+    "item_level": 3,
+    "rare_only": false,
+    "weight": 0.7,
+    "slots": null,
+    "text": "Pale wick: creatures in your lantern light are slowed #%"
+   },
+   {
+    "index": 36,
+    "name": "of the Green Taper",
+    "prefix": false,
+    "stat": "lgreen",
+    "range": [
+     1,
+     2
+    ],
+    "item_level": 4,
+    "rare_only": false,
+    "weight": 0.6,
+    "slots": null,
+    "text": "Green taper: regenerate # Essence a second"
+   },
+   {
+    "index": 37,
+    "name": "of the Violet Wick",
+    "prefix": false,
+    "stat": "lviolet",
+    "range": [
+     1,
+     3
+    ],
+    "item_level": 5,
+    "rare_only": false,
+    "weight": 0.5,
+    "slots": null,
+    "text": "Violet wick: regain # Essence when a creature dies in your lantern light"
+   }
+  ],
+  "rule": "the strongest wick colour carried tints the lamp and acts on creatures in its light; lrad widens the radius (__lampK = 1.5 + lrad/100*0.5; heroLightR x0.62 x (1 + lrad/100))"
+ },
+ "potions": {
+  "source_lines": [
+   "if (kind === 'hp') { P.heal += potionHeal(D.maxHp * 0.4); sfx(300, 0.2, 'sine', 0.04, 200); }",
+   "else { P.restore += D.maxMana * 0.5; sfx(500, 0.2, 'sine', 0.04, 200); }",
+   "if (P.heal > 0) { const a = Math.min(P.heal, D.maxHp * 0.3 * dt); P.heal -= a; P.hp = Math.min(D.maxHp, P.hp + a); }",
+   "if (P.restore > 0) { const a = Math.min(P.restore, D.maxMana * 0.4 * dt); P.restore -= a; P.mana = Math.min(D.maxMana, P.mana + a); }",
+   "drops.push(newPotion(Math.random() < 0.55 ? 'hp' : 'mp'));"
+  ],
+  "kinds": {
+   "hp": {
+    "uid": 3,
+    "potion": "hp",
+    "q": "potion",
+    "name": "Healing Draught",
+    "w": 1,
+    "h": 1
+   },
+   "mp": {
+    "uid": 4,
+    "potion": "mp",
+    "q": "potion",
+    "name": "Essence Draught",
+    "w": 1,
+    "h": 1
+   }
+  },
+  "healing": "heals 40% of max life over time, at most 30% of max life per second",
+  "essence": "restores 50% of max resource, at most 40% per second",
+  "drop_split": "55% healing, 45% essence",
+  "belt": "4 slots, each stacks 4 of one kind; keys 1-4",
+  "buy_price_gold": 30,
+  "sell_value": 8
+ },
+ "gold": {
+  "pile_expr": "max(1, round(rand(min,max) * ilvl * rank_mult))",
+  "per_rank": {
+   "normal": {
+    "chance": 0.45,
+    "per_ilvl": [
+     2,
+     6
+    ],
+    "rank_mult": 1
+   },
+   "minion": {
+    "chance": 0.4,
+    "per_ilvl": [
+     2,
+     5
+    ],
+    "rank_mult": 1
+   },
+   "champion": {
+    "chance": 0.95,
+    "per_ilvl": [
+     4,
+     10
+    ],
+    "rank_mult": 2.5
+   },
+   "unique": {
+    "chance": 1,
+    "per_ilvl": [
+     6,
+     14
+    ],
+    "rank_mult": 5
+   },
+   "boss": {
+    "chance": 1,
+    "per_ilvl": [
+     10,
+     20
+    ],
+    "rank_mult": 14
+   },
+   "chest": {
+    "chance": 0.85,
+    "per_ilvl": [
+     3,
+     8
+    ],
+    "rank_mult": 1.5
+   }
+  },
+  "pickup": "walk over it (0.9 yd); +25% with the wick dimmed",
+  "drops_silently": true,
+  "chest_empty_consolation": "50% chance of (2..6)*ilvl gold when a chest rolled nothing"
+ },
+ "drops": {
+  "rank_gate": {
+   "normal": 0.22,
+   "minion": 0.18,
+   "champion": 0.7,
+   "unique": 0.9,
+   "boss": 1,
+   "chest": 1
+  },
+  "per_rank_cfg": {
+   "normal": {
+    "rolls": 1,
+    "chance": 0.32,
+    "guar": 0,
+    "minQ": null,
+    "mfBonus": 0,
+    "gold": [
+     0.45,
+     [
+      2,
+      6
+     ],
+     1
+    ],
+    "potChance": 0.2
+   },
+   "minion": {
+    "rolls": 1,
+    "chance": 0.28,
+    "guar": 0,
+    "minQ": null,
+    "mfBonus": 0,
+    "gold": [
+     0.4,
+     [
+      2,
+      5
+     ],
+     1
+    ],
+    "potChance": 0.08
+   },
+   "champion": {
+    "rolls": 3,
+    "chance": 0.85,
+    "guar": 1,
+    "minQ": "magic",
+    "mfBonus": 40,
+    "gold": [
+     0.95,
+     [
+      4,
+      10
+     ],
+     2.5
+    ],
+    "potChance": 0.3
+   },
+   "unique": {
+    "rolls": 5,
+    "chance": 1,
+    "guar": 1,
+    "minQ": "rare",
+    "mfBonus": 90,
+    "gold": [
+     1,
+     [
+      6,
+      14
+     ],
+     5
+    ],
+    "potChance": 0.45
+   },
+   "boss": {
+    "rolls": 8,
+    "chance": 1,
+    "guar": 2,
+    "minQ": "rare",
+    "mfBonus": 200,
+    "gold": [
+     1,
+     [
+      10,
+      20
+     ],
+     14
+    ],
+    "potChance": 0.6
+   },
+   "chest": {
+    "rolls": 2,
+    "chance": 0.6,
+    "guar": 0,
+    "minQ": null,
+    "mfBonus": 0,
+    "gold": [
+     0.85,
+     [
+      3,
+      8
+     ],
+     1.5
+    ],
+    "potChance": 0.25
+   }
+  },
+  "expected_per_100_analytic": {
+   "normal": {
+    "items": 7.04,
+    "gold_piles": 9.9,
+    "potions": 4.4,
+    "expr": "gate * (guaranteed + (rolls - guaranteed) * chance); gold gate*gold_chance; potions gate*potChance (chest: +coins 50% when empty)"
+   },
+   "minion": {
+    "items": 5.04,
+    "gold_piles": 7.2,
+    "potions": 1.44,
+    "expr": "gate * (guaranteed + (rolls - guaranteed) * chance); gold gate*gold_chance; potions gate*potChance (chest: +coins 50% when empty)"
+   },
+   "champion": {
+    "items": 189,
+    "gold_piles": 66.5,
+    "potions": 21,
+    "expr": "gate * (guaranteed + (rolls - guaranteed) * chance); gold gate*gold_chance; potions gate*potChance (chest: +coins 50% when empty)"
+   },
+   "unique": {
+    "items": 450,
+    "gold_piles": 90,
+    "potions": 40.5,
+    "expr": "gate * (guaranteed + (rolls - guaranteed) * chance); gold gate*gold_chance; potions gate*potChance (chest: +coins 50% when empty)"
+   },
+   "boss": {
+    "items": 800,
+    "gold_piles": 100,
+    "potions": 60,
+    "expr": "gate * (guaranteed + (rolls - guaranteed) * chance); gold gate*gold_chance; potions gate*potChance (chest: +coins 50% when empty)"
+   },
+   "chest": {
+    "items": 145,
+    "gold_piles": 85,
+    "potions": 25,
+    "expr": "gate * (guaranteed + (rolls - guaranteed) * chance + 0.25 chest roll); gold gate*gold_chance; potions gate*potChance (chest: +coins 50% when empty)"
+   }
+  },
+  "chest_extra": "one more 25% item roll (zz_zz_chest91); loot spills 1.05-1.75 tiles in front",
+  "item_level": "monster mlvl (+1 unique); chest = zone level; quest reward max(level, act top)+2",
+  "per_act_and_difficulty": "no per-act or per-difficulty drop tables exist in the web build: rates depend only on rank, item level and magic find",
+  "measured": {
+   "normal": {
+    "trials": 20000,
+    "ilvl": 10,
+    "per_100": {
+     "items": 7.13,
+     "normal": 5.84,
+     "magic": 0.99,
+     "rare": 0.195,
+     "unique": 0.105,
+     "gold_piles": 9.86,
+     "potions": 4.325
+    },
+    "empty_pct": 84.61,
+    "mean_gold_per_pile": 39.8083
+   },
+   "minion": {
+    "trials": 20000,
+    "ilvl": 10,
+    "per_100": {
+     "items": 5.05,
+     "normal": 4.07,
+     "magic": 0.815,
+     "rare": 0.12,
+     "unique": 0.045,
+     "gold_piles": 7.31,
+     "potions": 1.43
+    },
+    "empty_pct": 89.08,
+    "mean_gold_per_pile": 34.6532
+   },
+   "champion": {
+    "trials": 2000,
+    "ilvl": 10,
+    "per_100": {
+     "items": 188.15,
+     "normal": 88.4,
+     "magic": 81.95,
+     "rare": 13,
+     "unique": 4.8,
+     "gold_piles": 65.45,
+     "potions": 19.9
+    },
+    "empty_pct": 30.65,
+    "mean_gold_per_pile": 174.1581
+   },
+   "unique": {
+    "trials": 2000,
+    "ilvl": 10,
+    "per_100": {
+     "items": 449.5,
+     "normal": 240.35,
+     "magic": 106.25,
+     "rare": 73.25,
+     "unique": 29.65,
+     "gold_piles": 89.9,
+     "potions": 41.95
+    },
+    "empty_pct": 10.1,
+    "mean_gold_per_pile": 498.3165
+   },
+   "boss": {
+    "trials": 2000,
+    "ilvl": 10,
+    "per_100": {
+     "items": 800,
+     "normal": 300.95,
+     "magic": 247.15,
+     "rare": 182.75,
+     "unique": 69.15,
+     "gold_piles": 100,
+     "potions": 61.05
+    },
+    "empty_pct": 0,
+    "mean_gold_per_pile": 2107.984
+   },
+   "chest": {
+    "trials": 2000,
+    "ilvl": 10,
+    "per_100": {
+     "items": 145,
+     "normal": 121.4,
+     "magic": 20.15,
+     "rare": 2.75,
+     "unique": 0.7,
+     "gold_piles": 85.25,
+     "potions": 23.35
+    },
+    "empty_pct": 0.8,
+    "mean_gold_per_pile": 81.566
+   }
+  },
+  "rollItem_measured": {
+   "ilvl1_mf0": {
+    "n": 20000,
+    "pct": {
+     "normal": 82.315,
+     "magic": 14.48,
+     "rare": 2.29,
+     "unique": 0.915
+    },
+    "mean_affixes": {
+     "magic": 2,
+     "rare": 6
+    },
+    "bases": {
+     "relic": 2443,
+     "belt": 2474,
+     "gloves": 2565,
+     "ring": 2490,
+     "boots": 2504,
+     "hood": 2514,
+     "wand": 2507,
+     "robe": 2503
+    }
+   },
+   "ilvl10_mf0": {
+    "n": 20000,
+    "pct": {
+     "normal": 82.49,
+     "magic": 14.39,
+     "rare": 2.32,
+     "unique": 0.8
+    },
+    "mean_affixes": {
+     "magic": 2,
+     "rare": 6
+    },
+    "bases": {
+     "staff": 1526,
+     "amulet": 1513,
+     "hood": 1550,
+     "boots": 1481,
+     "gloves": 1533,
+     "wand": 1550,
+     "robe": 1529,
+     "mask": 1557,
+     "dagger": 1514,
+     "relic": 1566,
+     "belt": 1574,
+     "ring": 1525,
+     "mail": 1582
+    }
+   },
+   "ilvl10_mf100": {
+    "n": 20000,
+    "pct": {
+     "normal": 64.93,
+     "magic": 28.86,
+     "rare": 4.5,
+     "unique": 1.71
+    },
+    "mean_affixes": {
+     "magic": 2,
+     "rare": 6
+    },
+    "bases": {
+     "robe": 1487,
+     "relic": 1516,
+     "dagger": 1495,
+     "mask": 1558,
+     "hood": 1570,
+     "boots": 1558,
+     "mail": 1594,
+     "wand": 1642,
+     "ring": 1514,
+     "gloves": 1497,
+     "amulet": 1565,
+     "belt": 1558,
+     "staff": 1446
+    }
+   },
+   "ilvl20_mf0": {
+    "n": 20000,
+    "pct": {
+     "normal": 82.445,
+     "magic": 14.405,
+     "rare": 2.21,
+     "unique": 0.94
+    },
+    "mean_affixes": {
+     "magic": 2,
+     "rare": 6
+    },
+    "bases": {
+     "gloves": 1467,
+     "ring": 1638,
+     "staff": 1557,
+     "dagger": 1567,
+     "mask": 1496,
+     "belt": 1505,
+     "amulet": 1552,
+     "robe": 1514,
+     "wand": 1510,
+     "boots": 1561,
+     "mail": 1526,
+     "hood": 1627,
+     "relic": 1480
+    }
+   },
+   "ilvl30_mf0": {
+    "n": 20000,
+    "pct": {
+     "normal": 82.92,
+     "magic": 14.195,
+     "rare": 2.155,
+     "unique": 0.73
+    },
+    "mean_affixes": {
+     "magic": 2,
+     "rare": 6
+    },
+    "bases": {
+     "mask": 1537,
+     "wand": 1518,
+     "boots": 1608,
+     "robe": 1562,
+     "hood": 1612,
+     "relic": 1559,
+     "ring": 1468,
+     "dagger": 1480,
+     "amulet": 1551,
+     "belt": 1522,
+     "mail": 1575,
+     "gloves": 1524,
+     "staff": 1484
+    }
+   },
+   "ilvl40_mf0": {
+    "n": 20000,
+    "pct": {
+     "normal": 82.37,
+     "magic": 14.675,
+     "rare": 2.145,
+     "unique": 0.81
+    },
+    "mean_affixes": {
+     "magic": 2,
+     "rare": 6
+    },
+    "bases": {
+     "staff": 1535,
+     "hood": 1509,
+     "gloves": 1520,
+     "amulet": 1584,
+     "wand": 1536,
+     "mail": 1539,
+     "belt": 1654,
+     "relic": 1457,
+     "mask": 1488,
+     "dagger": 1488,
+     "boots": 1598,
+     "ring": 1562,
+     "robe": 1530
+    }
+   },
+   "ilvl40_mf200": {
+    "n": 20000,
+    "pct": {
+     "normal": 51.025,
+     "magic": 40.09,
+     "rare": 6.48,
+     "unique": 2.405
+    },
+    "mean_affixes": {
+     "magic": 2,
+     "rare": 6
+    },
+    "bases": {
+     "ring": 1551,
+     "dagger": 1536,
+     "staff": 1564,
+     "robe": 1479,
+     "mail": 1585,
+     "boots": 1584,
+     "gloves": 1506,
+     "belt": 1454,
+     "relic": 1493,
+     "wand": 1578,
+     "mask": 1471,
+     "amulet": 1599,
+     "hood": 1600
+    }
+   }
+  }
+ },
+ "vendor": {
+  "potion_price": 30,
+  "sell_value_expr": "potion 8, else {normal:5, magic:25, rare:70, unique:160}[q] + 4*item_level",
+  "sell_value_by_level": {
+   "normal": {
+    "1": 9,
+    "2": 13,
+    "3": 17,
+    "4": 21,
+    "5": 25,
+    "6": 29,
+    "7": 33,
+    "8": 37,
+    "9": 41,
+    "10": 45,
+    "11": 49,
+    "12": 53,
+    "13": 57,
+    "14": 61,
+    "15": 65,
+    "16": 69,
+    "17": 73,
+    "18": 77,
+    "19": 81,
+    "20": 85,
+    "21": 89,
+    "22": 93,
+    "23": 97,
+    "24": 101,
+    "25": 105,
+    "26": 109,
+    "27": 113,
+    "28": 117,
+    "29": 121,
+    "30": 125,
+    "31": 129,
+    "32": 133,
+    "33": 137,
+    "34": 141,
+    "35": 145,
+    "36": 149,
+    "37": 153,
+    "38": 157,
+    "39": 161,
+    "40": 165
+   },
+   "magic": {
+    "1": 29,
+    "2": 33,
+    "3": 37,
+    "4": 41,
+    "5": 45,
+    "6": 49,
+    "7": 53,
+    "8": 57,
+    "9": 61,
+    "10": 65,
+    "11": 69,
+    "12": 73,
+    "13": 77,
+    "14": 81,
+    "15": 85,
+    "16": 89,
+    "17": 93,
+    "18": 97,
+    "19": 101,
+    "20": 105,
+    "21": 109,
+    "22": 113,
+    "23": 117,
+    "24": 121,
+    "25": 125,
+    "26": 129,
+    "27": 133,
+    "28": 137,
+    "29": 141,
+    "30": 145,
+    "31": 149,
+    "32": 153,
+    "33": 157,
+    "34": 161,
+    "35": 165,
+    "36": 169,
+    "37": 173,
+    "38": 177,
+    "39": 181,
+    "40": 185
+   },
+   "rare": {
+    "1": 74,
+    "2": 78,
+    "3": 82,
+    "4": 86,
+    "5": 90,
+    "6": 94,
+    "7": 98,
+    "8": 102,
+    "9": 106,
+    "10": 110,
+    "11": 114,
+    "12": 118,
+    "13": 122,
+    "14": 126,
+    "15": 130,
+    "16": 134,
+    "17": 138,
+    "18": 142,
+    "19": 146,
+    "20": 150,
+    "21": 154,
+    "22": 158,
+    "23": 162,
+    "24": 166,
+    "25": 170,
+    "26": 174,
+    "27": 178,
+    "28": 182,
+    "29": 186,
+    "30": 190,
+    "31": 194,
+    "32": 198,
+    "33": 202,
+    "34": 206,
+    "35": 210,
+    "36": 214,
+    "37": 218,
+    "38": 222,
+    "39": 226,
+    "40": 230
+   },
+   "unique": {
+    "1": 164,
+    "2": 168,
+    "3": 172,
+    "4": 176,
+    "5": 180,
+    "6": 184,
+    "7": 188,
+    "8": 192,
+    "9": 196,
+    "10": 200,
+    "11": 204,
+    "12": 208,
+    "13": 212,
+    "14": 216,
+    "15": 220,
+    "16": 224,
+    "17": 228,
+    "18": 232,
+    "19": 236,
+    "20": 240,
+    "21": 244,
+    "22": 248,
+    "23": 252,
+    "24": 256,
+    "25": 260,
+    "26": 264,
+    "27": 268,
+    "28": 272,
+    "29": 276,
+    "30": 280,
+    "31": 284,
+    "32": 288,
+    "33": 292,
+    "34": 296,
+    "35": 300,
+    "36": 304,
+    "37": 308,
+    "38": 312,
+    "39": 316,
+    "40": 320
+   }
+  },
+  "smith": {
+   "items": 7,
+   "uniques": false,
+   "item_level": "max(hero level, act minimum + 2)",
+   "magic_find": 60,
+   "price_expr": "sell_value*5 + level*6",
+   "restock": "when the hero levels"
+  },
+  "stash_size": 48
+ },
+ "gambling": null,
+ "sources": {
+  "rollItem_final": "function () {\n      let it = _roll.apply(this, arguments);\n      if (it && (it.q === 'rare' || it.q === 'unique') && Math.random() < 0.30) {\n        for (let k = 0; k < 10; k++) { const r = _roll.apply(this, arguments); if (r && r.q !== 'rare' && r.q !== 'unique') { it = r; break; } }\n      }\n      return it;\n    }",
+  "affixPool": "function affixPool(base, ilvl, pre, rare) { return AFFIX.filter(a => a.p === pre && a.l <= ilvl + 1 && (!a.only || a.only.includes(base.slot)) && (!a.rare || rare)); }",
+  "newBaseItem": "function newBaseItem(baseId) {\n  const b = BASES[baseId];\n  const it = { uid: itemUid++, base: baseId, q: 'normal', name: b.name, w: b.w, h: b.h, stats: {}, lvl: 1 };\n  if (b.armor) it.armor = randi(b.armor[0], b.armor[1]);\n  if (b.dmg) it.dmg = [b.dmg[0], b.dmg[1]];\n  return it;\n}",
+  "dropLoot_final": "function () {\n      const z = G.zone, n0 = z && z.items ? z.items.length : 0, r = fn.apply(this, arguments);\n      try { if (z && z.items && z.items.length > n0) dropSound(z.items.slice(n0)); } catch (e) { }\n      return r;\n    }",
+  "potionHeal": "function (amt) { if (aR('v_crown')) { say(crown().name + ' refuses the draught', 1.4); return 0; } return _ph.apply(this, arguments); }"
+ }
+}

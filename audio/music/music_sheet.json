@@ -1,0 +1,368 @@
+{
+ "_help": {
+  "what": "One entry per cue. Change a number, render again. Delete a key to keep the default.",
+  "fields": {
+   "bpm": "tempo, beats per minute (slower is more sombre)",
+   "steps": "steps per bar (6 is a lilting compound metre, 8 is straight)",
+   "root": "the key, as a MIDI note (50 = D; 12 higher is an octave up)",
+   "sc": "the mode: aeol (minor), dor (dorian), phr (phrygian, dark), hij (hijaz, eastern), hmin (harmonic minor), pmin (pentatonic minor)",
+   "seed": "which tune: every seed is a different motif for the same place",
+   "gain": "the cue's level before the master (1.0 = as written)",
+   "wind": "level of the wind bed (0 = none)",
+   "windF": "the wind's centre pitch in Hz (lower is a bigger, colder wind)",
+   "ds": "how much of the cue goes to the echo (0..1)",
+   "drone": "[note, level, lowpass Hz, kind]: the drone under everything; kind 'dist' is the Descent's distorted one"
+  },
+  "modes": [
+   "aeol",
+   "dor",
+   "phr",
+   "hij",
+   "hmin",
+   "pmin"
+  ]
+ },
+ "a1_town": {
+  "bpm": 132,
+  "steps": 6,
+  "root": 50,
+  "sc": "dor",
+  "seed": 11,
+  "gain": 0.8,
+  "wind": 0.007,
+  "windF": 420.0,
+  "ds": 0.35,
+  "drone": [
+   38,
+   0.03,
+   300
+  ]
+ },
+ "a1_wild": {
+  "bpm": 70,
+  "steps": 8,
+  "root": 50,
+  "sc": "aeol",
+  "seed": 12,
+  "gain": 1.3,
+  "wind": 0.018,
+  "windF": 420.0,
+  "ds": 0.0,
+  "drone": [
+   38,
+   0.028,
+   240
+  ]
+ },
+ "a1_deep": {
+  "bpm": 58,
+  "steps": 8,
+  "root": 38,
+  "sc": "phr",
+  "seed": 13,
+  "gain": 1.0,
+  "wind": 0.005,
+  "windF": 220,
+  "ds": 0.0,
+  "drone": [
+   26,
+   0.05,
+   180
+  ]
+ },
+ "a2_town": {
+  "bpm": 208,
+  "steps": 8,
+  "root": 50,
+  "sc": "hij",
+  "seed": 21,
+  "gain": 1.0,
+  "wind": 0.006,
+  "windF": 900,
+  "ds": 0.0,
+  "drone": [
+   38,
+   0.024,
+   420
+  ]
+ },
+ "a2_wild": {
+  "bpm": 84,
+  "steps": 8,
+  "root": 50,
+  "sc": "hij",
+  "seed": 22,
+  "gain": 1.2,
+  "wind": 0.027,
+  "windF": 700,
+  "ds": 0.0,
+  "drone": [
+   38,
+   0.026,
+   300
+  ]
+ },
+ "a2_deep": {
+  "bpm": 60,
+  "steps": 8,
+  "root": 38,
+  "sc": "hij",
+  "seed": 23,
+  "gain": 1.0,
+  "wind": 0.006,
+  "windF": 300,
+  "ds": 0.0,
+  "drone": [
+   26,
+   0.05,
+   200
+  ]
+ },
+ "a3_town": {
+  "bpm": 150,
+  "steps": 8,
+  "root": 52,
+  "sc": "pmin",
+  "seed": 31,
+  "gain": 1.9,
+  "wind": 0.004,
+  "windF": 420.0,
+  "ds": 0.0,
+  "drone": [
+   40,
+   0.02,
+   350
+  ]
+ },
+ "a3_wild": {
+  "bpm": 132,
+  "steps": 12,
+  "root": 45,
+  "sc": "pmin",
+  "seed": 32,
+  "gain": 1.3,
+  "wind": 0.007,
+  "windF": 350,
+  "ds": 0.0,
+  "drone": [
+   33,
+   0.03,
+   260
+  ]
+ },
+ "a3_deep": {
+  "bpm": 66,
+  "steps": 8,
+  "root": 40,
+  "sc": "phr",
+  "seed": 33,
+  "gain": 1.1,
+  "wind": 0.0,
+  "windF": 420.0,
+  "ds": 0.0,
+  "drone": [
+   28,
+   0.045,
+   220
+  ]
+ },
+ "a4_town": {
+  "bpm": 76,
+  "steps": 8,
+  "root": 48,
+  "sc": "aeol",
+  "seed": 41,
+  "gain": 1.9,
+  "wind": 0.012,
+  "windF": 600,
+  "ds": 0.0,
+  "drone": [
+   36,
+   0.02,
+   280
+  ]
+ },
+ "a4_wild": {
+  "bpm": 66,
+  "steps": 8,
+  "root": 48,
+  "sc": "aeol",
+  "seed": 42,
+  "gain": 1.3,
+  "wind": 0.03,
+  "windF": 800,
+  "ds": 0.0,
+  "drone": [
+   36,
+   0.03,
+   260
+  ]
+ },
+ "a4_deep": {
+  "bpm": 56,
+  "steps": 8,
+  "root": 45,
+  "sc": "phr",
+  "seed": 43,
+  "gain": 1.0,
+  "wind": 0.009,
+  "windF": 300,
+  "ds": 0.0,
+  "drone": [
+   33,
+   0.045,
+   200
+  ]
+ },
+ "a5_town": {
+  "bpm": 60,
+  "steps": 8,
+  "root": 50,
+  "sc": "dor",
+  "seed": 51,
+  "gain": 2.4,
+  "wind": 0.0,
+  "windF": 420.0,
+  "ds": 0.0,
+  "drone": [
+   38,
+   0.02,
+   260
+  ]
+ },
+ "a5_wild": {
+  "bpm": 92,
+  "steps": 8,
+  "root": 38,
+  "sc": "phr",
+  "seed": 52,
+  "gain": 1.0,
+  "wind": 0.0,
+  "windF": 420.0,
+  "ds": 0.0,
+  "drone": [
+   26,
+   0.05,
+   520,
+   "dist"
+  ]
+ },
+ "a5_deep": {
+  "bpm": 72,
+  "steps": 8,
+  "root": 38,
+  "sc": "phr",
+  "seed": 53,
+  "gain": 1.0,
+  "wind": 0.0,
+  "windF": 420.0,
+  "ds": 0.0,
+  "drone": [
+   24,
+   0.055,
+   380,
+   "dist"
+  ]
+ },
+ "boss1": {
+  "bpm": 150,
+  "steps": 8,
+  "root": 38,
+  "sc": "phr",
+  "seed": 61,
+  "gain": 1.0,
+  "wind": 0.0,
+  "windF": 420.0,
+  "ds": 0.0,
+  "drone": [
+   26,
+   0.04,
+   400,
+   ""
+  ]
+ },
+ "boss2": {
+  "bpm": 150,
+  "steps": 8,
+  "root": 38,
+  "sc": "phr",
+  "seed": 62,
+  "gain": 1.0,
+  "wind": 0.0,
+  "windF": 420.0,
+  "ds": 0.0,
+  "drone": [
+   26,
+   0.04,
+   400,
+   ""
+  ]
+ },
+ "boss3": {
+  "bpm": 150,
+  "steps": 8,
+  "root": 40,
+  "sc": "phr",
+  "seed": 63,
+  "gain": 1.0,
+  "wind": 0.0,
+  "windF": 420.0,
+  "ds": 0.0,
+  "drone": [
+   26,
+   0.04,
+   400,
+   ""
+  ]
+ },
+ "boss4": {
+  "bpm": 150,
+  "steps": 8,
+  "root": 36,
+  "sc": "phr",
+  "seed": 64,
+  "gain": 1.0,
+  "wind": 0.0,
+  "windF": 420.0,
+  "ds": 0.0,
+  "drone": [
+   26,
+   0.04,
+   400,
+   ""
+  ]
+ },
+ "boss5": {
+  "bpm": 150,
+  "steps": 8,
+  "root": 38,
+  "sc": "phr",
+  "seed": 65,
+  "gain": 1.0,
+  "wind": 0.0,
+  "windF": 420.0,
+  "ds": 0.0,
+  "drone": [
+   26,
+   0.04,
+   700,
+   "dist"
+  ]
+ },
+ "title": {
+  "bpm": 110,
+  "steps": 6,
+  "root": 50,
+  "sc": "dor",
+  "seed": 11,
+  "gain": 0.8,
+  "wind": 0.012,
+  "windF": 420.0,
+  "ds": 0.35,
+  "drone": [
+   38,
+   0.03,
+   300
+  ]
+ }
+}

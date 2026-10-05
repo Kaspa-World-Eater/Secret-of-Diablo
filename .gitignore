@@ -1,3 +1,12 @@
 .godot/
 *.tmp
 build/
+_backup/
+# never public: signing keys, tokens, local caches
+*.keystore
+*.jks
+.pixellab/
+*token*
+!**/*token*.gd
+__pycache__/
+*.pyc

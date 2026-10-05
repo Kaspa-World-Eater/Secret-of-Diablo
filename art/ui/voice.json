@@ -1,0 +1,704 @@
+{
+ "zones": {
+  "moor": {
+   "e": "Ash to the ankle, still warm. The god's cheek, where it struck first.",
+   "w": [
+    "Nothing sings over the Moor. Nothing ever has. The wind only practises.",
+    "The pilgrims fell mid-hymn. Some are shapes under the ash. Some are standing up.",
+    "Black glass underfoot. A Husk bled here, and the ash drank it and hardened.",
+    "The ash is warm because the flesh beneath is still cooling. A thousand years, cooling.",
+    "Chalk on the milestones. Villa Llaga's penitents renew it yearly. It lasts eleven months."
+   ]
+  },
+  "crypt": {
+   "e": "Dur-nang, the inside grave. The walls are ribs, dry as old ivory.",
+   "w": [
+    "The flagstones lift under your boots, slow and even. Something below is sleeping.",
+    "Every niche held a mother's bones once. The Great Standing emptied them.",
+    "The votive candles never gutter. The ribs keep the Last Breath off them.",
+    "Tally-marks in hundreds and eights. Nobody living knows what was being counted.",
+    "Somewhere in the dark a Marrow Duelist is still practising his forms, for no one."
+   ]
+  },
+  "fen": {
+   "e": "The god's lymph, standing knee-deep. It beads on your skin and rolls away.",
+   "w": [
+    "Every reed bends the same way, whatever the wind. Toward something.",
+    "Fire burns green over the water. The air is thick with breath never exhaled.",
+    "Iron and old incense: the drowned chapels, and what the dredgers left in them.",
+    "A boat passes and leaves no wake. Or nothing passes, and the water parts anyway.",
+    "The boatmen bow toward the Well-Shrine as they pass. You find you have bowed too."
+   ]
+  },
+  "barrow": {
+   "e": "The Tithed's own dead, mounded over the skin like knots in a coverlet.",
+   "w": [
+    "Every barrow-lid is dished inward, as if the ground breathed out once and never in.",
+    "Cart ruts in the sunken lanes. The Ossuary Lords came here first, for bones.",
+    "The dead here rise wrong. Pauldrons on backwards. Heads on, but turned.",
+    "Walk Widow's Lane counter-sunwise and a stranger comes to your door. One often does.",
+    "The Empty Ninth stands open. The villagers say it is waiting. They do not say for whom."
+   ]
+  },
+  "cata1": {
+   "e": "The pilgrim ossuary. Every wall is a sermon laid in bone.",
+   "w": [
+    "A wall of femurs, then a wall of jaws, then skull-caps stacked cup-down like tiles.",
+    "Chalk, old paper, and something like a fresh haircut. The air of the kept dead.",
+    "The Wardens salute each other in the corridors. They do not salute you.",
+    "Touch one skull-cap on the Cup Wall and ten thousand ring, faintly, like glasses.",
+    "The book on the lectern has one page turned. The hand is yours."
+   ]
+  },
+  "cata2": {
+   "e": "Below the kept bone. Here the walls forget what patterns were for.",
+   "w": [
+    "The monks stopped digging when they struck something warm. It is still warm.",
+    "Count the skulls in the Miscount. Count again. One more. Some say the one is you.",
+    "A pick set in the end wall, its shaft snapped. Nobody has pulled it free.",
+    "The ceiling sagged into a face. You cannot say whose. You do not want to.",
+    "Old Hundred-Fingers came down here once. He came back with a look he will not explain."
+   ]
+  },
+  "sighing_ridge": {
+   "e": "The Moor lifts into a ridge, and the wind across it sounds like breath.",
+   "w": [
+    "The Sighing Lantern hums through its cracked bell. The ash pools beneath it, listening.",
+    "Three colonnade stumps, always warm. A foreman and two daughters, found holding hands.",
+    "A line of lanterns along the crest. The Tithed keep them lit so no one walks blind.",
+    "The wind lifts ash off the ridge in long grey scarves. Below, it settles on someone."
+   ]
+  },
+  "ash_shore": {
+   "e": "Where the ash meets a grey sea that does not move like water.",
+   "w": [
+    "The Broken Kneeler: a prayer-bench halved by something that fell the night the god died.",
+    "The tide brings in nothing. The tide takes out footprints. Yours are already going.",
+    "Black glass along the waterline, sharp as a lie. Husks bled here in rows.",
+    "Some say the sea is the god's eye, filmed over, still looking up."
+   ]
+  },
+  "burnt_heath": {
+   "e": "Heather burned to wire. The Pyre-Saints walked here, and walk still.",
+   "w": [
+    "The ash-circle is where a Pyre-Saint knelt to burn. The centre is still warm.",
+    "Cinders lift when you pass and follow a little way, like mourners who lost the coffin.",
+    "Someone chalked a milestone, then cracked it. Here, not knowing the distance is a mercy.",
+    "The heath burned for a year after the god died. Nobody lit it."
+   ]
+  },
+  "fern_gully": {
+   "e": "The ground folds into a gully of ferns, wet and green and wrong.",
+   "w": [
+    "The ferns uncurl as you pass, then curl again, slowly, like fingers remembering.",
+    "Berries by the ford, red as a cut. The Berry-Warden watches who picks them.",
+    "Water runs here, real water. It tastes of iron anyway.",
+    "A ring of ferns grows in a perfect circle. Nothing stands in it for long."
+   ]
+  },
+  "pilgrim_road": {
+   "e": "The old road down. Glass-paved in patches, a milestone every four hundred paces.",
+   "w": [
+    "Sister Un's reliquary is gone. The milestone still waits for it.",
+    "Pilgrims walked this road singing. Their song ends here, at no particular place.",
+    "A kneeling post, rubbed smooth by foreheads. Kneel, and yours fits the hollow.",
+    "Lantern-light off the black glass is the surest road on the Hide. Follow it down.",
+    "Down. The road always goes down, even where it seems to climb."
+   ]
+  },
+  "drowned_village": {
+   "e": "A village stood here, and still stands, a little under the water.",
+   "w": [
+    "Doors ajar under the water. Someone left in a hurry and meant to come back.",
+    "A loom sagging on its frame, the last shroud half-woven. The shuttle is still warm.",
+    "The Reed That Points Home turns its head toward the village you were born in.",
+    "Bells ring under the square at dusk. The belfry fell a thousand years ago."
+   ]
+  },
+  "sunken_bog": {
+   "e": "The fen gives up pretending to be water. Bog, to the thigh.",
+   "w": [
+    "The Kneeling Arch leans forty degrees and never falls. Boatmen sleep tied to it.",
+    "The Iron Hook is still in the mud. The Shrine Keepers hang a paper doll on it each Ōharae.",
+    "A monk drowned here in his sash. The sash is still knotted. The monk is not.",
+    "The mud clutches and lets go, clutches and lets go. It is patient with you."
+   ]
+  },
+  "fallen_monastery": {
+   "e": "Half a roof, half a sky. The brothers prayed until the ceiling answered.",
+   "w": [
+    "The tallies on the Counting Wall stop mid-hundred. The counter was interrupted.",
+    "The pews face an altar that faces away. The brothers turned it the night of the fall.",
+    "Rain falls into the half-sky nave and pools in the font. Nobody drinks it.",
+    "That is not chanting. That is the wind in the broken stalls, pretending."
+   ]
+  },
+  "wolf_den_chapel": {
+   "e": "A chapel the hungry took. They left the pews and ate the rest.",
+   "w": [
+    "The old kill-floor, dark with a century of meals. Bone-scraps in the altar rail.",
+    "Something howled here at the moment the god died. The walls still hold the note.",
+    "A pew split by a body thrown hard. The hungry were not the first to fight here.",
+    "The hymn-board still lists the last hymns. The numbers match nothing now."
+   ]
+  },
+  "plague_hospice": {
+   "e": "The sisters kept the sick here. Then the sickness kept the sisters.",
+   "w": [
+    "A row of cots, blankets drawn up. The shapes beneath them are patient.",
+    "In her alcove the last sister wrote names on the wall until the wall was full.",
+    "Vinegar and tallow and old wounds. The hospice still smells of mercy attempted.",
+    "Something coughs, three rooms away. Then, closer, something coughs back."
+   ]
+  },
+  "well_shaft": {
+   "e": "Down the well, rung by rung, into the dark the village drank from.",
+   "w": [
+    "The first rung is iron. The deeper rungs are bone, and warmer.",
+    "Water drips upward here. You feel it on your chin.",
+    "The village lowered buckets for a thousand years. They came up full of something.",
+    "The shaft coils like a throat. Walk quietly. It may swallow."
+   ]
+  },
+  "smugglers_hold": {
+   "e": "Salt, rope, false floors. Contraband bone, bound for the Ossuary Lords.",
+   "w": [
+    "The ledger lists bones by weight and saint. Most of the saints are made up.",
+    "Salt heaped to the rafters. It kept the goods from spoiling. Mostly.",
+    "A smuggler's knife pins a note to the table. The ink has run away.",
+    "They sold mothers to lords, a rib at a time. The hold remembers every price."
+   ]
+  },
+  "bogwitch_shack": {
+   "e": "A crooked shack on a hump of bog. Chimney smoke, and no fire.",
+   "w": [
+    "Charms hang from the eaves: knuckle-bones, teeth, a child's shoe. They turn without wind.",
+    "The doorstone is worn by knees, not feet. People came here to beg.",
+    "Her kettle still simmers. Do not ask what she was rendering.",
+    "She traded cures for years off a life. Her ledger is written on skin."
+   ]
+  },
+  "tree_hollow": {
+   "e": "Inside a trunk as wide as a chapel. The bark closed over something here.",
+   "w": [
+    "The walls of the hollow are ribbed like a wrist, and they pulse, faintly.",
+    "Spores drift toward your warmth. They mean nothing by it. They only want warm.",
+    "A candle burns inside a knot. It has not run down in eight hundred years.",
+    "Scratch the bark and a clear cold thing runs out. Almost water."
+   ]
+  },
+  "hunter_cache": {
+   "e": "A hunter's cache in the heather. He meant to come back for it.",
+   "w": [
+    "Snares still set, rusted shut around nothing. What he hunted, he did not catch.",
+    "Dried meat on the rack, black as tar. Whose meat, the cache does not say.",
+    "A bow unstrung and leaning, the way a man leaves one when he means to return.",
+    "His boots are here. So are his tracks, leading away barefoot."
+   ]
+  },
+  "fallen_watchtower": {
+   "e": "The tower that watched the Barrows fell. Its bell did not.",
+   "w": [
+    "The Buried Bell rings under the turf when the wind is right. No one strikes it.",
+    "The watchmen saw the god fall. The tower fell after, out of grief, the stones say.",
+    "Arrow-slits look out on mounds. What they watched for came up from below.",
+    "A watchman's horn in the rubble. Blow it, and the barrows go very quiet."
+   ]
+  },
+  "broken_bridge": {
+   "e": "The bridge fell in the middle. Both halves still reach for each other.",
+   "w": [
+    "The river camp's fire went out generations ago. The ash is still laid for morning.",
+    "The water below runs clear and slow and thick. It is not a river. It is a vein.",
+    "Those who waited here for the ferry are waiting still. Look at the bank.",
+    "Names carved on the parapet. The last name is only half cut."
+   ]
+  },
+  "hollow_wood": {
+   "e": "The god's veins stood up out of the Hide and became a forest.",
+   "w": [
+    "Teal caps for the young, ghost-blue for the tall, amber where something lies dead.",
+    "A ribcage grown through with bark, a pilgrim's badge still in one rib. Warm.",
+    "The Blind Face was about to speak, and then the bark grew over its eyes.",
+    "The fireflies are not fireflies. They are spores, and they drift toward your warmth.",
+    "Every tenth trunk holds something the god was carrying when it fell."
+   ]
+  },
+  "root_deep": {
+   "e": "Ne-no-kuni, the land under the Hide. It breathes in, and out.",
+   "w": [
+    "Every four heartbeats the lantern-shadows shift. The corridor is breathing.",
+    "Your echo comes back before you speak. Do not answer it.",
+    "Drink from the Reversed Spring and it takes a memory. It does not say which.",
+    "A second heartbeat under your own, slower. Stand still and they begin to match.",
+    "The oni walk down this road with their sacks. Nothing walks up it."
+   ]
+  },
+  "a2_town": {
+   "e": "A fortress in a hollow leg-bone. The marrow was scraped out for chapels.",
+   "w": [
+    "The Femur's Heart burns where the marrow was thickest. The knights kneel to it in shifts.",
+    "Bone-dust sifts from the vault all day. The sweepers never finish. They are not meant to.",
+    "Nine orders, one femur. They share the bone and nothing else.",
+    "The rib-arches outside the gate were counted once. The count was entered as a sin."
+   ]
+  },
+  "a2_dunes": {
+   "e": "White dunes of powdered bone, under a sun that does not blink.",
+   "w": [
+    "The sand is holy bone, ground fine. Every step you take is on someone.",
+    "A caravan lies where the dune took it: salt, oxen, drivers, one white shape.",
+    "The Keel of Saint Ivel juts from the sand. He sailed the dunes, they say, and sank.",
+    "Your edge dulls a little in the dust. Bone wears down iron, given time.",
+    "A rib-arch on the horizon, like a wrecked hull. It is the Bearing Mother's."
+   ]
+  },
+  "a2_avenue": {
+   "e": "Leagues of calcified bearers, each holding a stone lantern up for no one.",
+   "w": [
+    "The bearers were pilgrims. They stood to hold the lanterns, and the dust set around them.",
+    "One bearer kneels at the halfway mark. He was tired. The procession did not wait.",
+    "Some lanterns are lit. Nobody has ever been seen lighting them.",
+    "Every face turns toward the Chapter Stair. Yours will too, if you are not careful."
+   ]
+  },
+  "a2_chapter": {
+   "e": "A crusader order's house, sunk under the sand with its oaths still sworn.",
+   "w": [
+    "In the Hall of Oaths the vows are cut in bone. Some are scratched out, by fingernail.",
+    "The brothers were buried at prayer. The sand came in and they did not stop.",
+    "A reliquary with nine locks. Nine orders. Each kept one key and lost it.",
+    "The chapter bell has no clapper. They took it out so the sand would not hear."
+   ]
+  },
+  "a2_ribvalley": {
+   "e": "The god's ribs stand in rows, like wrecked hulls between the mesas.",
+   "w": [
+    "The Great Hull is a rib so large the wind keeps its own weather under it.",
+    "Pilgrims camped in the ribs' shade. The ribs are shade still. The pilgrims are chalk.",
+    "Put your palm to a rib. It is cool, and very faintly, it gives.",
+    "The Keel-Stone marks where the ribs meet the spine, far below the sand."
+   ]
+  },
+  "a2_stormflat": {
+   "e": "A dead pan of chalk. When the wind rises, the whole plain rises.",
+   "w": [
+    "In the chalk storms your lamp shrinks to a coin. Keep walking. Stopping is worse.",
+    "The Last Shade: a pillar's shadow, the only one for a day's walk.",
+    "Arrows drift in the white wind. The archers here aim where you will be.",
+    "Something is buried under the White Pan, and the pan is cracking open to see."
+   ]
+  },
+  "a2_tomb": {
+   "e": "The sand came into the tomb and filled it, hall by hall.",
+   "w": [
+    "Chalk-wyrms swim in the drifts. The sand moves where no wind reaches.",
+    "In the Choked Nave the painted saints have sand to their chins.",
+    "Whoever lies here was buried twice. Once by the brothers, once by the Barrens.",
+    "Your footprints fill behind you, a grain at a time. The tomb is tidying."
+   ]
+  },
+  "a2_banners": {
+   "e": "Banners of holy wars no one won. The cloth rotted; the gold thread stands.",
+   "w": [
+    "The Standard of Nine Wars went out to nine wars. It never came back from the tenth.",
+    "The shield-wall held. The men behind it did not. The shields stand in a line, alone.",
+    "A herald's post, the proclamation on it bleached blank by the sun.",
+    "Metal thread outlasts cloth. Oaths outlast the men. Neither is a comfort."
+   ]
+  },
+  "a2_oasis": {
+   "e": "Palm-stumps round a cracked basin, where the god's knee once held water.",
+   "w": [
+    "The well-house bucket comes up full of dust. The rope is still wet.",
+    "Salt crusts the Brine Shrine, where pilgrims wept in their thirst.",
+    "The Femur's Knee is a door. It bends a little, when no one is watching.",
+    "Palm roots go down to the bone and suck. Nothing comes up. They keep sucking."
+   ]
+  },
+  "a2_marrow": {
+   "e": "Inside the great femur. The marrow is a lake, and the lake is warm.",
+   "w": [
+    "The Marrow-Ghouls gnaw the petrified marrow. Their teeth are worn to the gums.",
+    "The walls sweat tallow. The Citadel's candles came from here, once.",
+    "A shore of marrow-butter, soft underfoot. Things sleep under the skin of it.",
+    "Oss-Vharoth made her children from this. Some of it is still trying."
+   ]
+  },
+  "a2_lair": {
+   "e": "The god's hip-socket, a bowl of bone. A Saint kneels where the joint was.",
+   "w": [
+    "The Saint's prayer is a single word, and he has not finished saying it.",
+    "The socket is empty. The leg it held is the Citadel, leagues behind you.",
+    "Lances stand in the rim where his knights planted them, and knelt, and calcified.",
+    "The Bearing Mother turned in her sleep here once. The bowl remembers the turning."
+   ]
+  },
+  "qvault_2": {
+   "e": "The knuckle-seals break. The vault breathes out a thousand years of chalk.",
+   "w": [
+    "Nine orders sealed this. Three seals were enough. The orders never trusted each other.",
+    "The air in here has not been breathed since the Crusade. It tastes of oaths."
+   ]
+  },
+  "a3_town": {
+   "e": "Stilt-huts on a mud-brick mound. The tallow kettles never stop steaming.",
+   "w": [
+    "The stilt-folk tie a knot for every beat of the mud. The ropes are very long.",
+    "Tallow in the kettles, rendered from what the delta gives up. Do not ask what.",
+    "Children here are taught to hop, never walk. The mud listens to walking.",
+    "At night the whole town holds its breath between heartbeats. So will you."
+   ]
+  },
+  "a3_flats": {
+   "e": "Red-black mud to the horizon, pulsing slow as a sleeper's heart.",
+   "w": [
+    "The mud clutches on the beat. Learn the beat. Step between.",
+    "Blood channels cut the flats, warm as a bath and running the wrong way.",
+    "A kettle-ring drowned here: the stilt-folk's first town. The mud took it on a strong beat.",
+    "The Bleeding Maiden's heart is under you, very deep. It has not stopped. It never will."
+   ]
+  },
+  "a3_mangroves": {
+   "e": "Black mangroves, weeping. Curdled amber runs down every trunk.",
+   "w": [
+    "The mangroves weep on the downbeat. You begin to hear it as a hymn.",
+    "Where the bark bleeds most, something beneath the roots is feeding.",
+    "A stalker's path through the roots, worn smooth. It goes where you are going.",
+    "The air is hot and wet and tastes of copper. Breathe it anyway."
+   ]
+  },
+  "a3_fetish": {
+   "e": "Grass masks in the branches, feather charms, dripping egg sacs. Someone keeps these.",
+   "w": [
+    "The masks all face inward, toward the ring. Whatever they watch has not left.",
+    "Egg sacs hang like fruit. Do not shake the branches. They are ripe.",
+    "The Sac-Mother's hollow is warm, and smells of milk and iron.",
+    "The priests carve their masks from bird-bone. There are no birds. Think on that."
+   ]
+  },
+  "a3_delta": {
+   "e": "The god's blood braids into a hundred channels, all running for the sea.",
+   "w": [
+    "The kettle-priests boiled the delta for tallow until the delta boiled them.",
+    "At the braided ford the blood is shin-deep and warm as a hand.",
+    "Leeches the size of dogs sleep in the shallows, fat and content. Walk softly.",
+    "Every channel runs to the sea, and on the beat the sea runs back up them."
+   ]
+  },
+  "a3_amber": {
+   "e": "The mire has curdled. Grease the colour of old honey, holding things fast.",
+   "w": [
+    "Flies in the grease, and moths, and a man, all held mid-motion.",
+    "A tree wept here so long it drowned in its own grease.",
+    "Your boots stick and come away with a sound like a kiss.",
+    "The amber-witches skim the mire and sell its skin as candle-fat."
+   ]
+  },
+  "a3_broodbanks": {
+   "e": "Egg-banks along a broad red river. Something here is always hatching.",
+   "w": [
+    "The sac-weir holds the eggs back from the current. It has begun to fail.",
+    "Larvae swim in the hatching shallows, all facing upstream, toward the Ziggurat.",
+    "The brood-sows wallow in the warm. They do not mind you. Yet.",
+    "A husk floats past, belly swollen. It is not dead. It is carrying leeches."
+   ]
+  },
+  "a3_causeway": {
+   "e": "A drowned plaza of step-shrines, and the Ziggurat rising at its end.",
+   "w": [
+    "One step-shrine drowns each year. The priests count the years by it.",
+    "At the Ziggurat's crown, a basin of warm blood. Never full. Never empty.",
+    "The mud-brick here was fired by body heat. The whole plaza is faintly warm.",
+    "Pilgrims crawled the causeway on their knees. The flagstones are dished where they went."
+   ]
+  },
+  "a3_sumps": {
+   "e": "Pits where the brood-priests bred their leeches. The leeches bred themselves after.",
+   "w": [
+    "In the Suckling Pool a leech the size of a cart sleeps, still attached to something.",
+    "The sumps drain toward the Maiden. Everything here drains toward her.",
+    "Priests lay in these pits to be bled holy. Their outlines are still in the mud.",
+    "A drip. A drip. A drip. Each one warm."
+   ]
+  },
+  "a3_egggal": {
+   "e": "Racks of eggs in warm galleries, tended by no one, hatching anyway.",
+   "w": [
+    "The warm racks hum. Put your ear close and you can hear them growing.",
+    "Each egg holds a face against its shell. No two the same face.",
+    "A keeper's stool by the racks, and a keeper's shape on it, gone to shell.",
+    "The first brood was laid here. The galleries still keep its heat."
+   ]
+  },
+  "a3_ziggurat": {
+   "e": "Warm mud-brick, stair upon stair. The Maiden's first children were born inside.",
+   "w": [
+    "The brood-font never cools. Something in it turns over, now and then.",
+    "The priests who built this were fed on what they built. They did not mind.",
+    "Every brick was pressed by a palm. Put yours in one. It fits.",
+    "Blood runs down the stair from the basin, warm, a thread at a time."
+   ]
+  },
+  "a3_lair": {
+   "e": "The Ziggurat's crown. A basin of warm blood, and something bathing in it.",
+   "w": [
+    "The Brood-Mother is the Maiden's oldest wound, still bleeding children.",
+    "Fetish-trees ring the basin. Their masks all face her. None of them are brave.",
+    "The blood in the basin is warm as a mouth. It ripples on the heartbeat."
+   ]
+  },
+  "qvault_3": {
+   "e": "The pulse-seals give. Warm air, and the smell of something that waited.",
+   "w": [
+    "The walls beat once when you entered. They have not beaten since.",
+    "Whatever was sealed here was sealed by the stilt-folk. They sealed it singing."
+   ]
+  },
+  "a4_town": {
+   "e": "A hearth under the bells. Its warmth is borrowed, and carefully returned.",
+   "w": [
+    "The monks breathe in fours. In, hold, out, hold. The fire breathes with them.",
+    "A bell-frame with no bell. They still bow to where it hung.",
+    "Prayer flags crack in the wind. Each carries a single breath up the mountain.",
+    "Here the Last Breath is thin. Here they spend it slowly."
+   ]
+  },
+  "a4_foothills": {
+   "e": "The ground lifts toward the Heights. Somewhere above, the wind is ringing.",
+   "w": [
+    "Chime-bells in the rocks, tuned to one note. The wind strikes it and it never resolves.",
+    "A cairn of mantras: every stone carved with a breath someone did not take.",
+    "Prayer slips frozen in the ice underfoot. Some still legible. Some are names.",
+    "The first chime marks where the Veiled Crone set down her foot, climbing."
+   ]
+  },
+  "a4_glasspass": {
+   "e": "Black basalt under glass-ice. You can see the stone, and the dead, beneath.",
+   "w": [
+    "Frozen in the glass, a pilgrim mid-stride, one hand out for balance. Still falling.",
+    "At the saddle the wind decides which side of the mountain you belong to.",
+    "Your breath hangs in front of you and does not leave. The pass keeps breaths.",
+    "The ice rings when you step on it. Something below rings back."
+   ]
+  },
+  "a4_flags": {
+   "e": "Terraces of humming silk. Every flag carries a mantra to the wind.",
+   "w": [
+    "The silk hums a note too low to hear. You feel it in your teeth.",
+    "Nine terraces. The ninth is where the monks went to stop breathing, on purpose.",
+    "The flags are tied with hair. Every novice gave a lock, every lock a year.",
+    "A mantra to tether a dying soul. The wind reads it aloud, again, again."
+   ]
+  },
+  "a4_spires": {
+   "e": "Hollow brass towers burning pale flames. They give warmth and eat nothing.",
+   "w": [
+    "Stand near a spire and the wind forgets you. It is the only shelter up here.",
+    "One spire has gone out. The monks do not speak of it. They step around its shadow.",
+    "The flames burn the Last Breath itself. When it is spent, so are they.",
+    "Moths come up from the lowlands to die in the spires. They climb for weeks."
+   ]
+  },
+  "a4_cloudshelf": {
+   "e": "A shelf of stone above the clouds. Below, a white sea with no floor.",
+   "w": [
+    "The Bridge of Held Breath: cross it without breathing and it will bear you.",
+    "The clouds below rise and fall like a sleeper's chest. They are not clouds.",
+    "Something fell into the cloud-sea once. You can still hear it, falling.",
+    "Up here the sky is the colour of a closed eye."
+   ]
+  },
+  "a4_windscour": {
+   "e": "Ridges scoured to the bone. Nothing stands here that did not kneel.",
+   "w": [
+    "Where the wind turns, it turns hard and takes what is loose. Hold on to your name.",
+    "The wind carved the Cut Stone a grain a year, into a woman at prayer.",
+    "Tether-pilgrims roped themselves to the ridges and let the wind take them, slowly.",
+    "This wind is the Crone's last breath, still leaving. It will take a long time."
+   ]
+  },
+  "a4_stair": {
+   "e": "A thousand steps cut into the cliff. The monks climbed them on their knees.",
+   "w": [
+    "Every landing has a bell. Each climber rings each bell once, and never again.",
+    "Bronze bells on the landing, green with age. Their tongues are wrapped in silk.",
+    "From the last landing, everything you have walked looks very small.",
+    "Soul-threads trail down the stair from the monastery gate, fine as spider-silk, humming."
+   ]
+  },
+  "a4_breathcaves": {
+   "e": "Caves where the mountain breathes. The first breath is still in here.",
+   "w": [
+    "An organ of ice in the cave's throat. The mountain plays it, very slowly.",
+    "In the Held Exhale your lungs will not empty. Do not stay long.",
+    "The monks came here to learn to hold one breath for a year.",
+    "Frost on the wall in the shape of a mouth, open."
+   ]
+  },
+  "a4_bellhollow": {
+   "e": "A hollow of hanging bells. None has rung in a thousand years.",
+   "w": [
+    "The cracked chime rang once, the night the god died, and split from the grief of it.",
+    "Brush a bell and it does not ring. It inhales.",
+    "Chime-golems sleep among the bells. The harmony keeps them sleeping. Do not break it.",
+    "The bells hang from chains of frozen breath."
+   ]
+  },
+  "a4_monastery": {
+   "e": "Timber and bronze clinging to the cliff. The monks still walk, moved by threads.",
+   "w": [
+    "In the Hall of Soul-Threads, every thread ends in a monk. Every monk is dead.",
+    "The prayer-wheels turn themselves. The monks would be proud. The monks cannot be.",
+    "In the Mantra Loft the words were chanted so long they soaked into the beams.",
+    "The thread-bound monks bow before they strike. Bow back. It costs you nothing."
+   ]
+  },
+  "a4_lair": {
+   "e": "The summit. A great bell, never rung, and an Abbot keeping it silent.",
+   "w": [
+    "The Unrung Bell was cast to sound the god's last breath. They never let it.",
+    "Ring it, and the Crone finishes breathing out. The Abbot has waited to be sure.",
+    "The last lantern on the mountain. After this the way is only down, into her."
+   ]
+  },
+  "qvault_4": {
+   "e": "The silent bells are answered. The vault opens like a held breath let go.",
+   "w": [
+    "Frost on every surface, and in the frost, the print of a kneeling monk.",
+    "No wind in here. It is the first still air on the mountain."
+   ]
+  },
+  "a5_town": {
+   "e": "A fire at the lip of the sinkhole. The last people keep it burning.",
+   "w": [
+    "The vigil-fire is fed a little at a time. There is not much left to feed it.",
+    "Wind rises out of the sinkhole, warm, smelling of the inside of a body.",
+    "They keep vigil for everyone who went down. They read the names each night.",
+    "Someone has laid a blanket over the sleepers by the fire. Softly. Twice."
+   ]
+  },
+  "a5_highway": {
+   "e": "The god's spinal canal, vaulted and vast. Tallow lanterns mark the way down.",
+   "w": [
+    "Carvings on the vertebrae: men with chisels, cutting the god while it was cooling.",
+    "In the Tallow Nave marrow-candles burn in rows, each one a year of someone's work.",
+    "The highway is warm and dry and smells of burnt dust. Of a sickroom.",
+    "Side-passages open like mouths. Nerves ran through them, once."
+   ]
+  },
+  "a5_siphon": {
+   "e": "Chains and iron buckets, scooping marrow-grease from the god's own bone.",
+   "w": [
+    "The bucket-chain still turns. No one turns it. The marrow pulls it round.",
+    "The sappers worked in shifts for a century. Their shifts have not ended.",
+    "The sump at the bottom is full of grease and hands.",
+    "A foreman's tally on the wall: buckets, men, days. The men column stops first."
+   ]
+  },
+  "a5_skerries": {
+   "e": "A red sea boiling in a cavern the size of a sky.",
+   "w": [
+    "The scab-skerries sink under your weight, slowly. Keep walking and they hold.",
+    "Bone-wrecks drift on the sea, ships of petrified timber crewed by what drowned.",
+    "The steam tastes of iron and old coins. Your teeth ache with it.",
+    "The walls pulse, far off, like a drum beneath a hill."
+   ]
+  },
+  "a5_valves": {
+   "e": "Doors of tendon and cartilage. They open on the heartbeat, and close.",
+   "w": [
+    "Three cusps on the Tricuspid Heart. What passes them never comes back.",
+    "Wait for the valve to open. Then go. It does not wait for you.",
+    "The Pulmonic Gate once let breath into her blood. It remembers breath.",
+    "Behind every valve the pressure builds. It has been building a long time."
+   ]
+  },
+  "a5_shaft": {
+   "e": "A black abyss strung with blue nerves. Somewhere, the god is thinking.",
+   "w": [
+    "Strike the Hanging Bell and it remembers something that is not yours.",
+    "The nerve-bridges hum. The hum sounds almost like your name.",
+    "A memory from before the Triune passes you on the bridge. It does not look at you.",
+    "Fall here and you fall a long time, and are thought about all the way down."
+   ]
+  },
+  "a5_crucible": {
+   "e": "The floor grinds and shudders. Acid basins, and ruins older than the god.",
+   "w": [
+    "Crowns lie whole at the bottom of the acid pools. The heads are not.",
+    "Bone plates grind the ruins between them, patient as teeth on a hard crust.",
+    "These halls were built by something that was not men. The doors are the wrong height.",
+    "The acid breathes a green light. It smells of stomach, and of old wet stone."
+   ]
+  },
+  "a5_cerebrum": {
+   "e": "Inside the skull. Folded halls of ossified thought, and the thoughts still moving.",
+   "w": [
+    "Crystals of thought grow from the walls. Touch one and you remember falling.",
+    "Down is not always down here. The god's last confusion bent the floors.",
+    "Light through the cracked crystal shows a murder, over and over, before time began.",
+    "Rage, sorrow, confusion: the Thought-Forms are the god's last moods, walking."
+   ]
+  },
+  "a5_lair": {
+   "e": "Black stone at angles that hurt. The Slayers built this. Before.",
+   "w": [
+    "The Slayers killed the Triune before there was a when. This is where they kept the knife.",
+    "The inscriptions bend when you read them. Do not read them twice.",
+    "The Angled Door opens onto a direction you have no word for."
+   ]
+  },
+  "a5_scar": {
+   "e": "The Void bled in here. Sunlight stops at the rim.",
+   "w": [
+    "Your footprints in the ash fill themselves back in. As if you had not come.",
+    "The fire in the fissure is cold and gives no light. It is not fire.",
+    "Ur-Nihl does not hate you. The Void That Emanates cannot. It only takes the room.",
+    "Rocks float here, upside down, very still. They forgot which way the ground was."
+   ]
+  },
+  "a5_monolith": {
+   "e": "A black pillar over a bottomless crater. Even your heartbeat is muffled.",
+   "w": [
+    "Speak, and the words leave your mouth and go nowhere.",
+    "The monolith has no seams, no marks, no shadow. A hole shaped like a stone.",
+    "Stand at its foot long enough and you forget what sound was for."
+   ]
+  },
+  "qvault_5": {
+   "e": "A sealed place in the deep. Whatever sealed it meant it.",
+   "w": [
+    "The Crown was swallowed before the god was born. The vault kept it undigested.",
+    "Even here, the walls are warm. Even here."
+   ]
+  }
+ },
+ "act": {
+  "1": [
+   "The ash settles where you stood, and keeps your shape a moment.",
+   "Somewhere a lantern leans, listening for you.",
+   "Down. Always down. The Hide slopes toward the wound."
+  ],
+  "2": [
+   "Bone-dust in your teeth. It is someone. It was always someone.",
+   "The sun does not blink. Neither do the dead out here.",
+   "A hymn in a language the orders forgot drifts over the dunes."
+  ],
+  "3": [
+   "The mud keeps time. You are keeping it too, now.",
+   "Warm. Everything here is warm. Warmth is not kindness.",
+   "Something hatches, far off, and begins to cry."
+  ],
+  "4": [
+   "The air is thin. Every breath you take is one the Crone let go.",
+   "A bell rings once, somewhere below. No one strikes it.",
+   "Frost forms on your lashes in the shape of words."
+  ],
+  "5": [
+   "Warm walls. A slow pulse. You are inside something that is dreaming.",
+   "The Vigil's fire is far above now. It is still burning. Believe that.",
+   "Only in. There is no more down. Only in."
+  ]
+ }
+}

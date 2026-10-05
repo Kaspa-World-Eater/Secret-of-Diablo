@@ -1,0 +1,2888 @@
+{
+ "meta": {
+  "source_html": "/tmp/ossport/x71.html",
+  "source_bytes": 15603075,
+  "exported_at": "2026-09-30T01:35:30.214Z",
+  "exporter": "/tmp/gd/tools/export_data.js",
+  "reference_hero": "fresh level-1 character of each order via startGame(\"new\"): Vitality 15, Essence 25, Constitution 15, starting kit, daytime, no Reading, no Arcana",
+  "page_errors": [],
+  "zone_seed": 12345,
+  "zone_count": 75
+ },
+ "shrines": {
+  "source_lines": [
+   "d.armor = Math.round(d.con / 2 + (s.armorBase || 0) + (s.armor || 0) + (b.stone > 0 ? 100 : 0));",
+   "d.wispCap = 4 + Math.floor(K.wisps / 3) + (K.bright > 0 ? 1 : 0) + d.itemWisps + (b.wisp > 0 ? 2 : 0);",
+   "d.wispRegen = Math.max(0.4, 2.6 - 0.1 * K.wisps) / (1 + ((s.regen || 0) + 4 * K.choir + (b.wisp > 0 ? 100 : 0)) / 100) / (K.swiftw > 0 ? 1.2 : 1);",
+   "d.dmgMult = (1 + d.spi * 0.012 + (s.dmg || 0) / 100) * (b.echo > 0 ? 1.5 : 1);",
+   "if (o.kind === 'refill') { P.hp = D.maxHp; P.mana = D.maxMana; } else P.buffs[o.kind] = 60;"
+  ],
+  "names": {
+   "echo": "Shrine of Echoes: +50% skill damage",
+   "wisp": "Shrine of the Wisp: more wisps, faster",
+   "stone": "Shrine of Stone: +100 armor",
+   "refill": "Refilling Shrine"
+  },
+  "duration_s": 60,
+  "effects": {
+   "echo": {
+    "skill_damage_x": 1.5
+   },
+   "wisp": {
+    "wisp_cap_add": 2,
+    "wisp_regen_pct": 100
+   },
+   "stone": {
+    "armor_add": 100
+   },
+   "refill": {
+    "restore": "life and resource at once"
+   },
+   "arcana": {
+    "major_points": 1,
+    "once_per_zone": true
+   }
+  },
+  "one_use": true
+ },
+ "lantern": {
+  "hero_light_radius": {
+   "expr": "(outdoor ? 7 + 1.5*(1 - dayK) : 7.5) x0.45 per Silent One within 6 yd, then x0.62 x (1 + lrad/100)",
+   "source_final": "function () { return _hl() * 0.62 * (1 + (stats().lrad || 0) / 100); }"
+  },
+  "world_lanterns": {
+   "kindle_radius_yd": 6,
+   "light_radius_yd": 9,
+   "touch": "sets return point, restores life/resource/poise, refills wisps and shards, mends golem and Colossus, flips Majors free, saves"
+  },
+  "wick_down": {
+   "key": "L",
+   "pool_x": 0.62,
+   "wake_range_x": 0.7,
+   "damage_taken_x": 1.15,
+   "magic_find_add_pct": 40,
+   "gold_find_add_pct": 25,
+   "resets_on_death": true,
+   "source": [
+    "const target = () => (LS.dim ? 0.62 : 1) * (1 - 0.12 * kept());",
+    "if (LS.dim) { d.mf = (d.mf || 0) + 40; d.goldK = (d.goldK || 1) * 1.25; }",
+    "if (typeof wakeRange === 'function') { const _w = wakeRange; wakeRange = function () { return _w.apply(this, arguments) * (LS.dim ? 0.7 : 1); }; }",
+    "if (typeof hurtPlayer === 'function') { const _hp = hurtPlayer; hurtPlayer = function (dmg) { const a = Array.prototype.slice.call(arguments); if (LS.dim && a[0] > 0) a[0] *= 1.15; return _hp.apply(this, a); }; }",
+    "P.kept = clamp((P.kept || 0) + 1, 0, 3);",
+    "P.kept = 0; rederive();",
+    "try { P.hp = Math.min(D.maxHp, P.hp + D.maxHp * 0.25); } catch (e) { }",
+    "if (d > 2.5) R.armed = true;                       // you have to come back to it"
+   ]
+  },
+  "class_rgb": {
+   "LAMP_RGB": {
+    "animancer": "170,215,255",
+    "ossumancer": "255,226,170",
+    "hemomancer": "238,222,198",
+    "miasmancer": "255,200,140",
+    "monk": "255,214,140"
+   },
+   "CLASS_LIGHT": {
+    "animancer": "170,215,255",
+    "ossumancer": "255,236,205",
+    "hemomancer": "238,222,198",
+    "miasmancer": "200,150,255"
+   },
+   "runtime_by_class": {
+    "animancer": {
+     "runtime_rgb": "150,196,255",
+     "LAMP_RGB": "170,215,255",
+     "CLASS_LIGHT": "170,215,255",
+     "light_radius_k": 1.5
+    },
+    "ossumancer": {
+     "runtime_rgb": "240,228,204",
+     "LAMP_RGB": "255,226,170",
+     "CLASS_LIGHT": "255,236,205",
+     "light_radius_k": 1.5
+    },
+    "hemomancer": {
+     "runtime_rgb": "242,214,168",
+     "LAMP_RGB": "238,222,198",
+     "CLASS_LIGHT": "238,222,198",
+     "light_radius_k": 1.5
+    },
+    "miasmancer": {
+     "runtime_rgb": "255,210,150",
+     "LAMP_RGB": "255,200,140",
+     "CLASS_LIGHT": "200,150,255",
+     "light_radius_k": 1.5
+    },
+    "monk": {
+     "runtime_rgb": null,
+     "LAMP_RGB": "255,214,140",
+     "light_radius_k": 1.5
+    }
+   }
+  },
+  "perks": {
+   "perks": [
+    {
+     "n": "Bright",
+     "p": 1,
+     "s": "lrad",
+     "r": [
+      10,
+      25
+     ],
+     "l": 1
+    },
+    {
+     "n": "Blazing",
+     "p": 1,
+     "s": "lrad",
+     "r": [
+      26,
+      45
+     ],
+     "l": 9,
+     "rare": true
+    },
+    {
+     "n": "of the Ghostlight",
+     "p": 0,
+     "s": "lblue",
+     "r": [
+      8,
+      20
+     ],
+     "l": 2,
+     "w": 0.7
+    },
+    {
+     "n": "of the Hearth-wick",
+     "p": 0,
+     "s": "lamber",
+     "r": [
+      1,
+      3
+     ],
+     "l": 2,
+     "w": 0.7
+    },
+    {
+     "n": "of the Pale Flame",
+     "p": 0,
+     "s": "lwhite",
+     "r": [
+      10,
+      22
+     ],
+     "l": 3,
+     "w": 0.7
+    },
+    {
+     "n": "of the Green Taper",
+     "p": 0,
+     "s": "lgreen",
+     "r": [
+      1,
+      2
+     ],
+     "l": 4,
+     "w": 0.6
+    },
+    {
+     "n": "of the Violet Wick",
+     "p": 0,
+     "s": "lviolet",
+     "r": [
+      1,
+      3
+     ],
+     "l": 5,
+     "w": 0.5
+    }
+   ],
+   "wick_rgb": {
+    "lblue": "150,200,255",
+    "lamber": "255,176,96",
+    "lwhite": "236,236,228",
+    "lgreen": "170,230,150",
+    "lviolet": "200,160,255"
+   },
+   "base_rgb": {
+    "hemomancer": "242,214,168",
+    "animancer": "150,196,255",
+    "ossumancer": "240,228,204",
+    "miasmancer": "255,210,150"
+   }
+  },
+  "mood": "below 30% life the pool shrinks and stutters; a boss waking makes the flame gutter"
+ },
+ "death": {
+  "respawn_after_s": 3,
+  "at": "last lantern touched, full life/resource/poise",
+  "gold": "all carried gold left in a remnant",
+  "kept_light": {
+   "per_death": 1,
+   "max": 3,
+   "light_x": 0.88,
+   "mf_pct": -10,
+   "gold_pct": -10,
+   "reclaim": "walk 2.5 yd away and come back; lantern takes it all back and mends 25% life"
+  },
+  "xp_loss": {
+   "normal": 0,
+   "nightmare": 0.05,
+   "hell": 0.1
+  },
+  "clears": "minions, wisps, shards, golem, pillars, summons; Arcana and Miasma states reset",
+  "boss_on_respawn": "respawn() resets a boss to full life (d_play) vs v83 waits without healing: bug 0b",
+  "respawn_source": "function () {\n        V.respawning = true; let r;\n        try { r = _rs.apply(this, arguments); } finally { V.respawning = false; }\n        try { let i = Math.floor(Math.random() * RETURN.length); if (i === V.lastRet) i = (i + 1) % RETURN.length; V.lastRet = i; V.deathLine = null; V.ch.entry = null; V.pending = { chan: 'entry', text: RETURN[i], d: 0.9, t: 5, zone: G.zone && G.zone.id, kind: 'ret' }; V.wt = Math.max(V.wt, 45); } catch (e) { vErr(e); }\n        return r;\n      }"
+ },
+ "player_poise_break": {
+  "consts": "const STUN = 0.75, GRACE = 1.6, REFILL = 0.35, BURST = 0.5",
+  "stun_s_after_x1_2": 0.9,
+  "grace_s": 1.6,
+  "refill_to": 0.5,
+  "refill_s": 0.35,
+  "roll_needs_full_poise": true
+ },
+ "day_night": {
+  "len": 600,
+  "start": 0.12,
+  "phases": {
+   "day": [
+    0,
+    0.55
+   ],
+   "dusk": [
+    0.55,
+    0.66
+   ],
+   "night": [
+    0.66,
+    0.9
+   ],
+   "dawn": [
+    0.9,
+    1
+   ]
+  },
+  "dayK_source": "function dayK() { const p = dayPhase(); if (p < 0.55) return 1; if (p < 0.66) return 1 - (p - 0.55) / 0.11; if (p < 0.9) return 0; return (p - 0.9) / 0.1; }",
+  "isOutdoor_source": "function (z) { return _io(z) || (z && NEW_THEMES[z.theme]); }",
+  "hour_all_speed": {
+   "day": {
+    "spd": 1
+   },
+   "dusk": {
+    "spd": 1.12
+   },
+   "night": {
+    "spd": 1.05
+   },
+   "dawn": {
+    "spd": 0.95
+   }
+  },
+  "hours_per_kind": {
+   "hollow": {
+    "night": 1.25,
+    "dusk": 1.35
+   },
+   "drowned": {
+    "night": 1.3,
+    "dusk": 1.3
+   },
+   "hound": {
+    "dusk": 1.5,
+    "night": 1.2,
+    "day": 0.9
+   },
+   "archer": {
+    "dawn": 1.5,
+    "day": 1.05
+   },
+   "ossarcher": {
+    "dawn": 1.5
+   },
+   "caster": {
+    "when": [
+     "dusk",
+     "night",
+     "dawn"
+    ],
+    "night": 1.3,
+    "dusk": 1.4
+   },
+   "bogwitch": {
+    "when": [
+     "dusk",
+     "night",
+     "dawn"
+    ],
+    "night": 1.3,
+    "dusk": 1.4
+   },
+   "moth": {
+    "when": [
+     "dusk",
+     "night"
+    ],
+    "dusk": 1.5,
+    "night": 1.2
+   },
+   "pyre": {
+    "day": 1.25,
+    "dusk": 1.1,
+    "night": 0.8,
+    "dawn": 1.4
+   },
+   "bell": {
+    "dusk": 1.45,
+    "dawn": 1.45
+   },
+   "worm": {
+    "night": 1.25
+   },
+   "leech": {
+    "night": 1.25,
+    "dusk": 1.2
+   },
+   "knight": {
+    "dawn": 1.35,
+    "day": 1.1
+   },
+   "marrow": {
+    "dawn": 1.4,
+    "day": 1.1
+   },
+   "bloat": {
+    "dusk": 1.2
+   }
+  },
+  "hour_text": {
+   "day": [
+    "DAY",
+    "The sun is on the Hide. The pyres burn hot.",
+    "#e8d8a8"
+   ],
+   "dusk": [
+    "DUSK",
+    "The Hide bleeds. Everything hunts faster; the Hands come out.",
+    "#e06040"
+   ],
+   "night": [
+    "NIGHT",
+    "Keep to the light. The breath walks.",
+    "#8ea0d8"
+   ],
+   "dawn": [
+    "DAWN",
+    "The long shadows. Bone stands straighter; the mourners weep.",
+    "#e0b878"
+   ]
+  },
+  "ambient": {
+   "AMB_DAY": {
+    "moor": [
+     150,
+     146,
+     158
+    ],
+    "fen": [
+     130,
+     144,
+     138
+    ]
+   },
+   "AMB_DUSK": [
+    228,
+    132,
+    84
+   ],
+   "AMB_NIGHT": {
+    "moor": [
+     66,
+     68,
+     92
+    ],
+    "fen": [
+     58,
+     72,
+     78
+    ]
+   },
+   "AMB_DEEP": {
+    "crypt": [
+     80,
+     76,
+     96
+    ],
+    "barrow": [
+     86,
+     78,
+     74
+    ],
+    "bone": [
+     86,
+     84,
+     80
+    ],
+    "a5_town": [
+     108,
+     100,
+     90
+    ],
+    "a5_marrow": [
+     98,
+     92,
+     82
+    ],
+    "a5_sanguine": [
+     114,
+     76,
+     72
+    ],
+    "a5_shaft": [
+     74,
+     86,
+     112
+    ],
+    "a5_crucible": [
+     88,
+     104,
+     74
+    ],
+    "a5_cerebrum": [
+     104,
+     98,
+     114
+    ],
+    "a5_temple": [
+     72,
+     68,
+     90
+    ],
+    "a5_scar": [
+     64,
+     64,
+     72
+    ]
+   }
+  }
+ },
+ "difficulty": {
+  "profiles": {
+   "normal": {
+    "hp": 1,
+    "dmg": 1,
+    "res": 0
+   },
+   "nightmare": {
+    "hp": 1.5,
+    "dmg": 1.5,
+    "res": -40
+   },
+   "hell": {
+    "hp": 2.5,
+    "dmg": 2,
+    "res": -100
+   }
+  },
+  "live": "normal only (window.__setDifficulty)",
+  "death_xp_loss": [
+   0,
+   0.05,
+   0.1
+  ],
+  "state_at_start": {
+   "difficulty": "normal",
+   "diffHpMult": 1,
+   "diffDmgMult": 1,
+   "diffResPenalty": 0
+  }
+ },
+ "heralds": {
+  "per_act_max": 4,
+  "act_minors": 16,
+  "altar_chance": {
+   "outdoor": 0.4,
+   "dungeon": 0.25
+  },
+  "rank": "unique at zone top level, 45% life, enrage x1.3 below half"
+ },
+ "tiles": {
+  "GRASS": 0,
+  "ROAD": 1,
+  "TREE": 2,
+  "ROCK": 3,
+  "WATER": 4,
+  "CLIFF": 5,
+  "FLOOR": 6,
+  "WALL": 7,
+  "FOG": 8,
+  "PILLAR": 9,
+  "PALISADE": 10,
+  "DIRT": 11,
+  "SHALLOW": 12,
+  "MUD": 13,
+  "FLAGS": 14,
+  "RUIN": 15
+ },
+ "zones": {
+  "moor": {
+   "name": "Ashen Moor",
+   "theme": "moor",
+   "w": 164,
+   "h": 164,
+   "outdoor": true,
+   "mlvl": [
+    2,
+    6
+   ],
+   "monsters_at_gen": 500,
+   "kinds": {
+    "moth": 45,
+    "hollow": 178,
+    "bloatling": 16,
+    "caster": 34,
+    "bell": 2,
+    "veinworm_elder": 17,
+    "pyre": 17,
+    "trunk_thing": 5,
+    "archer": 42,
+    "moth_saint": 31,
+    "bloat": 35,
+    "worm": 16,
+    "hound": 59,
+    "kneeler": 3
+   },
+   "objects": {
+    "lantern": 2,
+    "portal": 5,
+    "vendor": 1,
+    "chest": 7,
+    "shrine:stone": 1,
+    "shrine:refill": 2,
+    "shrine:wisp": 2,
+    "statue": 2
+   },
+   "links": [
+    "crypt",
+    "fen",
+    "barrow",
+    "sighing_ridge",
+    "hollow_wood",
+    "moor"
+   ],
+   "gen_ms": 630,
+   "act": 1
+  },
+  "crypt": {
+   "name": "Hollow Crypt",
+   "theme": "crypt",
+   "w": 109,
+   "h": 109,
+   "outdoor": false,
+   "mlvl": [
+    9,
+    12
+   ],
+   "monsters_at_gen": 114,
+   "kinds": {
+    "hollow": 32,
+    "chorister": 14,
+    "knight": 25,
+    "bloat": 21,
+    "kneeler": 1,
+    "caster": 20,
+    "boss": 1
+   },
+   "objects": {
+    "portal": 3,
+    "lantern": 1,
+    "chest": 2
+   },
+   "links": [
+    "moor",
+    "fallen_monastery",
+    "hollow_wood"
+   ],
+   "gen_ms": 24,
+   "act": 1
+  },
+  "fen": {
+   "name": "Drowned Fen",
+   "theme": "fen",
+   "w": 160,
+   "h": 160,
+   "outdoor": true,
+   "mlvl": [
+    10,
+    15
+   ],
+   "monsters_at_gen": 465,
+   "kinds": {
+    "bell": 13,
+    "drowned": 179,
+    "moth": 73,
+    "bloat": 35,
+    "archer": 26,
+    "leech": 45,
+    "pyre": 32,
+    "bloatling": 34,
+    "bogwitch": 20,
+    "moth_saint": 8
+   },
+   "objects": {
+    "lantern": 2,
+    "portal": 5,
+    "chest": 6,
+    "shrine:refill": 2,
+    "shrine:echo": 1,
+    "shrine:wisp": 1,
+    "statue": 2
+   },
+   "links": [
+    "moor",
+    "cata1",
+    "drowned_village",
+    "root_deep",
+    "pilgrim_road"
+   ],
+   "gen_ms": 788,
+   "act": 1
+  },
+  "barrow": {
+   "name": "Old Barrow",
+   "theme": "barrow",
+   "w": 87,
+   "h": 87,
+   "outdoor": false,
+   "mlvl": [
+    7,
+    10
+   ],
+   "monsters_at_gen": 101,
+   "kinds": {
+    "hound": 19,
+    "hollow": 34,
+    "archer": 5,
+    "moth": 18,
+    "moth_saint": 2,
+    "stalker_crone": 2,
+    "worm": 14,
+    "pyre": 2,
+    "bloatling": 5
+   },
+   "objects": {
+    "portal": 2,
+    "lantern": 1,
+    "chest": 4
+   },
+   "links": [
+    "moor",
+    "fallen_watchtower"
+   ],
+   "gen_ms": 81,
+   "act": 1
+  },
+  "cata1": {
+   "name": "Bone Catacombs I",
+   "theme": "bone",
+   "w": 117,
+   "h": 117,
+   "outdoor": false,
+   "mlvl": [
+    14,
+    16
+   ],
+   "monsters_at_gen": 152,
+   "kinds": {
+    "hollow": 41,
+    "knight": 7,
+    "marrow": 28,
+    "ossarcher": 45,
+    "bogwitch": 2,
+    "bloat": 29
+   },
+   "objects": {
+    "portal": 4,
+    "lantern": 1,
+    "chest": 4,
+    "altar": 1
+   },
+   "links": [
+    "fen",
+    "cata2",
+    "plague_hospice",
+    "root_deep"
+   ],
+   "gen_ms": 19,
+   "act": 1
+  },
+  "cata2": {
+   "name": "Bone Catacombs II",
+   "theme": "bone",
+   "w": 113,
+   "h": 113,
+   "outdoor": false,
+   "mlvl": [
+    15,
+    18
+   ],
+   "monsters_at_gen": 115,
+   "kinds": {
+    "marrow": 32,
+    "ossarcher": 48,
+    "bloat": 16,
+    "bogwitch": 8,
+    "hollow": 10,
+    "matron": 1
+   },
+   "objects": {
+    "portal": 2,
+    "lantern": 1,
+    "chest": 1
+   },
+   "links": [
+    "cata1",
+    "smugglers_hold"
+   ],
+   "gen_ms": 111,
+   "act": 1
+  },
+  "sighing_ridge": {
+   "name": "Sighing Ridge",
+   "theme": "moor",
+   "w": 172,
+   "h": 124,
+   "outdoor": true,
+   "mlvl": [
+    2,
+    4
+   ],
+   "monsters_at_gen": 75,
+   "kinds": {
+    "hollow": 37,
+    "archer": 3,
+    "moth": 9,
+    "kneeler": 4,
+    "hound": 15,
+    "bloatling": 6,
+    "worm": 1
+   },
+   "objects": {
+    "lantern": 4,
+    "portal": 3,
+    "chest": 5,
+    "shrine:refill": 1,
+    "shrine:wisp": 1,
+    "shrine:echo": 1,
+    "statue": 3,
+    "altar": 1
+   },
+   "links": [
+    "moor",
+    "burnt_heath",
+    "wolf_den_chapel"
+   ],
+   "gen_ms": 434,
+   "act": 1
+  },
+  "ash_shore": {
+   "name": "Ash Shore",
+   "theme": "moor",
+   "w": 152,
+   "h": 152,
+   "outdoor": true,
+   "mlvl": [
+    3,
+    5
+   ],
+   "monsters_at_gen": 98,
+   "kinds": {
+    "worm": 11,
+    "moth": 12,
+    "hound": 21,
+    "hollow": 36,
+    "archer": 6,
+    "kneeler": 12
+   },
+   "objects": {
+    "lantern": 4,
+    "portal": 1,
+    "chest": 5,
+    "shrine:refill": 1,
+    "shrine:echo": 1,
+    "shrine:stone": 1,
+    "statue": 3,
+    "altar": 1
+   },
+   "links": [
+    "burnt_heath"
+   ],
+   "gen_ms": 435,
+   "act": 1
+  },
+  "burnt_heath": {
+   "name": "Burnt Heath",
+   "theme": "moor",
+   "w": 152,
+   "h": 152,
+   "outdoor": true,
+   "mlvl": [
+    4,
+    6
+   ],
+   "monsters_at_gen": 94,
+   "kinds": {
+    "moth": 15,
+    "bloatling": 13,
+    "hollow": 18,
+    "moth_saint": 12,
+    "archer": 28,
+    "pyre": 2,
+    "worm": 6
+   },
+   "objects": {
+    "lantern": 4,
+    "portal": 3,
+    "chest": 5,
+    "shrine:refill": 1,
+    "shrine:stone": 2,
+    "statue": 3,
+    "altar": 1
+   },
+   "links": [
+    "sighing_ridge",
+    "ash_shore",
+    "fern_gully"
+   ],
+   "gen_ms": 495,
+   "act": 1
+  },
+  "fern_gully": {
+   "name": "Fern Gully",
+   "theme": "hollow_wood",
+   "w": 132,
+   "h": 172,
+   "outdoor": true,
+   "mlvl": [
+    3,
+    6
+   ],
+   "monsters_at_gen": 82,
+   "kinds": {
+    "hound": 14,
+    "moth": 15,
+    "worm": 12,
+    "pyre": 3,
+    "hollow": 9,
+    "stalker_crone": 1,
+    "archer": 27,
+    "moth_saint": 1
+   },
+   "objects": {
+    "lantern": 4,
+    "portal": 2,
+    "chest": 3,
+    "shrine:stone": 1,
+    "shrine:refill": 1,
+    "shrine:wisp": 1
+   },
+   "links": [
+    "burnt_heath",
+    "hunter_cache"
+   ],
+   "gen_ms": 52,
+   "act": 1
+  },
+  "pilgrim_road": {
+   "name": "Pilgrim Road",
+   "theme": "moor",
+   "w": 184,
+   "h": 128,
+   "outdoor": true,
+   "mlvl": [
+    6,
+    8
+   ],
+   "monsters_at_gen": 158,
+   "kinds": {
+    "archer": 55,
+    "caster": 12,
+    "hollow": 48,
+    "stalker_crone": 9,
+    "moth_saint": 2,
+    "hound": 29,
+    "worm": 3
+   },
+   "objects": {
+    "lantern": 5,
+    "portal": 3,
+    "chest": 5,
+    "shrine:stone": 1,
+    "shrine:refill": 1,
+    "shrine:wisp": 1,
+    "statue": 2
+   },
+   "links": [
+    "hollow_wood",
+    "fen",
+    "tree_hollow"
+   ],
+   "gen_ms": 99,
+   "act": 1
+  },
+  "drowned_village": {
+   "name": "Drowned Village",
+   "theme": "fen",
+   "w": 152,
+   "h": 144,
+   "outdoor": true,
+   "mlvl": [
+    6,
+    9
+   ],
+   "monsters_at_gen": 135,
+   "kinds": {
+    "moth_saint": 9,
+    "moth": 26,
+    "bogwitch": 7,
+    "drowned": 62,
+    "bloat": 6,
+    "archer": 7,
+    "bell": 4,
+    "leech": 7,
+    "bloatling": 4,
+    "pyre": 3
+   },
+   "objects": {
+    "lantern": 5,
+    "portal": 3,
+    "chest": 5,
+    "shrine:refill": 2,
+    "shrine:stone": 1,
+    "statue": 2
+   },
+   "links": [
+    "fen",
+    "sunken_bog",
+    "well_shaft"
+   ],
+   "gen_ms": 172,
+   "act": 1
+  },
+  "sunken_bog": {
+   "name": "Sunken Bog",
+   "theme": "fen",
+   "w": 164,
+   "h": 152,
+   "outdoor": true,
+   "mlvl": [
+    9,
+    11
+   ],
+   "monsters_at_gen": 155,
+   "kinds": {
+    "bloatling": 11,
+    "drowned": 64,
+    "leech": 14,
+    "bloat": 13,
+    "bell": 12,
+    "pyre": 16,
+    "bogwitch": 8,
+    "moth": 16,
+    "archer": 1
+   },
+   "objects": {
+    "lantern": 5,
+    "portal": 2,
+    "chest": 5,
+    "shrine:stone": 1,
+    "shrine:refill": 1,
+    "shrine:wisp": 1,
+    "statue": 1
+   },
+   "links": [
+    "drowned_village",
+    "bogwitch_shack"
+   ],
+   "gen_ms": 149,
+   "act": 1
+  },
+  "fallen_monastery": {
+   "name": "Fallen Monastery",
+   "theme": "crypt",
+   "w": 120,
+   "h": 120,
+   "outdoor": false,
+   "mlvl": [
+    7,
+    9
+   ],
+   "monsters_at_gen": 134,
+   "kinds": {
+    "kneeler": 7,
+    "knight": 11,
+    "chorister": 25,
+    "hollow": 55,
+    "bloat": 14,
+    "archer": 8,
+    "caster": 14
+   },
+   "objects": {
+    "portal": 2,
+    "lantern": 3,
+    "chest": 4,
+    "altar": 1
+   },
+   "links": [
+    "crypt",
+    "bogwitch_shack"
+   ],
+   "gen_ms": 19,
+   "act": 1
+  },
+  "wolf_den_chapel": {
+   "name": "The Gnawed Chapel",
+   "theme": "crypt",
+   "w": 104,
+   "h": 104,
+   "outdoor": false,
+   "mlvl": [
+    4,
+    8
+   ],
+   "monsters_at_gen": 90,
+   "kinds": {
+    "hollow": 31,
+    "archer": 13,
+    "moth_saint": 7,
+    "bloatling": 3,
+    "stalker_crone": 7,
+    "worm": 4,
+    "hound": 16,
+    "pyre": 2,
+    "moth": 7
+   },
+   "objects": {
+    "portal": 1,
+    "lantern": 3,
+    "chest": 4
+   },
+   "links": [
+    "sighing_ridge"
+   ],
+   "gen_ms": 11,
+   "act": 1
+  },
+  "plague_hospice": {
+   "name": "Plague Hospice",
+   "theme": "crypt",
+   "w": 120,
+   "h": 120,
+   "outdoor": false,
+   "mlvl": [
+    9,
+    12
+   ],
+   "monsters_at_gen": 133,
+   "kinds": {
+    "knight": 35,
+    "archer": 19,
+    "pyre": 3,
+    "hollow": 52,
+    "bloat": 6,
+    "kneeler": 3,
+    "caster": 6,
+    "chorister": 9
+   },
+   "objects": {
+    "portal": 1,
+    "lantern": 3,
+    "chest": 4
+   },
+   "links": [
+    "cata1"
+   ],
+   "gen_ms": 23,
+   "act": 1
+  },
+  "well_shaft": {
+   "name": "The Well-Shaft",
+   "theme": "crypt",
+   "w": 105,
+   "h": 105,
+   "outdoor": false,
+   "mlvl": [
+    10,
+    13
+   ],
+   "monsters_at_gen": 121,
+   "kinds": {
+    "leech": 6,
+    "bloat": 4,
+    "drowned": 41,
+    "bell": 8,
+    "bloatling": 45,
+    "moth_saint": 11,
+    "pyre": 6
+   },
+   "objects": {
+    "portal": 1,
+    "lantern": 3,
+    "chest": 3
+   },
+   "links": [
+    "drowned_village"
+   ],
+   "gen_ms": 11,
+   "act": 1
+  },
+  "smugglers_hold": {
+   "name": "Smugglers' Hold",
+   "theme": "barrow",
+   "w": 107,
+   "h": 107,
+   "outdoor": false,
+   "mlvl": [
+    5,
+    9
+   ],
+   "monsters_at_gen": 101,
+   "kinds": {
+    "stalker_crone": 2,
+    "hollow": 25,
+    "worm": 13,
+    "caster": 4,
+    "moth": 7,
+    "bloatling": 13,
+    "moth_saint": 4,
+    "hound": 30,
+    "archer": 3
+   },
+   "objects": {
+    "portal": 1,
+    "lantern": 3,
+    "chest": 4
+   },
+   "links": [
+    "cata2"
+   ],
+   "gen_ms": 14,
+   "act": 1
+  },
+  "bogwitch_shack": {
+   "name": "Bog-Witch's Shack",
+   "theme": "fen",
+   "w": 104,
+   "h": 104,
+   "outdoor": true,
+   "mlvl": [
+    7,
+    10
+   ],
+   "monsters_at_gen": 45,
+   "kinds": {
+    "drowned": 18,
+    "moth": 5,
+    "bloat": 6,
+    "archer": 4,
+    "pyre": 12
+   },
+   "objects": {
+    "lantern": 1,
+    "portal": 2,
+    "chest": 3,
+    "shrine:stone": 1,
+    "statue": 1,
+    "altar": 1
+   },
+   "links": [
+    "sunken_bog",
+    "fallen_monastery"
+   ],
+   "gen_ms": 52,
+   "act": 1
+  },
+  "tree_hollow": {
+   "name": "The Tree-Hollow",
+   "theme": "hollow_wood",
+   "w": 104,
+   "h": 104,
+   "outdoor": true,
+   "mlvl": [
+    6,
+    7
+   ],
+   "monsters_at_gen": 53,
+   "kinds": {
+    "moth": 4,
+    "archer": 4,
+    "caster": 10,
+    "hollow": 17,
+    "moth_saint": 4,
+    "hound": 14
+   },
+   "objects": {
+    "lantern": 1,
+    "portal": 1,
+    "chest": 2,
+    "shrine:echo": 1
+   },
+   "links": [
+    "pilgrim_road"
+   ],
+   "gen_ms": 49,
+   "act": 1
+  },
+  "hunter_cache": {
+   "name": "Hunter's Cache",
+   "theme": "moor",
+   "w": 104,
+   "h": 104,
+   "outdoor": true,
+   "mlvl": [
+    4,
+    5
+   ],
+   "monsters_at_gen": 67,
+   "kinds": {
+    "hollow": 31,
+    "archer": 6,
+    "hound": 20,
+    "bloatling": 10
+   },
+   "objects": {
+    "lantern": 1,
+    "portal": 1,
+    "chest": 4,
+    "shrine:wisp": 1,
+    "statue": 1
+   },
+   "links": [
+    "fern_gully"
+   ],
+   "gen_ms": 68,
+   "act": 1
+  },
+  "fallen_watchtower": {
+   "name": "Fallen Watchtower",
+   "theme": "moor",
+   "w": 124,
+   "h": 124,
+   "outdoor": true,
+   "mlvl": [
+    6,
+    9
+   ],
+   "monsters_at_gen": 94,
+   "kinds": {
+    "bloatling": 10,
+    "hollow": 40,
+    "moth_saint": 9,
+    "moth": 4,
+    "worm": 4,
+    "caster": 8,
+    "pyre": 4,
+    "archer": 15
+   },
+   "objects": {
+    "lantern": 2,
+    "portal": 1,
+    "chest": 5,
+    "shrine:stone": 2,
+    "statue": 5,
+    "altar": 1
+   },
+   "links": [
+    "barrow"
+   ],
+   "gen_ms": 112,
+   "act": 1
+  },
+  "broken_bridge": {
+   "name": "The Broken Bridge",
+   "theme": "moor",
+   "w": 152,
+   "h": 132,
+   "outdoor": true,
+   "mlvl": [
+    10,
+    13
+   ],
+   "monsters_at_gen": 108,
+   "kinds": {
+    "bell": 4,
+    "hollow": 16,
+    "pyre": 7,
+    "moth_saint": 11,
+    "hound": 64,
+    "caster": 6
+   },
+   "objects": {
+    "lantern": 2,
+    "portal": 1,
+    "chest": 5,
+    "shrine:stone": 1,
+    "shrine:wisp": 1,
+    "statue": 3,
+    "altar": 1
+   },
+   "links": [
+    "root_deep"
+   ],
+   "gen_ms": 94,
+   "act": 1
+  },
+  "a2_town": {
+   "name": "Citadel of the Shattered Femur",
+   "theme": "ossa_town",
+   "w": 124,
+   "h": 96,
+   "outdoor": true,
+   "mlvl": null,
+   "monsters_at_gen": 0,
+   "kinds": {},
+   "objects": {
+    "lantern": 1,
+    "portal": 1
+   },
+   "links": [
+    "a2_dunes"
+   ],
+   "gen_ms": 38,
+   "act": 2
+  },
+  "a2_dunes": {
+   "name": "The Bleached Dunes",
+   "theme": "ossa",
+   "w": 170,
+   "h": 150,
+   "outdoor": true,
+   "mlvl": [
+    18,
+    19
+   ],
+   "monsters_at_gen": 149,
+   "kinds": {
+    "chalk_worm": 55,
+    "dune_kite": 45,
+    "ossarcher": 11,
+    "calc_knight": 20,
+    "marrow_ghoul": 18
+   },
+   "objects": {
+    "portal": 2,
+    "lantern": 4,
+    "chest": 4,
+    "shrine:stone": 1,
+    "shrine:wisp": 2,
+    "altar": 1
+   },
+   "links": [
+    "a2_town",
+    "a2_avenue"
+   ],
+   "gen_ms": 141,
+   "act": 2
+  },
+  "a2_avenue": {
+   "name": "Reliquary Avenue",
+   "theme": "ossa",
+   "w": 180,
+   "h": 120,
+   "outdoor": true,
+   "mlvl": [
+    19,
+    20
+   ],
+   "monsters_at_gen": 154,
+   "kinds": {
+    "calc_knight": 33,
+    "ossarcher": 29,
+    "chalk_wraith": 24,
+    "chalk_worm": 8,
+    "dune_kite": 39,
+    "oath_blade": 21
+   },
+   "objects": {
+    "portal": 3,
+    "lantern": 3,
+    "chest": 4,
+    "shrine:echo": 1,
+    "shrine:refill": 1,
+    "shrine:wisp": 1
+   },
+   "links": [
+    "a2_dunes",
+    "a2_ribvalley",
+    "a2_chapter"
+   ],
+   "gen_ms": 215,
+   "act": 2
+  },
+  "a2_chapter": {
+   "name": "The Buried Chapter-House",
+   "theme": "ossa_chapter",
+   "w": 104,
+   "h": 104,
+   "outdoor": false,
+   "mlvl": [
+    19,
+    21
+   ],
+   "monsters_at_gen": 80,
+   "kinds": {
+    "calc_knight": 36,
+    "oath_blade": 3,
+    "ossarcher": 6,
+    "marrow": 9,
+    "chalk_wraith": 26
+   },
+   "objects": {
+    "portal": 1,
+    "lantern": 2,
+    "chest": 3
+   },
+   "links": [
+    "a2_avenue"
+   ],
+   "gen_ms": 13,
+   "act": 2
+  },
+  "a2_ribvalley": {
+   "name": "The Valley of Standing Ribs",
+   "theme": "ossa",
+   "w": 170,
+   "h": 160,
+   "outdoor": true,
+   "mlvl": [
+    20,
+    21
+   ],
+   "monsters_at_gen": 123,
+   "kinds": {
+    "calc_knight": 17,
+    "dune_kite": 33,
+    "marrow_ghoul": 18,
+    "chalk_worm": 34,
+    "ossarcher": 11,
+    "oath_blade": 10
+   },
+   "objects": {
+    "portal": 2,
+    "lantern": 3,
+    "chest": 4,
+    "shrine:refill": 1,
+    "shrine:stone": 1,
+    "shrine:wisp": 1
+   },
+   "links": [
+    "a2_avenue",
+    "a2_stormflat"
+   ],
+   "gen_ms": 372,
+   "act": 2
+  },
+  "a2_stormflat": {
+   "name": "The Chalk Flats",
+   "theme": "ossa",
+   "w": 180,
+   "h": 170,
+   "outdoor": true,
+   "mlvl": [
+    21,
+    22
+   ],
+   "monsters_at_gen": 125,
+   "kinds": {
+    "dune_kite": 31,
+    "chalk_wraith": 53,
+    "chalk_worm": 22,
+    "marrow_ghoul": 19
+   },
+   "objects": {
+    "portal": 3,
+    "lantern": 4,
+    "chest": 4,
+    "shrine:echo": 3
+   },
+   "links": [
+    "a2_ribvalley",
+    "a2_banners",
+    "a2_tomb"
+   ],
+   "gen_ms": 273,
+   "act": 2
+  },
+  "a2_tomb": {
+   "name": "The Sand-Choked Tomb",
+   "theme": "ossa_tomb",
+   "w": 100,
+   "h": 100,
+   "outdoor": false,
+   "mlvl": [
+    21,
+    23
+   ],
+   "monsters_at_gen": 42,
+   "kinds": {
+    "marrow_ghoul": 3,
+    "calc_knight": 7,
+    "chalk_wraith": 26,
+    "chalk_worm": 6
+   },
+   "objects": {
+    "portal": 1,
+    "lantern": 2,
+    "chest": 3,
+    "altar": 1
+   },
+   "links": [
+    "a2_stormflat"
+   ],
+   "gen_ms": 226,
+   "act": 2
+  },
+  "a2_banners": {
+   "name": "The Field of Fallen Standards",
+   "theme": "ossa",
+   "w": 170,
+   "h": 150,
+   "outdoor": true,
+   "mlvl": [
+    22,
+    23
+   ],
+   "monsters_at_gen": 154,
+   "kinds": {
+    "calc_knight": 54,
+    "oath_blade": 39,
+    "marrow_ghoul": 14,
+    "chalk_wraith": 13,
+    "ossarcher": 34
+   },
+   "objects": {
+    "portal": 2,
+    "lantern": 3,
+    "chest": 4,
+    "shrine:echo": 1,
+    "shrine:wisp": 1,
+    "shrine:refill": 1,
+    "altar": 1
+   },
+   "links": [
+    "a2_stormflat",
+    "a2_oasis"
+   ],
+   "gen_ms": 72,
+   "act": 2
+  },
+  "a2_oasis": {
+   "name": "The Dry Oasis",
+   "theme": "ossa",
+   "w": 160,
+   "h": 160,
+   "outdoor": true,
+   "mlvl": [
+    22,
+    23
+   ],
+   "monsters_at_gen": 120,
+   "kinds": {
+    "oath_blade": 10,
+    "chalk_worm": 49,
+    "dune_kite": 41,
+    "chalk_wraith": 14,
+    "marrow_ghoul": 6
+   },
+   "objects": {
+    "portal": 2,
+    "lantern": 3,
+    "chest": 4,
+    "shrine:wisp": 1,
+    "shrine:stone": 1,
+    "shrine:refill": 1,
+    "altar": 1
+   },
+   "links": [
+    "a2_banners",
+    "a2_marrow"
+   ],
+   "gen_ms": 84,
+   "act": 2
+  },
+  "a2_marrow": {
+   "name": "The Marrow Cavity",
+   "theme": "ossa_marrow",
+   "w": 112,
+   "h": 112,
+   "outdoor": false,
+   "mlvl": [
+    23,
+    24
+   ],
+   "monsters_at_gen": 70,
+   "kinds": {
+    "oath_blade": 6,
+    "marrow_ghoul": 20,
+    "marrow": 9,
+    "chalk_wraith": 28,
+    "calc_knight": 7
+   },
+   "objects": {
+    "portal": 2,
+    "lantern": 2,
+    "chest": 1,
+    "altar": 1
+   },
+   "links": [
+    "a2_oasis",
+    "a2_lair"
+   ],
+   "gen_ms": 7,
+   "act": 2
+  },
+  "a2_lair": {
+   "name": "The Empty Socket",
+   "theme": "ossa",
+   "w": 140,
+   "h": 140,
+   "outdoor": true,
+   "mlvl": [
+    23,
+    24
+   ],
+   "monsters_at_gen": 26,
+   "kinds": {
+    "calc_knight": 6,
+    "oath_blade": 14,
+    "marrow_ghoul": 6
+   },
+   "objects": {
+    "portal": 1,
+    "lantern": 1,
+    "chest": 2,
+    "shrine:stone": 1,
+    "shrine:wisp": 1
+   },
+   "links": [
+    "a2_marrow"
+   ],
+   "gen_ms": 48,
+   "act": 2
+  },
+  "a3_town": {
+   "name": "Kettlewick Stilts",
+   "theme": "shogmire",
+   "w": 84,
+   "h": 84,
+   "outdoor": true,
+   "mlvl": null,
+   "monsters_at_gen": 0,
+   "kinds": {},
+   "objects": {
+    "lantern": 1,
+    "portal": 1
+   },
+   "links": [
+    "a3_flats"
+   ],
+   "gen_ms": 31,
+   "act": 3
+  },
+  "a3_flats": {
+   "name": "The Heartbeat Flats",
+   "theme": "shogmire",
+   "w": 160,
+   "h": 150,
+   "outdoor": true,
+   "mlvl": [
+    24,
+    25
+   ],
+   "monsters_at_gen": 276,
+   "kinds": {
+    "a3_broodhusk": 113,
+    "drowned": 89,
+    "a3_mudleaper": 31,
+    "a3_fetishpriest": 18,
+    "bloatling": 25
+   },
+   "objects": {
+    "lantern": 3,
+    "portal": 2,
+    "statue": 1,
+    "chest": 7,
+    "shrine:echo": 2,
+    "shrine:refill": 1
+   },
+   "links": [
+    "a3_town",
+    "a3_mangroves"
+   ],
+   "gen_ms": 258,
+   "act": 3
+  },
+  "a3_mangroves": {
+   "name": "The Weeping Mangroves",
+   "theme": "shogmire",
+   "w": 150,
+   "h": 150,
+   "outdoor": true,
+   "mlvl": [
+    25,
+    26
+   ],
+   "monsters_at_gen": 165,
+   "kinds": {
+    "moth_saint": 28,
+    "a3_mudleaper": 16,
+    "a3_amberwitch": 28,
+    "a3_broodhusk": 55,
+    "a3_fetishpriest": 16,
+    "a3_mangrovestalker": 22
+   },
+   "objects": {
+    "lantern": 3,
+    "portal": 3,
+    "statue": 1,
+    "chest": 6,
+    "shrine:echo": 1,
+    "shrine:stone": 2
+   },
+   "links": [
+    "a3_flats",
+    "a3_delta",
+    "a3_fetish"
+   ],
+   "gen_ms": 619,
+   "act": 3
+  },
+  "a3_fetish": {
+   "name": "The Fetish-Tree Groves",
+   "theme": "shogmire",
+   "w": 140,
+   "h": 140,
+   "outdoor": true,
+   "mlvl": [
+    26,
+    27
+   ],
+   "monsters_at_gen": 138,
+   "kinds": {
+    "a3_mangrovestalker": 10,
+    "a3_fetishpriest": 82,
+    "a3_amberwitch": 22,
+    "a3_broodhusk": 24
+   },
+   "objects": {
+    "lantern": 3,
+    "portal": 2,
+    "chest": 5,
+    "shrine:stone": 1,
+    "shrine:refill": 1,
+    "shrine:wisp": 1
+   },
+   "links": [
+    "a3_mangroves",
+    "a3_sumps"
+   ],
+   "gen_ms": 79,
+   "act": 3
+  },
+  "a3_delta": {
+   "name": "The Blood Delta",
+   "theme": "shogmire",
+   "w": 170,
+   "h": 140,
+   "outdoor": true,
+   "mlvl": [
+    26,
+    28
+   ],
+   "monsters_at_gen": 178,
+   "kinds": {
+    "a3_fetishpriest": 35,
+    "a3_mudleaper": 35,
+    "leech": 29,
+    "a3_broodhusk": 50,
+    "a3_amberwitch": 29
+   },
+   "objects": {
+    "lantern": 3,
+    "portal": 2,
+    "chest": 7,
+    "shrine:echo": 1,
+    "shrine:stone": 1,
+    "shrine:refill": 1,
+    "altar": 1
+   },
+   "links": [
+    "a3_mangroves",
+    "a3_amber"
+   ],
+   "gen_ms": 74,
+   "act": 3
+  },
+  "a3_amber": {
+   "name": "The Amber-Grease Mire",
+   "theme": "shogmire",
+   "w": 140,
+   "h": 140,
+   "outdoor": true,
+   "mlvl": [
+    27,
+    28
+   ],
+   "monsters_at_gen": 174,
+   "kinds": {
+    "bogwitch": 42,
+    "a3_broodhusk": 65,
+    "a3_amberwitch": 33,
+    "a3_mudleaper": 24,
+    "a3_mangrovestalker": 10
+   },
+   "objects": {
+    "lantern": 3,
+    "portal": 2,
+    "chest": 6,
+    "shrine:refill": 3
+   },
+   "links": [
+    "a3_delta",
+    "a3_broodbanks"
+   ],
+   "gen_ms": 77,
+   "act": 3
+  },
+  "a3_broodbanks": {
+   "name": "The Brood-Banks",
+   "theme": "shogmire",
+   "w": 150,
+   "h": 130,
+   "outdoor": true,
+   "mlvl": [
+    28,
+    29
+   ],
+   "monsters_at_gen": 181,
+   "kinds": {
+    "a3_broodsow": 31,
+    "a3_broodhusk": 86,
+    "a3_fetishpriest": 29,
+    "a3_mudleaper": 35
+   },
+   "objects": {
+    "lantern": 3,
+    "portal": 3,
+    "chest": 6,
+    "shrine:echo": 1,
+    "shrine:wisp": 2
+   },
+   "links": [
+    "a3_amber",
+    "a3_egggal",
+    "a3_causeway"
+   ],
+   "gen_ms": 87,
+   "act": 3
+  },
+  "a3_causeway": {
+   "name": "Causeway of the First Brood",
+   "theme": "shogmire",
+   "w": 150,
+   "h": 150,
+   "outdoor": true,
+   "mlvl": [
+    29,
+    30
+   ],
+   "monsters_at_gen": 167,
+   "kinds": {
+    "a3_broodsow": 15,
+    "a3_mudleaper": 6,
+    "a3_mangrovestalker": 18,
+    "a3_amberwitch": 31,
+    "a3_broodhusk": 53,
+    "a3_fetishpriest": 44
+   },
+   "objects": {
+    "lantern": 3,
+    "portal": 2,
+    "chest": 6,
+    "shrine:wisp": 2,
+    "shrine:echo": 1
+   },
+   "links": [
+    "a3_broodbanks",
+    "a3_ziggurat"
+   ],
+   "gen_ms": 79,
+   "act": 3
+  },
+  "a3_sumps": {
+   "name": "The Leech-Sumps",
+   "theme": "shogmire_deep",
+   "w": 110,
+   "h": 110,
+   "outdoor": false,
+   "mlvl": [
+    26,
+    29
+   ],
+   "monsters_at_gen": 119,
+   "kinds": {
+    "leech": 25,
+    "a3_broodhusk": 57,
+    "a3_amberwitch": 32,
+    "a3_mudleaper": 5
+   },
+   "objects": {
+    "portal": 1,
+    "lantern": 2,
+    "chest": 5,
+    "altar": 1
+   },
+   "links": [
+    "a3_fetish"
+   ],
+   "gen_ms": 9,
+   "act": 3
+  },
+  "a3_egggal": {
+   "name": "The Egg-Galleries",
+   "theme": "shogmire_deep",
+   "w": 110,
+   "h": 100,
+   "outdoor": false,
+   "mlvl": [
+    28,
+    30
+   ],
+   "monsters_at_gen": 87,
+   "kinds": {
+    "a3_fetishpriest": 35,
+    "a3_broodhusk": 30,
+    "a3_amberwitch": 16,
+    "a3_broodsow": 6
+   },
+   "objects": {
+    "portal": 1,
+    "lantern": 2,
+    "chest": 4
+   },
+   "links": [
+    "a3_broodbanks"
+   ],
+   "gen_ms": 10,
+   "act": 3
+  },
+  "a3_ziggurat": {
+   "name": "Ziggurat of the First Brood",
+   "theme": "shogmire_deep",
+   "w": 120,
+   "h": 120,
+   "outdoor": false,
+   "mlvl": [
+    29,
+    30
+   ],
+   "monsters_at_gen": 127,
+   "kinds": {
+    "a3_amberwitch": 14,
+    "a3_broodhusk": 33,
+    "a3_fetishpriest": 54,
+    "a3_broodsow": 19,
+    "a3_mangrovestalker": 7
+   },
+   "objects": {
+    "portal": 2,
+    "lantern": 3,
+    "chest": 3
+   },
+   "links": [
+    "a3_causeway",
+    "a3_lair"
+   ],
+   "gen_ms": 10,
+   "act": 3
+  },
+  "a3_lair": {
+   "name": "The Blood-Basin",
+   "theme": "shogmire",
+   "w": 96,
+   "h": 96,
+   "outdoor": true,
+   "mlvl": [
+    30,
+    30
+   ],
+   "monsters_at_gen": 12,
+   "kinds": {
+    "a3_broodhusk": 8,
+    "a3_amberwitch": 4
+   },
+   "objects": {
+    "portal": 1,
+    "lantern": 1
+   },
+   "links": [
+    "a3_ziggurat"
+   ],
+   "gen_ms": 2,
+   "act": 3
+  },
+  "a4_town": {
+   "name": "Bellrest Hearth",
+   "theme": "anvhar",
+   "w": 86,
+   "h": 80,
+   "outdoor": true,
+   "mlvl": null,
+   "monsters_at_gen": 0,
+   "kinds": {},
+   "objects": {
+    "lantern": 1,
+    "portal": 1
+   },
+   "links": [
+    "a4_foothills"
+   ],
+   "gen_ms": 5,
+   "act": 4
+  },
+  "a4_foothills": {
+   "name": "The Chime-Foothills",
+   "theme": "anvhar",
+   "w": 160,
+   "h": 150,
+   "outdoor": true,
+   "mlvl": [
+    30,
+    31
+   ],
+   "monsters_at_gen": 181,
+   "kinds": {
+    "a4_animamonk": 21,
+    "a4_tetherpilgrim": 104,
+    "a4_basaltborer": 9,
+    "a4_rimewraith": 19,
+    "a4_flagmoth": 28
+   },
+   "objects": {
+    "lantern": 3,
+    "portal": 2,
+    "chest": 7,
+    "shrine:echo": 1,
+    "shrine:stone": 1,
+    "shrine:refill": 1
+   },
+   "links": [
+    "a4_town",
+    "a4_glasspass"
+   ],
+   "gen_ms": 161,
+   "act": 4
+  },
+  "a4_glasspass": {
+   "name": "The Glass Pass",
+   "theme": "anvhar",
+   "w": 150,
+   "h": 150,
+   "outdoor": true,
+   "mlvl": [
+    30,
+    31
+   ],
+   "monsters_at_gen": 124,
+   "kinds": {
+    "a4_flagmoth": 54,
+    "a4_animamonk": 17,
+    "a4_basaltborer": 13,
+    "a4_tetherpilgrim": 22,
+    "a4_rimewraith": 18
+   },
+   "objects": {
+    "lantern": 2,
+    "portal": 3,
+    "chest": 6,
+    "shrine:echo": 1,
+    "shrine:wisp": 1,
+    "shrine:refill": 1
+   },
+   "links": [
+    "a4_foothills",
+    "a4_breathcaves",
+    "a4_flags"
+   ],
+   "gen_ms": 62,
+   "act": 4
+  },
+  "a4_flags": {
+   "name": "The Prayer-Flag Terraces",
+   "theme": "anvhar",
+   "w": 150,
+   "h": 150,
+   "outdoor": true,
+   "mlvl": [
+    31,
+    32
+   ],
+   "monsters_at_gen": 159,
+   "kinds": {
+    "a4_tetherpilgrim": 55,
+    "a4_flagmoth": 41,
+    "a4_animamonk": 42,
+    "a4_chimegolem": 21
+   },
+   "objects": {
+    "lantern": 3,
+    "portal": 2,
+    "statue": 1,
+    "chest": 7,
+    "shrine:stone": 1,
+    "shrine:echo": 1,
+    "shrine:refill": 1,
+    "altar": 1
+   },
+   "links": [
+    "a4_glasspass",
+    "a4_spires"
+   ],
+   "gen_ms": 123,
+   "act": 4
+  },
+  "a4_spires": {
+   "name": "Field of Lantern-Spires",
+   "theme": "anvhar",
+   "w": 160,
+   "h": 160,
+   "outdoor": true,
+   "mlvl": [
+    31,
+    32
+   ],
+   "monsters_at_gen": 170,
+   "kinds": {
+    "a4_chimegolem": 38,
+    "a4_tetherpilgrim": 36,
+    "a4_basaltborer": 30,
+    "a4_animamonk": 20,
+    "a4_rimewraith": 14,
+    "a4_flagmoth": 32
+   },
+   "objects": {
+    "lantern": 3,
+    "portal": 2,
+    "statue": 1,
+    "chest": 8,
+    "shrine:wisp": 1,
+    "shrine:stone": 1,
+    "shrine:refill": 1
+   },
+   "links": [
+    "a4_flags",
+    "a4_cloudshelf"
+   ],
+   "gen_ms": 383,
+   "act": 4
+  },
+  "a4_cloudshelf": {
+   "name": "The Cloud-Shelf",
+   "theme": "anvhar",
+   "w": 170,
+   "h": 150,
+   "outdoor": true,
+   "mlvl": [
+    32,
+    33
+   ],
+   "monsters_at_gen": 143,
+   "kinds": {
+    "a4_chimegolem": 16,
+    "a4_rimewraith": 51,
+    "a4_animamonk": 9,
+    "a4_flagmoth": 53,
+    "a4_basaltborer": 14
+   },
+   "objects": {
+    "lantern": 3,
+    "portal": 3,
+    "statue": 1,
+    "chest": 6,
+    "shrine:echo": 2,
+    "shrine:stone": 1
+   },
+   "links": [
+    "a4_spires",
+    "a4_bellhollow",
+    "a4_windscour"
+   ],
+   "gen_ms": 57,
+   "act": 4
+  },
+  "a4_windscour": {
+   "name": "The Wind-Scoured Ridges",
+   "theme": "anvhar",
+   "w": 150,
+   "h": 150,
+   "outdoor": true,
+   "mlvl": [
+    32,
+    33
+   ],
+   "monsters_at_gen": 178,
+   "kinds": {
+    "a4_basaltborer": 23,
+    "a4_tetherpilgrim": 37,
+    "a4_animamonk": 34,
+    "a4_flagmoth": 52,
+    "a4_rimewraith": 21,
+    "a4_chimegolem": 11
+   },
+   "objects": {
+    "lantern": 3,
+    "portal": 2,
+    "chest": 7,
+    "shrine:refill": 1,
+    "shrine:echo": 1,
+    "shrine:wisp": 1
+   },
+   "links": [
+    "a4_cloudshelf",
+    "a4_stair"
+   ],
+   "gen_ms": 277,
+   "act": 4
+  },
+  "a4_stair": {
+   "name": "Stair of the Sky-Climbers",
+   "theme": "anvhar",
+   "w": 140,
+   "h": 160,
+   "outdoor": true,
+   "mlvl": [
+    33,
+    34
+   ],
+   "monsters_at_gen": 233,
+   "kinds": {
+    "a4_flagmoth": 74,
+    "a4_rimewraith": 30,
+    "a4_animamonk": 62,
+    "a4_chimegolem": 13,
+    "a4_tetherpilgrim": 54
+   },
+   "objects": {
+    "lantern": 4,
+    "portal": 2,
+    "chest": 8,
+    "shrine:refill": 1,
+    "shrine:wisp": 2
+   },
+   "links": [
+    "a4_windscour",
+    "a4_monastery"
+   ],
+   "gen_ms": 47,
+   "act": 4
+  },
+  "a4_breathcaves": {
+   "name": "The Breath-Caves",
+   "theme": "anvhar_deep",
+   "w": 110,
+   "h": 110,
+   "outdoor": false,
+   "mlvl": [
+    31,
+    33
+   ],
+   "monsters_at_gen": 69,
+   "kinds": {
+    "a4_tetherpilgrim": 30,
+    "a4_rimewraith": 14,
+    "a4_basaltborer": 21,
+    "chorister": 4
+   },
+   "objects": {
+    "portal": 1,
+    "lantern": 2,
+    "chest": 5,
+    "altar": 1
+   },
+   "links": [
+    "a4_glasspass"
+   ],
+   "gen_ms": 10,
+   "act": 4
+  },
+  "a4_bellhollow": {
+   "name": "The Bell-Hollow",
+   "theme": "anvhar_deep",
+   "w": 110,
+   "h": 110,
+   "outdoor": false,
+   "mlvl": [
+    32,
+    34
+   ],
+   "monsters_at_gen": 72,
+   "kinds": {
+    "a4_chimegolem": 19,
+    "a4_animamonk": 16,
+    "a4_rimewraith": 30,
+    "bell": 7
+   },
+   "objects": {
+    "portal": 1,
+    "lantern": 2,
+    "chest": 3
+   },
+   "links": [
+    "a4_cloudshelf"
+   ],
+   "gen_ms": 35,
+   "act": 4
+  },
+  "a4_monastery": {
+   "name": "Sky-Climber's Monastery",
+   "theme": "anvhar_deep",
+   "w": 130,
+   "h": 120,
+   "outdoor": false,
+   "mlvl": [
+    33,
+    34
+   ],
+   "monsters_at_gen": 130,
+   "kinds": {
+    "a4_animamonk": 71,
+    "a4_rimewraith": 32,
+    "a4_chimegolem": 18,
+    "marrow": 9
+   },
+   "objects": {
+    "portal": 2,
+    "lantern": 3,
+    "chest": 4
+   },
+   "links": [
+    "a4_stair",
+    "a4_lair"
+   ],
+   "gen_ms": 26,
+   "act": 4
+  },
+  "a4_lair": {
+   "name": "Summit of the Unrung Bell",
+   "theme": "anvhar",
+   "w": 100,
+   "h": 100,
+   "outdoor": true,
+   "mlvl": [
+    34,
+    34
+   ],
+   "monsters_at_gen": 4,
+   "kinds": {
+    "a4_animamonk": 3,
+    "a4_chimegolem": 1
+   },
+   "objects": {
+    "portal": 1,
+    "lantern": 1
+   },
+   "links": [
+    "a4_monastery"
+   ],
+   "gen_ms": 9,
+   "act": 4
+  },
+  "a5_town": {
+   "name": "The Last Vigil",
+   "theme": "a5_town",
+   "w": 104,
+   "h": 104,
+   "outdoor": false,
+   "mlvl": null,
+   "monsters_at_gen": 0,
+   "kinds": {},
+   "objects": {
+    "lantern": 1,
+    "portal": 2
+   },
+   "links": [
+    "a5_highway",
+    "a5_scar"
+   ],
+   "gen_ms": 136,
+   "act": 5
+  },
+  "a5_highway": {
+   "name": "The Grand Calcified Highway",
+   "theme": "a5_marrow",
+   "w": 196,
+   "h": 92,
+   "outdoor": false,
+   "mlvl": [
+    34,
+    35
+   ],
+   "monsters_at_gen": 75,
+   "kinds": {
+    "a5_ribward": 11,
+    "a5_sapper": 38,
+    "a5_osteo": 21,
+    "marrow": 5
+   },
+   "objects": {
+    "portal": 2,
+    "lantern": 2,
+    "chest": 6,
+    "shrine:wisp": 1,
+    "shrine:echo": 1,
+    "shrine:refill": 1
+   },
+   "links": [
+    "a5_town",
+    "a5_siphon"
+   ],
+   "gen_ms": 253,
+   "act": 5
+  },
+  "a5_siphon": {
+   "name": "The Siphon Vaults",
+   "theme": "a5_marrow",
+   "w": 144,
+   "h": 144,
+   "outdoor": false,
+   "mlvl": [
+    35,
+    36
+   ],
+   "monsters_at_gen": 96,
+   "kinds": {
+    "a5_sapper": 48,
+    "a5_osteo": 29,
+    "a5_ribward": 6,
+    "marrow": 13
+   },
+   "objects": {
+    "portal": 2,
+    "lantern": 2,
+    "chest": 6,
+    "shrine:wisp": 1,
+    "shrine:refill": 1,
+    "shrine:echo": 1
+   },
+   "links": [
+    "a5_highway",
+    "a5_skerries"
+   ],
+   "gen_ms": 33,
+   "act": 5
+  },
+  "a5_skerries": {
+   "name": "The Sanguine Cavity",
+   "theme": "a5_sanguine",
+   "w": 184,
+   "h": 168,
+   "outdoor": false,
+   "mlvl": [
+    36,
+    37
+   ],
+   "monsters_at_gen": 100,
+   "kinds": {
+    "a5_tumor": 33,
+    "a5_leaper": 57,
+    "a5_sapper": 10
+   },
+   "objects": {
+    "portal": 2,
+    "lantern": 2,
+    "chest": 5,
+    "shrine:echo": 1,
+    "shrine:wisp": 1,
+    "shrine:refill": 1,
+    "altar": 1
+   },
+   "links": [
+    "a5_siphon",
+    "a5_valves"
+   ],
+   "gen_ms": 99,
+   "act": 5
+  },
+  "a5_valves": {
+   "name": "The Valve Gates",
+   "theme": "a5_sanguine",
+   "w": 132,
+   "h": 132,
+   "outdoor": false,
+   "mlvl": [
+    36,
+    37
+   ],
+   "monsters_at_gen": 49,
+   "kinds": {
+    "a5_leaper": 28,
+    "a5_sapper": 6,
+    "a5_tumor": 15
+   },
+   "objects": {
+    "portal": 2,
+    "lantern": 2,
+    "chest": 5,
+    "shrine:echo": 1,
+    "shrine:wisp": 2
+   },
+   "links": [
+    "a5_skerries",
+    "a5_shaft"
+   ],
+   "gen_ms": 28,
+   "act": 5
+  },
+  "a5_shaft": {
+   "name": "The Shaft of Fading Echoes",
+   "theme": "a5_shaft",
+   "w": 164,
+   "h": 164,
+   "outdoor": false,
+   "mlvl": [
+    37,
+    38
+   ],
+   "monsters_at_gen": 84,
+   "kinds": {
+    "a5_synapse": 43,
+    "a5_leaper": 30,
+    "a5_wraith": 11
+   },
+   "objects": {
+    "portal": 2,
+    "lantern": 2,
+    "shrine:echo": 2,
+    "chest": 5,
+    "shrine:wisp": 1,
+    "altar": 1
+   },
+   "links": [
+    "a5_valves",
+    "a5_crucible"
+   ],
+   "gen_ms": 62,
+   "act": 5
+  },
+  "a5_crucible": {
+   "name": "The Digesting Crucible",
+   "theme": "a5_crucible",
+   "w": 164,
+   "h": 152,
+   "outdoor": false,
+   "mlvl": [
+    38,
+    39
+   ],
+   "monsters_at_gen": 100,
+   "kinds": {
+    "a5_corroder": 33,
+    "a5_tumor": 21,
+    "a5_parasite": 46
+   },
+   "objects": {
+    "portal": 2,
+    "lantern": 2,
+    "chest": 7,
+    "shrine:stone": 1,
+    "shrine:echo": 1,
+    "shrine:wisp": 1
+   },
+   "links": [
+    "a5_shaft",
+    "a5_cerebrum"
+   ],
+   "gen_ms": 211,
+   "act": 5
+  },
+  "a5_cerebrum": {
+   "name": "The Cerebrum Labyrinth",
+   "theme": "a5_cerebrum",
+   "w": 208,
+   "h": 208,
+   "outdoor": false,
+   "mlvl": [
+    39,
+    40
+   ],
+   "monsters_at_gen": 149,
+   "kinds": {
+    "a5_thought": 50,
+    "a5_sentinel": 60,
+    "a5_synapse": 18,
+    "a5_wraith": 21
+   },
+   "objects": {
+    "portal": 2,
+    "lantern": 2,
+    "chest": 7,
+    "shrine:wisp": 2,
+    "shrine:echo": 1
+   },
+   "links": [
+    "a5_crucible",
+    "a5_lair"
+   ],
+   "gen_ms": 755,
+   "act": 5
+  },
+  "a5_lair": {
+   "name": "The Alien Temple of the Slayers",
+   "theme": "a5_temple",
+   "w": 148,
+   "h": 148,
+   "outdoor": false,
+   "mlvl": [
+    40,
+    40
+   ],
+   "monsters_at_gen": 113,
+   "kinds": {
+    "a5_sentinel": 60,
+    "a5_wraith": 19,
+    "a5_thought": 34
+   },
+   "objects": {
+    "portal": 1,
+    "lantern": 2,
+    "chest": 4,
+    "shrine:stone": 1,
+    "shrine:wisp": 1,
+    "shrine:echo": 1,
+    "altar": 1
+   },
+   "links": [
+    "a5_cerebrum"
+   ],
+   "gen_ms": 197,
+   "act": 5
+  },
+  "a5_scar": {
+   "name": "The Scar of Ur-Nihl",
+   "theme": "a5_scar",
+   "w": 188,
+   "h": 124,
+   "outdoor": false,
+   "mlvl": [
+    36,
+    38
+   ],
+   "monsters_at_gen": 61,
+   "kinds": {
+    "a5_nullshade": 43,
+    "a5_silence": 18
+   },
+   "objects": {
+    "portal": 2,
+    "lantern": 2,
+    "chest": 5,
+    "shrine:echo": 1,
+    "shrine:stone": 1,
+    "shrine:wisp": 1
+   },
+   "links": [
+    "a5_town",
+    "a5_monolith"
+   ],
+   "gen_ms": 180,
+   "act": 5
+  },
+  "a5_monolith": {
+   "name": "The Silent Monolith",
+   "theme": "a5_scar",
+   "w": 140,
+   "h": 140,
+   "outdoor": false,
+   "mlvl": [
+    38,
+    40
+   ],
+   "monsters_at_gen": 71,
+   "kinds": {
+    "a5_silence": 19,
+    "a5_nullshade": 52
+   },
+   "objects": {
+    "portal": 1,
+    "lantern": 2,
+    "chest": 5,
+    "shrine:refill": 1,
+    "shrine:stone": 2,
+    "altar": 1
+   },
+   "links": [
+    "a5_scar"
+   ],
+   "gen_ms": 189,
+   "act": 5
+  },
+  "qvault_2": {
+   "name": "The Ossified Vault",
+   "theme": "bone",
+   "w": 44,
+   "h": 44,
+   "outdoor": false,
+   "mlvl": null,
+   "monsters_at_gen": 0,
+   "kinds": {},
+   "objects": {
+    "portal": 1,
+    "chest": 3
+   },
+   "links": [
+    "a2_town"
+   ],
+   "gen_ms": 8,
+   "act": 2
+  },
+  "qvault_3": {
+   "name": "A Sealed Vault",
+   "theme": "crypt",
+   "w": 44,
+   "h": 44,
+   "outdoor": false,
+   "mlvl": null,
+   "monsters_at_gen": 0,
+   "kinds": {},
+   "objects": {
+    "portal": 1,
+    "chest": 3
+   },
+   "links": [
+    "a3_town"
+   ],
+   "gen_ms": 0,
+   "act": 3
+  },
+  "qvault_4": {
+   "name": "The Vault of the Unrung Bell",
+   "theme": "crypt",
+   "w": 44,
+   "h": 44,
+   "outdoor": false,
+   "mlvl": null,
+   "monsters_at_gen": 0,
+   "kinds": {},
+   "objects": {
+    "portal": 1,
+    "chest": 3
+   },
+   "links": [
+    "a4_town"
+   ],
+   "gen_ms": 0,
+   "act": 4
+  },
+  "qvault_5": {
+   "name": "A Sealed Vault",
+   "theme": "crypt",
+   "w": 44,
+   "h": 44,
+   "outdoor": false,
+   "mlvl": null,
+   "monsters_at_gen": 0,
+   "kinds": {},
+   "objects": {
+    "portal": 1,
+    "chest": 3
+   },
+   "links": [
+    "a5_town"
+   ],
+   "gen_ms": 0,
+   "act": 5
+  },
+  "hollow_wood": {
+   "name": "Hollow Wood",
+   "theme": "hollow_wood",
+   "w": 152,
+   "h": 152,
+   "outdoor": true,
+   "mlvl": [
+    5,
+    8
+   ],
+   "monsters_at_gen": 228,
+   "kinds": {
+    "moth_saint": 8,
+    "worm": 30,
+    "pyre": 6,
+    "hollow": 103,
+    "archer": 23,
+    "hound": 24,
+    "bloatling": 18,
+    "caster": 16
+   },
+   "objects": {
+    "lantern": 2,
+    "portal": 3,
+    "chest": 4,
+    "shrine:stone": 2,
+    "shrine:echo": 1,
+    "altar": 1
+   },
+   "links": [
+    "moor",
+    "crypt",
+    "pilgrim_road"
+   ],
+   "gen_ms": 288,
+   "act": 1
+  },
+  "root_deep": {
+   "name": "Root Deep",
+   "theme": "root_deep",
+   "w": 164,
+   "h": 164,
+   "outdoor": true,
+   "mlvl": [
+    13,
+    16
+   ],
+   "monsters_at_gen": 265,
+   "kinds": {
+    "trunk_thing": 10,
+    "archer": 24,
+    "veinworm_elder": 14,
+    "hollow": 93,
+    "moth_saint": 17,
+    "pyre": 9,
+    "caster": 5,
+    "bloat": 16,
+    "bell": 2,
+    "hound": 61,
+    "moth": 14
+   },
+   "objects": {
+    "lantern": 3,
+    "portal": 3,
+    "chest": 6,
+    "shrine:wisp": 1,
+    "shrine:refill": 1,
+    "shrine:echo": 1
+   },
+   "links": [
+    "fen",
+    "cata1",
+    "broken_bridge"
+   ],
+   "gen_ms": 216,
+   "act": 1
+  }
+ },
+ "sources": {
+  "interact": "function (o) {\n        const m0 = G.msg, t0 = G.msgT;\n        const r = _ik.apply(this, arguments);\n        try {\n          if (!o || !G.zone) return r;\n          const n = actOfV(G.zone.id), said = G.msg !== m0 || G.msgT > t0;\n          if (o.type === 'lantern') { show('bark', lanternInscr(o), { name: o.name, inscr: true }); V.stats.inscr++; return r; }\n          if (o.type === 'qobj' && o.q === 'wp') { if (o.vInscr) { show('bark', o.vInscr, { name: o.name, inscr: true }); V.stats.inscr++; } return r; }\n          const role = roleOf(o); if (!role) return r;\n          if (role === 'giver' && !V.giverSeen[o.name]) { V.giverSeen[o.name] = 1; return r; }   // their errand count first\n          if (role === 'stranger' && said) { o.vAlt = !o.vAlt; if (o.vAlt) return r; }           // their lines and ours take turns\n          const line = nextBark(n, role, o); if (!line) return r;\n          if (said) G.msgT = 0;\n          const name = role === 'stash' ? (o.name || 'The Reliquary Chest') : shortName(o.qname || o.name);\n          show('bark', line, { name, inscr: role === 'stash' }); V.stats.bark++;\n        } catch (e) { vErr(e); }\n        return r;\n      }"
+ }
+}

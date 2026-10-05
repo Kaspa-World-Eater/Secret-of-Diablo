@@ -1,0 +1,215 @@
+{
+ "cues": {
+  "a1_town": {
+   "file": "a1_town.ogg",
+   "seconds": 120.0,
+   "loop": true,
+   "seed": 11,
+   "act": 1,
+   "place": "town",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/a1_town.png"
+  },
+  "a1_wild": {
+   "file": "a1_wild.ogg",
+   "seconds": 120.0,
+   "loop": true,
+   "seed": 12,
+   "act": 1,
+   "place": "wild",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/a1_wild.png"
+  },
+  "a1_deep": {
+   "file": "a1_deep.ogg",
+   "seconds": 120.0,
+   "loop": true,
+   "seed": 13,
+   "act": 1,
+   "place": "deep",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/a1_deep.png"
+  },
+  "a2_town": {
+   "file": "a2_town.ogg",
+   "seconds": 120.0,
+   "loop": true,
+   "seed": 21,
+   "act": 2,
+   "place": "town",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/a2_town.png"
+  },
+  "a2_wild": {
+   "file": "a2_wild.ogg",
+   "seconds": 120.0,
+   "loop": true,
+   "seed": 22,
+   "act": 2,
+   "place": "wild",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/a2_wild.png"
+  },
+  "a2_deep": {
+   "file": "a2_deep.ogg",
+   "seconds": 120.0,
+   "loop": true,
+   "seed": 23,
+   "act": 2,
+   "place": "deep",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/a2_deep.png"
+  },
+  "a3_town": {
+   "file": "a3_town.ogg",
+   "seconds": 120.0,
+   "loop": true,
+   "seed": 31,
+   "act": 3,
+   "place": "town",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/a3_town.png"
+  },
+  "a3_wild": {
+   "file": "a3_wild.ogg",
+   "seconds": 120.0,
+   "loop": true,
+   "seed": 32,
+   "act": 3,
+   "place": "wild",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/a3_wild.png"
+  },
+  "a3_deep": {
+   "file": "a3_deep.ogg",
+   "seconds": 120.0,
+   "loop": true,
+   "seed": 33,
+   "act": 3,
+   "place": "deep",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/a3_deep.png"
+  },
+  "a4_town": {
+   "file": "a4_town.ogg",
+   "seconds": 120.0,
+   "loop": true,
+   "seed": 41,
+   "act": 4,
+   "place": "town",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/a4_town.png"
+  },
+  "a4_wild": {
+   "file": "a4_wild.ogg",
+   "seconds": 120.0,
+   "loop": true,
+   "seed": 42,
+   "act": 4,
+   "place": "wild",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/a4_wild.png"
+  },
+  "a4_deep": {
+   "file": "a4_deep.ogg",
+   "seconds": 120.0,
+   "loop": true,
+   "seed": 43,
+   "act": 4,
+   "place": "deep",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/a4_deep.png"
+  },
+  "a5_town": {
+   "file": "a5_town.ogg",
+   "seconds": 120.0,
+   "loop": true,
+   "seed": 51,
+   "act": 5,
+   "place": "town",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/a5_town.png"
+  },
+  "a5_wild": {
+   "file": "a5_wild.ogg",
+   "seconds": 120.0,
+   "loop": true,
+   "seed": 52,
+   "act": 5,
+   "place": "wild",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/a5_wild.png"
+  },
+  "a5_deep": {
+   "file": "a5_deep.ogg",
+   "seconds": 120.0,
+   "loop": true,
+   "seed": 53,
+   "act": 5,
+   "place": "deep",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/a5_deep.png"
+  },
+  "boss1": {
+   "file": "boss1.ogg",
+   "seconds": 96.0,
+   "loop": true,
+   "seed": 61,
+   "act": 1,
+   "place": "boss",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/boss1.png"
+  },
+  "boss2": {
+   "file": "boss2.ogg",
+   "seconds": 96.0,
+   "loop": true,
+   "seed": 62,
+   "act": 2,
+   "place": "boss",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/boss2.png"
+  },
+  "boss3": {
+   "file": "boss3.ogg",
+   "seconds": 96.0,
+   "loop": true,
+   "seed": 63,
+   "act": 3,
+   "place": "boss",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/boss3.png"
+  },
+  "boss4": {
+   "file": "boss4.ogg",
+   "seconds": 96.0,
+   "loop": true,
+   "seed": 64,
+   "act": 4,
+   "place": "boss",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/boss4.png"
+  },
+  "boss5": {
+   "file": "boss5.ogg",
+   "seconds": 96.0,
+   "loop": true,
+   "seed": 65,
+   "act": 5,
+   "place": "boss",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/boss5.png"
+  },
+  "title": {
+   "file": "title.ogg",
+   "seconds": 124.0,
+   "loop": true,
+   "seed": 11,
+   "act": 0,
+   "place": "title",
+   "knobs": {},
+   "png": "/home/user/godmarrow/audio/music/title.png"
+  }
+ },
+ "rate": 44100
+}

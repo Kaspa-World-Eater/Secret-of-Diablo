@@ -53,3 +53,24 @@ Bone Melee tree, SoM stamina/charge combat, day/night with darkness, lantern bea
 - Keep all skill/monster numbers in data files so balance can be tuned without code changes.
 - Art is placeholder; Secret of Mana / Diablo 2 assets are copyrighted — fine for a private personal build, but use original assets before any public release.
 - D2R is installed locally via Steam: use it as a reference for feel/numbers only.
+
+
+---
+# Phase 2: Godmarrow, Secret of Mana style (decided 2026-10-05)
+Take everything from Godmarrow (github.com/Kaspa-World-Eater/GodMarrow) except its art style and camera, and build it
+as the Secret of Mana version: top-down view, free assets only. Godmarrow stays the Diablo version.
+
+**Decisions (Derek):** Godmarrow's code is the base, adapted to this game (the old sandbox kept in `legacy/sandbox/`);
+all of Godmarrow's rules apply; the Necromancer folds into the Ossumancer; melee is poise only; free assets only.
+
+## Step 1 — done
+Godmarrow's code, data, docs, fonts, sound and music brought in; the grid turned top-down (`core/iso.gd`); zones
+dressed with LPC ground, cliffs, walls and props (`world/topdown.gd`); every hero, NPC and creature drawn with LPC
+composites in Godmarrow's atlas format; grimdark grade on the free art. Smoke test: errors 0 on every line.
+
+## Next steps (one at a time, each approved first)
+2. Fold the Necromancer's Bone Melee charge attacks into the Ossumancer (poise-only costs).
+3. Look pass: camera distance, more LPC props for the remaining keys (chains, cloth, cobwebs, flesh), dungeon walls,
+   the objects (shrines, portals, waystones), the title screen.
+4. Items, panels and icons with free art (game-icons.net, CC-BY 3.0).
+5. Acts II-V once Godmarrow exports their zones.

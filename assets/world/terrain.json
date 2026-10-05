@@ -1,0 +1,39 @@
+{
+	"block": {
+		"dirt": 3,
+		"dirt2": 6,
+		"grass": 0,
+		"water": 9,
+		"watergrass": 12
+	},
+	"tile": {
+		"bridge": [
+			15,
+			2
+		],
+		"cliff_face": [
+			15,
+			0
+		],
+		"cliff_top": [
+			16,
+			0
+		],
+		"crypt_floor": [
+			15,
+			3
+		],
+		"flags": [
+			16,
+			2
+		],
+		"wall_face": [
+			15,
+			1
+		],
+		"wall_top": [
+			16,
+			1
+		]
+	}
+}

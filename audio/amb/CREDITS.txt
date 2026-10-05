@@ -1,0 +1,8 @@
+Recorded ambience beds (made into seamless loops and levelled for Godmarrow):
+
+fire.ogg  - "Fire Crackling" by AntumDeluge, CC0. https://opengameart.org/content/fire-crackling
+rain.ogg  - "Rain (loopable)" (3.ogg) by Ylmir, CC0. https://opengameart.org/content/rain-loopable
+deep.ogg  - "Loopable Dungeon Ambience" by JaggedStone, CC0. https://opengameart.org/content/loopable-dungeon-ambience
+wind.ogg  - "Wind Loop" by AntumDeluge, from an original by Jonathan Shaw (InspectorJ), CC-BY 3.0.
+            ATTRIBUTION REQUIRED: "Wind" by Jonathan Shaw (InspectorJ), freesound.org/people/InspectorJ/sounds/376415/
+            https://opengameart.org/content/wind-loop
