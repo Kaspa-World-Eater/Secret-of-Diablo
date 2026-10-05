@@ -60,6 +60,7 @@ var _reveal := 0.0
 var respawn_timer := 0.0
 var spawn_point := Vector2.ZERO
 var lantern = null
+var _step := 0.0
 
 var golem = null
 var skeletons: Array = []
@@ -120,6 +121,7 @@ func gain_xp(amount: int) -> void:
 		hp = max_hp
 		mana = max_mana
 		Game.float_text(global_position + Vector2(0, -30), "LEVEL UP!", Color(1, 0.85, 0.3), 18)
+		Sfx.play("levelup", null, -6.0)
 		Game.fx(global_position, "ring", Color(1, 0.85, 0.3), 60.0, 0.8)
 		Game.message("Level %d! You have new stat and skill points." % level)
 		Game.refresh_merc_level()
@@ -384,6 +386,7 @@ func _cast(id: String, aim: Vector2, hover) -> void:
 	else:
 		ok = Skills.cast(self, id, lvl, aim, hover)
 	if ok:
+		Sfx.play("cast", global_position, -4.0)
 		mana -= cost
 		cast_timer = 0.5
 		attack_anim = 0.3
@@ -498,6 +501,7 @@ func take_damage(amount: float, dtype: String, source = null, melee := false, si
 					swing_power = 1.0
 					BoneMelee.hit(self, "ribcage_guard", source, 2.5 * guard_power, {"knock": 40.0, "stun": 0.6})
 				Game.float_text(global_position + Vector2(0, -24), "Parry!", Color(1, 0.95, 0.6), 13)
+				Sfx.play("block", global_position)
 			"reflect":
 				amount *= 0.2
 				if src_ok:
@@ -524,6 +528,7 @@ func take_damage(amount: float, dtype: String, source = null, melee := false, si
 func _swing(t, id: String) -> void:
 	swing_timer = 0.6
 	attack_anim = 0.3
+	Sfx.play("swing", global_position, -6.0)
 	var lvl := skill_level(id)
 	if id != "attack":
 		var cost := SkillDB.mana_cost(id, lvl)
@@ -539,6 +544,7 @@ func _swing(t, id: String) -> void:
 	else:
 		var d := wand_damage()
 		t.take_damage(randf_range(d.x, d.y), "physical", self, true)
+		Sfx.play("hit", t.global_position, -6.0)
 		if id == "poison_dagger" and is_instance_valid(t) and not t.dead:
 			t.apply_poison(SkillDB.poison_dagger_poison(lvl, self), 2.0, self)
 			Game.fx(t.global_position + Vector2(0, -12), "burst", Color(0.4, 1, 0.3), 14.0, 0.3)
@@ -549,6 +555,8 @@ func _swing(t, id: String) -> void:
 func drink(kind: String) -> void:
 	if dead:
 		return
+	if (kind == "hp" and hp_potions > 0) or (kind == "mp" and mp_potions > 0):
+		Sfx.play("potion", global_position, -4.0)
 	if kind == "hp" and hp_potions > 0 and hp < max_hp:
 		hp_potions -= 1
 		heal(max_hp * 0.4)
@@ -562,6 +570,7 @@ func drink(kind: String) -> void:
 func pick_up(item) -> bool:
 	match item.kind:
 		"gold":
+			Sfx.play("coins", global_position, -4.0)
 			gold += item.amount
 			Game.float_text(global_position, "+%d gold" % item.amount, Color(1, 0.85, 0.3), 11)
 			return true
@@ -602,6 +611,11 @@ func _physics_process(delta: float) -> void:
 	if avatar_time > 0.0:
 		avatar_time -= delta
 	dmg_reduction = 0.0
+	if moving:
+		_step -= delta
+		if _step <= 0.0:
+			_step = 0.36
+			Sfx.play("step", global_position, -16.0)
 	moving = false
 	_process_melee(delta)
 
@@ -735,6 +749,14 @@ func _draw_overlays() -> void:
 	if guard_time > 0.0:
 		var gc := Color(1, 0.95, 0.6, 0.6) if guard_mode == "parry" else Color(0.95, 0.92, 0.8, 0.5)
 		draw_arc(Vector2(0, -14), radius + 9.0, facing.angle() - 1.0, facing.angle() + 1.0, 16, gc, 3.0)
+
+
+func anim_state() -> String:
+	if charging != "":
+		return "charge"
+	if cast_timer > 0.15:
+		return "cast"
+	return super.anim_state()
 
 
 func _draw() -> void:

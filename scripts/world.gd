@@ -13,6 +13,13 @@ var zone_layers: Array = []  # per layer PackedInt32Array of atlas indices (-1 e
 
 enum T { GRASS0, GRASS1, GRASS2, GRASS3, FLOWERS, DIRT, WATER, TREE, ROCK, BRIDGE, CAMP, FOREST }
 const TILE_COUNT := 12
+const LPC_TERRAIN := "res://assets/world/terrain.png"
+const LPC_PROPS := "res://assets/world/props.json"
+# column offsets (in 32px tiles) of each autotile block inside terrain.png
+const BLOCK_GRASS := 0
+const BLOCK_DIRT := 6
+const BLOCK_WATER := 9
+const BRIDGE_TILE := Vector2i(12, 0)
 const SOLID_TILES := [T.WATER, T.TREE, T.ROCK]
 const BLOCK_PROJ_TILES := [T.TREE, T.ROCK]
 
@@ -104,14 +111,47 @@ func generate(seed_value: int) -> void:
 			elif dd <= 9.0 and tiles[y * W + x] in SOLID_TILES:
 				tiles[y * W + x] = T.GRASS1
 
+	_erode(T.WATER, [T.WATER, T.BRIDGE], T.GRASS1)
+	# bridges only make sense over water
+	for y in range(1, H - 1):
+		for x in range(1, W - 1):
+			var i := y * W + x
+			if tiles[i] == T.BRIDGE and not (tiles[i - 1] == T.WATER or tiles[i + 1] == T.WATER \
+					or tiles[i - W] == T.WATER or tiles[i + W] == T.WATER):
+				tiles[i] = T.DIRT
+	_erode(T.DIRT, [T.DIRT, T.BRIDGE, T.CAMP], T.GRASS1)
+
 	for i in W * H:
 		solid[i] = 1 if tiles[i] in SOLID_TILES else 0
 
 	_flood_reachable()
 	_build_astar()
-	_build_tilemap(rng)
+	if FileAccess.file_exists(LPC_TERRAIN):
+		_build_tilemap_lpc(rng)
+	else:
+		_build_tilemap(rng)
 	_build_map_image()
 	_make_bone_layer()
+
+
+func _erode(kind: int, same: Array, into: int) -> void:
+	## Removes 1-tile-wide strips so autotiled edges always have room to blend.
+	for pass_i in 3:
+		var changed := false
+		for y in range(1, H - 1):
+			for x in range(1, W - 1):
+				var i := y * W + x
+				if tiles[i] != kind:
+					continue
+				var n: bool = tiles[i - W] in same
+				var s: bool = tiles[i + W] in same
+				var w: bool = tiles[i - 1] in same
+				var e: bool = tiles[i + 1] in same
+				if (not n and not s) or (not w and not e):
+					tiles[i] = into
+					changed = true
+		if not changed:
+			break
 
 
 func _make_bone_layer() -> void:
@@ -479,6 +519,129 @@ func reveal(p: Vector2, r: int) -> void:
 	if map_dirty:
 		map_texture.update(map_image)
 		map_dirty = false
+
+
+# ---------------------------------------------------------------- LPC art
+
+func _tex(path: String) -> Texture2D:
+	if ResourceLoader.exists(path):
+		return load(path)
+	return ImageTexture.create_from_image(Image.load_from_file(ProjectSettings.globalize_path(path)))
+
+
+func _is(c: Vector2i, kinds: Array) -> bool:
+	if not in_bounds(c):
+		return true
+	return tiles[c.y * W + c.x] in kinds
+
+
+func _autotile(c: Vector2i, kinds: Array) -> Vector2i:
+	## LPC terrain block layout: rows 0-1 isolated bits + inner corners,
+	## rows 2-4 the 3x3 outer edge set, row 5 plain centre variants.
+	var n := _is(c + Vector2i(0, -1), kinds)
+	var s := _is(c + Vector2i(0, 1), kinds)
+	var w := _is(c + Vector2i(-1, 0), kinds)
+	var e := _is(c + Vector2i(1, 0), kinds)
+	if not n and not w: return Vector2i(0, 2)
+	if not n and not e: return Vector2i(2, 2)
+	if not s and not w: return Vector2i(0, 4)
+	if not s and not e: return Vector2i(2, 4)
+	if not n: return Vector2i(1, 2)
+	if not s: return Vector2i(1, 4)
+	if not w: return Vector2i(0, 3)
+	if not e: return Vector2i(2, 3)
+	if not _is(c + Vector2i(1, 1), kinds): return Vector2i(1, 0)
+	if not _is(c + Vector2i(-1, 1), kinds): return Vector2i(2, 0)
+	if not _is(c + Vector2i(1, -1), kinds): return Vector2i(1, 1)
+	if not _is(c + Vector2i(-1, -1), kinds): return Vector2i(2, 1)
+	var h := hash(c) % 10
+	return Vector2i(1, 3) if h < 6 else Vector2i(h % 3, 5)
+
+
+func _build_tilemap_lpc(rng: RandomNumberGenerator) -> void:
+	var ts := TileSet.new()
+	ts.tile_size = Vector2i(TILE, TILE)
+	var src := TileSetAtlasSource.new()
+	src.texture = _tex(LPC_TERRAIN)
+	src.texture_region_size = Vector2i(TILE, TILE)
+	var cols := src.texture.get_width() / TILE
+	var rows := src.texture.get_height() / TILE
+	for y in rows:
+		for x in cols:
+			src.create_tile(Vector2i(x, y))
+	ts.add_source(src, 0)
+	var ground := TileMapLayer.new()
+	var dirt := TileMapLayer.new()
+	var water := TileMapLayer.new()
+	var bridge := TileMapLayer.new()
+	for l in [ground, dirt, water, bridge]:
+		l.tile_set = ts
+		add_child(l)
+	tilemap = ground
+	var water_kinds := [T.WATER, T.BRIDGE]
+	var dirt_kinds := [T.DIRT, T.CAMP, T.BRIDGE]
+	for y in H:
+		for x in W:
+			var c := Vector2i(x, y)
+			var t := tiles[y * W + x]
+			var g := rng.randi_range(0, 9)
+			ground.set_cell(c, 0, Vector2i(BLOCK_GRASS + (0 if g < 6 else g % 3), 5))
+			if t in water_kinds:
+				water.set_cell(c, 0, _autotile(c, water_kinds) + Vector2i(BLOCK_WATER, 0))
+			if t == T.DIRT or t == T.CAMP:
+				dirt.set_cell(c, 0, _autotile(c, dirt_kinds) + Vector2i(BLOCK_DIRT, 0))
+			if t == T.BRIDGE:
+				bridge.set_cell(c, 0, BRIDGE_TILE)
+
+
+func build_props(parent: Node2D) -> void:
+	## Trees and rocks as y-sorted sprites so units walk behind canopies.
+	if zone != "" or not FileAccess.file_exists(LPC_PROPS):
+		return
+	var data = JSON.parse_string(FileAccess.get_file_as_string(LPC_PROPS))
+	var trees := []
+	var rocks := []
+	for p in data["props"]:
+		var r: Array = p["rect"]
+		if p["kind"] == "tree" and r[2] <= 130:
+			trees.append(p)
+		elif p["kind"] == "rock":
+			rocks.append(p)
+	var tree_tex := _tex("res://assets/world/trees.png")
+	var rock_tex := _tex("res://assets/world/rocks.png")
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(spawn_cell)
+	var taken := PackedByteArray()
+	taken.resize(W * H)
+	for y in H:
+		for x in W:
+			var i := y * W + x
+			var t := tiles[i]
+			if t == T.TREE and taken[i] == 0:
+				var p: Dictionary = trees[rng.randi() % trees.size()]
+				var s := _prop_sprite(tree_tex, p["rect"], rng.randf_range(0.8, 1.0))
+				s.position = center_of(Vector2i(x, y)) + Vector2(rng.randf_range(-6, 6) + 16, rng.randf_range(-4, 4) + 16)
+				s.modulate = Color(1, 1, 1).darkened(rng.randf_range(0.0, 0.15))
+				parent.add_child(s)
+				for oy in 2:
+					for ox in 2:
+						if x + ox < W and y + oy < H:
+							taken[(y + oy) * W + x + ox] = 1
+			elif t == T.ROCK:
+				var p: Dictionary = rocks[rng.randi() % rocks.size()]
+				var s := _prop_sprite(rock_tex, p["rect"], 1.0)
+				s.position = center_of(Vector2i(x, y)) + Vector2(0, 10)
+				parent.add_child(s)
+
+
+func _prop_sprite(tex: Texture2D, r: Array, sc: float) -> Sprite2D:
+	var s := Sprite2D.new()
+	s.texture = tex
+	s.region_enabled = true
+	s.region_rect = Rect2(r[0], r[1], r[2], r[3])
+	s.offset = Vector2(0, -r[3] / 2.0 + 10.0)
+	s.scale = Vector2(sc, sc)
+	return s
 
 
 # ---------------------------------------------------------------- tile art

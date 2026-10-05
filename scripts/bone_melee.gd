@@ -17,6 +17,7 @@ static func perform(p, id: String, charge: int, aim: Vector2) -> bool:
 	p.facing = dir
 	var power := 1.0 + (0.5 if charge >= 4 else 0.0)
 	var c: int = min(charge, 3)
+	Sfx.play("swing", p.global_position, -2.0 + c)
 	match id:
 		"bone_blade": _blade(p, dir, c, power)
 		"bone_lash": _lash(p, dir, c, power)
@@ -205,6 +206,7 @@ static func hit(p, id: String, u, mult: float, opts := {}) -> bool:
 	var w: Vector2 = SkillDB.bone_weapon_dmg(p, id)
 	var dmg: float = randf_range(w.x, w.y) * mult * p.swing_power
 	var dealt: float = u.take_damage(dmg, "physical", p, true)
+	Sfx.play("hit_heavy" if mult >= 2.0 else "hit", u.global_position, -4.0)
 	var lc: Vector2 = SkillDB.leech(p)
 	if dealt > 0.0 and lc != Vector2.ZERO:
 		p.heal(dealt * lc.x)

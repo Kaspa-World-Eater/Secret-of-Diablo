@@ -74,6 +74,7 @@ static func _raise(p, which: String, lvl: int, pos: Vector2) -> bool:
 	var m = Game.spawn_creature(stats, 0, c.global_position, p)
 	list.append(m)
 	Game.fx(c.global_position + Vector2(0, -8), "burst", Color(0.85, 0.85, 0.75), 26.0, 0.4)
+	Sfx.play("bone", c.global_position)
 	c.consume()
 	return true
 
@@ -149,6 +150,7 @@ static func _corpse_explosion(p, lvl: int, pos: Vector2) -> bool:
 		if is_instance_valid(u) and not u.dead:
 			u.take_damage(total * 0.5, "physical", p)
 	Game.fx(c.global_position, "burst", Color(1.0, 0.5, 0.15), r, 0.45)
+	Sfx.play("explode", c.global_position)
 	Game.fx(c.global_position, "ring", Color(1.0, 0.8, 0.3), r, 0.45)
 	c.consume()
 	return true

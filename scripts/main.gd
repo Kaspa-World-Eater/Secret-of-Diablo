@@ -49,6 +49,7 @@ func _ready() -> void:
 	Game.proj_layer = proj
 	Game.fx_layer = fx
 
+	world.build_props(units)
 	if world.zone == "":
 		var fire = CampfireScript.new()
 		fire.position = world.center_of(world.spawn_cell) + Vector2(0, -40)

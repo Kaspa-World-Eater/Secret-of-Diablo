@@ -12,6 +12,7 @@ config/features=PackedStringArray("4.3", "GL Compatibility")
 
 SkillDB="*res://scripts/skill_db.gd"
 SpriteLib="*res://scripts/sprite_lib.gd"
+Sfx="*res://scripts/sfx.gd"
 Game="*res://scripts/game.gd"
 
 [display]

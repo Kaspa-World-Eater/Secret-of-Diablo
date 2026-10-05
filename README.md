@@ -35,8 +35,12 @@ Current state: a playable **Necromancer sandbox** — one large open zone, the D
 - **World**: a 200×200-tile procedural zone (forests, lakes, roads, bridges), camp in the centre, monsters get stronger with distance, champion packs, automap with fog of war.
 - **Loot (minimal)**: gold and potions. Itemization comes later.
 
-## Art & imported areas
-Everything is drawn with placeholder art in a SoM-like style until real art is imported.
+## Art & sound
+Characters, monsters, terrain and trees use free **Liberated Pixel Cup (LPC)** art; sound effects are Kenney CC0 packs.
+Full attribution and licences are in `CREDITS.md` (CC-BY-SA / GPL: keep credits if you ever share it).
+`tools/build_lpc.gd` rebuilds the sheets from the original packs. Golems, wisps and the lantern bearer still use drawn placeholder art.
+
+## Imported areas
 - **Your own game exports** → `assets/rip/` (step-by-step guide in `assets/rip/README.md`), then
   `godot --headless --path . --script res://tools/import_rip.gd` builds zones in `assets/zones/` and sprite sheets in `assets/sprites/`.
 - **F10** travels between the procedural wilderness and imported zones (your character comes along).

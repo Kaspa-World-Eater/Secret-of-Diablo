@@ -63,13 +63,18 @@ func _build(cfg_path: String) -> SpriteFrames:
 	var off: Array = cfg.get("offset", [0, -fh / 2])
 	frames.set_meta("offset", Vector2(off[0], off[1]))
 	frames.set_meta("scale", float(cfg.get("scale", 1.0)))
+	if cfg.has("head_y"):
+		frames.set_meta("head_y", float(cfg["head_y"]))
 	return frames
 
 
 func pick(frames: SpriteFrames, state: String, dir: String) -> Array:
 	## Returns [animation_name, flip_h] for the best match.
 	var flip_dir := {"left": "right", "right": "left"}
+	var fallback := {"cast": "attack", "charge": "attack"}
 	var tries := [[state + "_" + dir, false]]
+	if fallback.has(state):
+		tries.append([fallback[state] + "_" + dir, false])
 	if flip_dir.has(dir):
 		tries.append([state + "_" + flip_dir[dir], true])
 	tries.append([state, false])

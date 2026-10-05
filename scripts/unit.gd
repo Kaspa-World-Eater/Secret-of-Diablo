@@ -61,6 +61,7 @@ func _ready() -> void:
 		sprite.offset = frames.get_meta("offset", Vector2.ZERO)
 		var sc: float = frames.get_meta("scale", 1.0)
 		sprite.scale = Vector2(sc, sc)
+		head_y = frames.get_meta("head_y", head_y)
 		add_child(sprite)
 
 
@@ -243,7 +244,7 @@ func _process(_delta: float) -> void:
 		m.a = 0.12
 	modulate = m
 	if sprite:
-		var state := "attack" if attack_anim > 0.0 else ("walk" if moving else "idle")
+		var state := anim_state()
 		var pick: Array = SpriteLib.pick(sprite.sprite_frames, state, dir_name())
 		if sprite.animation != pick[0] or not sprite.is_playing():
 			sprite.play(pick[0])
@@ -251,6 +252,12 @@ func _process(_delta: float) -> void:
 	var cam := get_viewport().get_camera_2d()
 	if cam == null or cam.get_screen_center_position().distance_squared_to(global_position) < 900.0 * 900.0:
 		queue_redraw()
+
+
+func anim_state() -> String:
+	if attack_anim > 0.0:
+		return "attack"
+	return "walk" if moving else "idle"
 
 
 func _draw() -> void:

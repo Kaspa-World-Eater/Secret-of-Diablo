@@ -290,6 +290,7 @@ func _attack() -> void:
 		})
 		return
 	var dealt: float = target.take_damage(dmg, dmg_type, self, true)
+	Sfx.play("soft" if team == 1 else "hit", target.global_position, -10.0)
 	if not is_instance_valid(target) or target.dead:
 		return
 	if slow_on_hit > 0.0:

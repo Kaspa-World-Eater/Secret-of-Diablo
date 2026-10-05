@@ -1,0 +1,191 @@
+{
+	"animations": {
+		"attack_down": {
+			"fps": 9.375,
+			"frames": [
+				[
+					3,
+					2
+				],
+				[
+					4,
+					2
+				],
+				[
+					5,
+					2
+				]
+			],
+			"loop": false
+		},
+		"attack_left": {
+			"fps": 9.375,
+			"frames": [
+				[
+					3,
+					2
+				],
+				[
+					4,
+					2
+				],
+				[
+					5,
+					2
+				]
+			],
+			"loop": false
+		},
+		"attack_right": {
+			"fps": 9.375,
+			"frames": [
+				[
+					3,
+					2
+				],
+				[
+					4,
+					2
+				],
+				[
+					5,
+					2
+				]
+			],
+			"loop": false
+		},
+		"attack_up": {
+			"fps": 9.375,
+			"frames": [
+				[
+					3,
+					2
+				],
+				[
+					4,
+					2
+				],
+				[
+					5,
+					2
+				]
+			],
+			"loop": false
+		},
+		"idle_down": {
+			"fps": 1,
+			"frames": [
+				[
+					0,
+					2
+				]
+			]
+		},
+		"idle_left": {
+			"fps": 1,
+			"frames": [
+				[
+					0,
+					2
+				]
+			]
+		},
+		"idle_right": {
+			"fps": 1,
+			"frames": [
+				[
+					0,
+					2
+				]
+			]
+		},
+		"idle_up": {
+			"fps": 1,
+			"frames": [
+				[
+					0,
+					2
+				]
+			]
+		},
+		"walk_down": {
+			"fps": 8,
+			"frames": [
+				[
+					0,
+					2
+				],
+				[
+					1,
+					2
+				],
+				[
+					2,
+					2
+				]
+			]
+		},
+		"walk_left": {
+			"fps": 8,
+			"frames": [
+				[
+					0,
+					2
+				],
+				[
+					1,
+					2
+				],
+				[
+					2,
+					2
+				]
+			]
+		},
+		"walk_right": {
+			"fps": 8,
+			"frames": [
+				[
+					0,
+					2
+				],
+				[
+					1,
+					2
+				],
+				[
+					2,
+					2
+				]
+			]
+		},
+		"walk_up": {
+			"fps": 8,
+			"frames": [
+				[
+					0,
+					2
+				],
+				[
+					1,
+					2
+				],
+				[
+					2,
+					2
+				]
+			]
+		}
+	},
+	"frame_size": [
+		128,
+		128
+	],
+	"head_y": -38.4,
+	"offset": [
+		0,
+		-46.08
+	],
+	"scale": 0.5,
+	"sheet": "shroom.png"
+}

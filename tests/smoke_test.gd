@@ -118,6 +118,9 @@ func _run() -> void:
 			await _frames(25)
 	# real hold-to-charge flow (at the camp, away from monsters)
 	var fight_pos: Vector2 = p.global_position
+	if p.dead:
+		p._respawn()
+	p.hp = p.max_hp
 	p.global_position = p.spawn_point
 	for u in Game.units:
 		if u.team == 1:
@@ -137,6 +140,7 @@ func _run() -> void:
 	p.guard_time = 0.0
 	p._begin_charge("bone_blade", "right")
 	p.bone_armor = 0.0
+	p.hp = p.max_hp
 	p.take_damage(p.max_hp * 0.3, "physical", null, true)
 	_check(p.charging == "" and p.stagger > 0.0, "hit breaks charge")
 	p.hp = p.max_hp
