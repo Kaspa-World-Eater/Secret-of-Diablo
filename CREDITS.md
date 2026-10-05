@@ -25,6 +25,10 @@ credit files next to the art, and release derived art under the same licence.
   Jetrel, Nemisys, Guido Bos, Curt, Bertram and daneeklu — CC-BY-SA 3.0+. Full list (must be included):
   `assets/world/CREDITS-decorations-medieval.txt`. https://opengameart.org/content/lpc-medieval-village-decorations
 
+## Icons — `art/icons/`, `art/items/` (built by `tools/build_icons.gd`, chosen in `tools/icon_map.json`)
+Icons by Lorc, Delapouite and the other artists of **game-icons.net**, CC-BY 3.0 (https://game-icons.net,
+https://creativecommons.org/licenses/by/3.0/). Recoloured and framed for the skill bar and inventory.
+
 ## Fonts — `art/fonts/`
 IM Fell English (Igino Marini) and Silkscreen (Jason Kottke) — SIL Open Font License, `art/fonts/OFL.txt`.
 
