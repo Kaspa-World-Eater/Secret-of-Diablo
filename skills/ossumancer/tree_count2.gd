@@ -21,6 +21,7 @@ var mcharge := {}            # {id, t, tier, at, target, goal}
 var guard := {}              # Ribcage Guard: {t, kind}
 var avatar_t := 0.0          # Ossuary Avatar
 var kills9 := 0              # Count Mastery: every ninth kill crowns one of the dead
+var gauge_node: Node2D       # the swing gauge, drawn in the world under his feet (Secret of Mana)
 
 # ------------------------------------------------------------------ numbers
 func sample(id: String, key: String, fallback: float) -> float:
@@ -36,6 +37,24 @@ func sample(id: String, key: String, fallback: float) -> float:
 func stroke_k() -> float:
 	return hero.st.melee_mult() * melee_k() * (1.3 if avatar_t > 0.0 else 1.0)
 
+## a thin bone-coloured bar under his feet while the gauge refills; it lingers a moment when full, then fades
+var _full_t := 0.0
+func _draw_gauge() -> void:
+	if hero.dead:
+		return
+	_full_t = 0.0 if swing < 1.0 else _full_t + get_process_delta_time_safe()
+	var a: float = 1.0 if swing < 1.0 else clampf(1.0 - (_full_t - 0.3) / 0.4, 0.0, 1.0)
+	if a <= 0.0:
+		return
+	var w := 46.0
+	var y := 14.0
+	gauge_node.draw_rect(Rect2(-w / 2 - 1, y - 1, w + 2, 6), Color(0.05, 0.04, 0.04, 0.75 * a))
+	var col := Color(0.93, 0.88, 0.7, a) if swing >= 1.0 else Color(0.6, 0.55, 0.45, a)
+	gauge_node.draw_rect(Rect2(-w / 2, y, w * swing, 4), col)
+
+func get_process_delta_time_safe() -> float:
+	return hero.get_process_delta_time() if hero else 0.016
+
 func begin_swing() -> void:
 	swing_k = maxf(0.3, swing)
 	swing = 0.0
@@ -46,6 +65,12 @@ func swing_rate() -> float:
 # ------------------------------------------------------------------ the frame
 func tick_count2(dt: float) -> void:
 	swing = minf(1.0, swing + dt * swing_rate())
+	if gauge_node == null or not is_instance_valid(gauge_node):
+		gauge_node = Node2D.new()
+		gauge_node.z_index = 30
+		gauge_node.draw.connect(_draw_gauge)
+		hero.add_child(gauge_node)
+	gauge_node.queue_redraw()
 	avatar_t = maxf(0.0, avatar_t - dt)
 	if not guard.is_empty():
 		guard["t"] -= dt

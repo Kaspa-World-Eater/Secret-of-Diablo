@@ -26,7 +26,7 @@ const DR_PER := 0.006         # of a blow turned per shard
 const DR_CAP := 0.45
 ## the pose each skill strikes (art/sprites/ossumancer.json has idle, walk, atk, cast, hit, death)
 const POSE := {"blade": "atk", "aura": "cast", "spear": "cast", "crush": "atk", "bscythe": "atk2", "lash": "atk2",
-	"gcharge": "atk2", "leap": "atk", "csplinter": "atk", "rguard": "cast"}
+	"gcharge": "atk2", "leap": "atk", "csplinter": "atk", "rguard": "cast", "vdagger": "atk"}
 ## the melee strikes walk you in, then strike (reach added to the weapon's)
 const MELEE := {"blade": 0.45}
 ## the loadouts the dead rise with, in turn (f_bone.js SL: life, damage, reach, time between blows, damage turned)

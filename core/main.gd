@@ -169,6 +169,8 @@ func enter(zid: String, from: String) -> void:
 		# a new pilgrim opens on the skill page to spend the first point
 		if fresh_pilgrim and hero.st.skill_points > 0 and not args.has("demo") and not args.has("panel") and not args.has("shot") and not args.has("arena") and not hud.is_open("skills"):
 			hud.toggle_panel("skills")
+	if not args.has("arena") and not args.has("panel") and not args.has("title"):   # (Secret of Diablo) the mercenary
+		load("res://entities/mercenary.gd").attach(self, zone, hero)
 	if ResourceLoader.exists("res://world/objects.gd") and not OS.has_environment("GM_NOOBJ"):   # (world objects): town, objects, waystones, vows
 		load("res://world/objects.gd").attach(self, zone, hero)
 	Bus.zone_entered.emit(zid)

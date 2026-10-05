@@ -1,4 +1,4 @@
-extends "res://skills/ossumancer/tree_count2.gd"
+extends "res://skills/ossumancer/tree_sod.gd"
 ## The Ossuarch (class id "ossumancer"), part 5 of 5: casting (which skill runs what), the hooks the shared game calls,
 ## and the frame (tick). The state, numbers and helpers are in skills/ossumancer/base.gd (its header tells how the
 ## Mantle works); each tree's skills are in skills/ossumancer/tree_*.gd.
@@ -7,7 +7,8 @@ extends "res://skills/ossumancer/tree_count2.gd"
 const DONE := ["aura", "spear", "raise", "blade", "barmor", "siphon", "ribcage", "ossify", "spikes", "sstorm", "bonerain", "spirit",
 	"offering", "unearth", "horn", "colossus", "host",
 	# (Secret of Diablo) the Count tree and the old Necromancer's melee (skills/ossumancer/tree_count2.gd)
-	"crush", "bscythe", "lash", "gcharge", "leap", "opencount", "fewer", "weighing", "ninthstair", "csplinter", "rguard", "avatar"]
+	"crush", "bscythe", "lash", "gcharge", "leap", "opencount", "fewer", "weighing", "ninthstair", "csplinter", "rguard", "avatar",
+	"teeth", "cexplode", "vdagger", "bwall", "pexplode", "pnovasod", "smage", "cgolem", "bgolem", "igolem", "fgolem2", "revive"]
 
 var mantle_set := false
 
@@ -86,6 +87,9 @@ func _cast(id: String, a: Vector2, target) -> bool:
 			return cast_stair(a, target)
 		"avatar":
 			return cast_avatar()
+	var sod := cast_sod(id, a, target)
+	if sod >= 0:
+		return sod == 1
 	if _cast_bone(id, a):
 		echo(id, a)
 		return true
@@ -108,7 +112,7 @@ func hud_gauge() -> Dictionary:
 		extra = " · HOST %d" % int(host["n"])
 	if avatar_t > 0.0:
 		extra += " · FRAME %d" % int(ceil(avatar_t))
-	return {"text": "SHARDS %d/%d · DEAD %d%s · SWING %d%%" % [int(shards), mantle_cap(), skels.size(), extra, int(round(swing * 100.0))], "pips": skels.size(), "max": skel_max(), "col": BONE}
+	return {"text": "SHARDS %d/%d · DEAD %d%s" % [int(shards), mantle_cap(), skels.size(), extra], "pips": skels.size(), "max": skel_max(), "col": BONE}
 
 func before_hit(d: float, _elem: String, _from: Vector2, opts: Dictionary) -> float:
 	# Bone Spurs (the Mantle at 5): a creature that strikes him in melee is cut by his shards
@@ -129,6 +133,7 @@ func on_lantern() -> void:
 
 func on_death() -> void:
 	_reset()
+	clear_sod()
 
 func _reset() -> void:
 	clear_dead()
@@ -180,6 +185,7 @@ func tick(dt: float) -> void:
 	tick_charge(dt)
 	tick_blade(dt)
 	tick_count2(dt)
+	tick_sod(dt)
 	for f in blade_fx:
 		f["t"] += dt
 	blade_fx = blade_fx.filter(func(f): return f["t"] < 0.5)
@@ -219,6 +225,7 @@ func tick(dt: float) -> void:
 
 func _enter_zone() -> void:
 	clear_dead()
+	clear_sod()
 	zone = hero.zone
 	motes.clear()
 	clear_spells()
