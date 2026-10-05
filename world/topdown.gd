@@ -41,6 +41,21 @@ static func tint(z) -> Color:
 
 
 static var _grades := {}
+static var _grade_base := {}   # key -> [desat, tint] at night (the grimdark grade)
+static var _day := -1.0
+
+
+## (Secret of Diablo) the grade by the hour: Secret of Mana's colour by day, Godmarrow's grim grade by night
+## (world/dark_layer.gd calls it each frame with the day's weight, 1 noon .. 0 night; dungeons pass 0)
+static func daylight(dk: float) -> void:
+	if absf(dk - _day) < 0.005:
+		return
+	_day = dk
+	for key in _grades:
+		var b: Array = _grade_base[key]
+		var m: ShaderMaterial = _grades[key]
+		m.set_shader_parameter("desat", lerpf(b[0], b[0] * 0.6, dk))
+		m.set_shader_parameter("tint", (b[1] as Color).lerp(Color(0.96, 0.95, 0.9), dk * 0.75))
 
 static func grade(z, desat: float = 0.42, lift: float = 0.0) -> ShaderMaterial:
 	## the shared grimdark grade material for this land (one per land and strength, so sprites still batch)
@@ -51,6 +66,11 @@ static func grade(z, desat: float = 0.42, lift: float = 0.0) -> ShaderMaterial:
 		m.set_shader_parameter("desat", desat)
 		m.set_shader_parameter("tint", tint(z).lightened(lift))
 		_grades[key] = m
+		_grade_base[key] = [desat, tint(z).lightened(lift)]
+		if _day >= 0.0:
+			var dk := _day
+			_day = -1.0
+			daylight(dk)
 	return _grades[key]
 
 

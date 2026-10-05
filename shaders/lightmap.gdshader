@@ -47,6 +47,7 @@ void fragment() {
 		float t = length(dv) / a.z;
 		if (t >= 1.0) continue;
 		int hi = int(lC[i].y);
+		float shf = 1.0;   // (Secret of Diablo) seen from above, a trunk or stone softens the light behind it, never cuts it out
 		if (hi >= 0) {
 			bool blocked = false;
 			for (int k = 0; k < n_occ; k++) {
@@ -54,11 +55,11 @@ void fragment() {
 				vec4 e = occ[k];
 				if (crosses(a.xy, p, e.xy, e.zw)) { blocked = true; break; }
 			}
-			if (blocked) continue;
+			if (blocked) shf = 0.45;
 		}
 		vec4 b = lB[i];
-		if (b.w < 0.5) Ladd += b.rgb * a.w * fall5(t);
-		else Lmax = max(Lmax, min(vec3(1.0), ambS + b.rgb * a.w * (b.w > 1.5 ? fall37(t) : fall5(t))));
+		if (b.w < 0.5) Ladd += b.rgb * a.w * shf * fall5(t);
+		else Lmax = max(Lmax, min(vec3(1.0), ambS + b.rgb * a.w * shf * (b.w > 1.5 ? fall37(t) : fall5(t))));
 	}
 	vec3 L = min(vec3(1.0), Lmax + Ladd);
 	float I = max(max(L.r, L.g), L.b) * 255.0;

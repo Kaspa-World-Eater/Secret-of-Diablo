@@ -30,8 +30,10 @@ static func land_of(z: Zone) -> String:
 		return "wood"
 	return "moor" if z.d.get("outdoor", false) else "under"
 const MAXO := 128
+const SOD_POOL := 1.4         # (Secret of Diablo) the lantern's pool, wider for the top-down camera
 
 const FlameK = preload("res://fx/flame.gd")
+const TopDown := preload("res://world/topdown.gd")
 var rect: ColorRect
 var lm_vp: SubViewport
 var lm_rect: ColorRect
@@ -134,7 +136,9 @@ func _process(dt: float) -> void:
 	keep += (hero.lamp_keep() - keep) * minf(1.0, dt * 4.8)   # 0.08 a frame at 60 (zz_zz_study82.js:19)
 	var outdoor: bool = zone.d.get("outdoor", false)
 	var dk := Game.day_k() if outdoor else 0.0
-	var A := (0.82 - 0.5 * dk * dk) if outdoor else 0.84
+	# (Secret of Diablo) the blend: Secret of Mana's bright open days, Godmarrow's dark nights. By day the veil all but
+	# lifts; it closes through dusk to the full dark, where only the lantern and the flames hold the world.
+	var A := (0.84 - 0.8 * pow(dk, 1.5)) if outdoor else 0.84
 	# the far flash: two flickers, a quick one, a gap, a longer one fading; the land stands up out of the dark
 	var nk := clampf((1.0 - dk - 0.4) / 0.6, 0.0, 1.0) if outdoor else 0.0
 	var fv := 0.0
@@ -165,7 +169,7 @@ func _process(dt: float) -> void:
 	var hp := hero.tp
 	if not hero.dead:
 		var lampk := 1.5 + hero.st.item("lrad") / 100.0 * 0.5
-		var R := minf(hero.light_radius(), 5.4 * lampk / 1.5) * ISO_R * 0.4 * (1.0 + 0.5 * dk) * mood * keep
+		var R := minf(hero.light_radius(), 5.4 * lampk / 1.5) * ISO_R * 0.4 * (1.0 + 0.5 * dk) * mood * keep * SOD_POOL
 		var foot := hp + Vector2(0.25, -0.25) * float(hero.face)   # the web: P + face x (0.25, -0.25) (y_light21.js:112)
 		if hero.lantern and is_instance_valid(hero.lantern):
 			foot = hero.lantern.tp   # the pool lies under the lantern, wherever it floats
@@ -181,15 +185,15 @@ func _process(dt: float) -> void:
 		# the light map: the hero's pool cut by what the lantern can see (y_light21.js:110-116, zz_grade55.js:111-123), and the
 		# lantern's own light from its glass down to the ground (zz_zw_lantern63.js:51-70)
 		var fl: float = FlameK.smooth(3.3)
-		var Ry := minf(hero.light_radius(), R / ISO_R * 1.35)
+		var Ry := minf(hero.light_radius() * SOD_POOL, R / ISO_R * 1.35)
 		var lp: Vector2 = xf * Iso.to_screen(foot)
 		# the lantern's own colour (zz_zw_lantern63 BASE_RGB), or its wick's (__lampRGB): the wick tints the light (the pool keeps the order's tint, as the web's does)
 		var lrgb: Color = {"animancer": Color8(150, 196, 255), "hemomancer": Color8(242, 214, 168), "ossumancer": Color8(240, 228, 204), "miasmancer": Color8(255, 210, 150)}.get(hero.cls, Color8(255, 214, 160))
 		var wk: String = load("res://items/ground.gd").wick(hero)
 		if wk != "":
 			lrgb = load("res://items/ground.gd").WICK_RGB[wk]
-		lights.append([lp, Ry * 0.85 * ISO_R * 4.0 * sc * fl, minf(1.0, (0.06 + 0.36 * lnk) * (1.0 if outdoor else 0.9) * lampk * 0.5), lrgb, 2, 0.5, hi])
-		lights.append([lp, Ry * (0.84 + 0.04 * fl) * ISO_R * 4.0 * sc, minf(1.0, (0.34 + 0.86 * (1.0 - dk) if outdoor else 1.05) * 0.62 * fl * 0.5), lrgb, 2, 0.5, hi])
+		lights.append([lp, Ry * 0.85 * ISO_R * 4.0 * sc * fl, minf(1.0, (0.06 + 0.36 * lnk) * (1.0 if outdoor else 0.9) * lampk * 0.5), lrgb, 2, 0.9, hi])   # (SoD) round from above
+		lights.append([lp, Ry * (0.84 + 0.04 * fl) * ISO_R * 4.0 * sc, minf(1.0, (0.34 + 0.86 * (1.0 - dk) if outdoor else 1.05) * 0.62 * fl * 0.5), lrgb, 2, 0.9, hi])   # (SoD) round from above
 		if hero.lantern and is_instance_valid(hero.lantern) and hero.lantern.visible:
 			var k2 := maxf(0.5, 1.0 + (fl - 1.0) * 0.8 - Game.wind * 0.06) * lampk * mood * keep
 			var gl: Vector2 = xf * hero.lantern.glass_screen()
@@ -237,7 +241,7 @@ func _process(dt: float) -> void:
 				fa = 2.3 - 0.9 * dk
 			elif outdoor:
 				fa *= 1.0 - 0.5 * dk
-			lights.append([pos, s["R"] * (0.96 + 0.04 * ff) * ISO_R * 4.0 * sc, minf(1.0, fa * ff * 0.5), s["rgb"], 2, 0.5, hi2 if shadowed > 0.0 else -1])
+			lights.append([pos, s["R"] * (0.96 + 0.04 * ff) * ISO_R * 4.0 * sc, minf(1.0, fa * ff * 0.5), s["rgb"], 2, 0.9, hi2 if shadowed > 0.0 else -1])
 			lights.append([pos + Vector2(s["dx"], -s["fh"]) * 4.0 * sc, s["R"] * ISO_R * 0.42 * 4.0 * sc, minf(1.0, fa * 0.7 * ff * 0.5), s["rgb"], 1, 1.0, -1])
 	# ---- lights other systems placed (wisps, skills, objects, fires): made into pools
 	scan_t -= dt
@@ -352,8 +356,8 @@ func _process(dt: float) -> void:
 	var N: Dictionary = GR["night"]
 	var hi: Color = (g["hi"][0] as Color).lerp(N["hi"][0], n)
 	var lo: Color = (g["lo"][0] as Color).lerp(N["lo"][0], n)
-	mat.set_shader_parameter("g_sat", lerpf(g["sat"], N["sat"], n))
-	mat.set_shader_parameter("g_con", lerpf(g["con"], N["con"], n))
+	mat.set_shader_parameter("g_sat", lerpf(lerpf(1.0, g["sat"], 0.25), N["sat"], n))   # (SoD) soft colour by day
+	mat.set_shader_parameter("g_con", lerpf(lerpf(1.0, g["con"], 0.5), N["con"], n))
 	mat.set_shader_parameter("g_bri", g.get("bri", 1.0))
 	mat.set_shader_parameter("g_hi", Vector4(hi.r, hi.g, hi.b, lerpf(g["hi"][1], N["hi"][1], n)))
 	mat.set_shader_parameter("g_lo", Vector4(lo.r, lo.g, lo.b, lerpf(g["lo"][1], N["lo"][1], n)))
@@ -361,6 +365,8 @@ func _process(dt: float) -> void:
 	# view; the user hated them (2026-10-05). The shader's haze stays off.
 	mat.set_shader_parameter("g_haze", Vector4.ZERO)
 	var am := zone.ambient_at(Game.phase())
+	am = am.lerp(Color(1.0, 0.98, 0.94), 0.85 * dk * dk)   # the day sun washes the land's shade out
+	TopDown.daylight(dk)
 	mat.set_shader_parameter("amb", Vector3(am.r, am.g, am.b))
 	lm_mat.set_shader_parameter("amb", Vector3(am.r, am.g, am.b))
 

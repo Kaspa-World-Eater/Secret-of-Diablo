@@ -151,7 +151,7 @@ void fragment() {
 				if (int(occ_h[k]) != i) continue;
 				vec4 e = occ[k];
 				if (crosses(a.xy, p, e.xy, e.zw)) {
-					float sf = d <= 1.0 ? 0.9 : max(0.0, 0.9 * (1.0 - (d - 1.0) / (far - 1.0) * 1.6));
+					float sf = d <= 1.0 ? 0.4 : max(0.0, 0.4 * (1.0 - (d - 1.0) / (far - 1.0) * 1.6));   // (SoD) soft, seen from above
 					v = v + (1.0 - v) * sf;
 					band *= 1.0 - sf;
 					break;
