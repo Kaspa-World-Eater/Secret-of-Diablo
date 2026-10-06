@@ -209,6 +209,11 @@ func _swap(h: Node2D, key: String) -> void:
 		return
 	var p := _piece(key)
 	if p.is_empty():
+		# no picture of it spent: the one it has darkens (an opened chest, a spent shrine)
+		if key in SPENT:
+			for c in h.get_children():
+				if c is CanvasItem:
+					(c as CanvasItem).self_modulate = Color(0.55, 0.55, 0.58)
 		return
 	for c in h.get_children():
 		if c is Sprite2D:
@@ -232,8 +237,34 @@ func _asset_node(key: String, tp: Vector2, cat: String = "") -> Node2D:
 		sp.scale = Vector2(sc, sc)
 		sp.offset = -p[1]
 		n.add_child(sp)
+	else:
+		_free_art(n, key, tp)
 	zone.sorted.add_child(n)
 	return n
+
+## (Secret of Diablo) Godmarrow's own object pictures are not in this game: a free LPC prop stands in
+## (world/topdown.gd props), so a statue, an altar, a shrine or a relic is still there to see
+const FREE_LOOK := {"statue": "statue", "relic_book": "chest", "captive": "gallows", "altar": "ruin", "shrine": "fountain",
+	"shrine_used": "fountain", "chest": "chest", "chest_open": "chest"}
+const SPENT := ["shrine_used", "chest_open"]
+
+func _free_art(n: Node2D, key: String, tp: Vector2) -> void:
+	var cat := ""
+	for k in FREE_LOOK:
+		if key.begins_with(k):
+			cat = FREE_LOOK[k]
+	if cat == "":
+		return
+	var TD = load("res://world/topdown.gd")
+	var h: Node2D = TD._prop(zone, cat, tp, hash(key), 1.0)
+	if h == null:
+		return
+	for c in h.get_children():
+		h.remove_child(c)
+		n.add_child(c)
+		if key in SPENT:
+			c.self_modulate = Color(0.55, 0.55, 0.58)
+	h.queue_free()
 
 ## art painted for this port (art/objects, see paint_objects.py)
 func _art_node(key: String, tp: Vector2, depth_off: Vector2 = Vector2.ZERO) -> Node2D:
@@ -251,6 +282,8 @@ func _art_node(key: String, tp: Vector2, depth_off: Vector2 = Vector2.ZERO) -> N
 		sp.scale = Vector2(sc, sc)
 		sp.offset = -Vector2(float(e.get("ox", 0)), float(e.get("oy", 0)))
 		n.add_child(sp)
+	else:
+		_free_art(n, key, tp)
 	zone.sorted.add_child(n)
 	return n
 

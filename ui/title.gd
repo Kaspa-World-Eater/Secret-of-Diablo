@@ -173,6 +173,11 @@ func _process(dt: float) -> void:
 ## raise the chosen stage behind the words (and put away the old one)
 func _set_stage(kind: String) -> void:
 	var path := "res://ui/title_stage/%s.gd" % kind
+	# (Secret of Diablo) the bowl and the chapel are Godmarrow's paintings, not in this game: the Stranger's box stands in
+	var painted := {"bowl": "res://art/ui/title_bowl.png", "fire": "res://art/ui/title_chapel.png"}
+	if painted.has(kind) and not ResourceLoader.exists(painted[kind]):
+		kind = "stranger"
+		path = "res://ui/title_stage/stranger.gd"
 	if not ResourceLoader.exists(path):
 		kind = "stranger"
 		path = "res://ui/title_stage/stranger.gd"
@@ -396,12 +401,12 @@ func _draw_ui() -> void:
 	var fb := U.font("book")
 	var x := 150.0
 	var y := 300.0
-	for c in "GODMARROW":
-		var cw := sc.get_string_size(c, HORIZONTAL_ALIGNMENT_LEFT, -1, 112).x
-		root.draw_string(sc, Vector2(x + 4, y + 5), c, HORIZONTAL_ALIGNMENT_LEFT, -1, 112, Color(0, 0, 0, 0.8 * a))
-		root.draw_string(sc, Vector2(x, y), c, HORIZONTAL_ALIGNMENT_LEFT, -1, 112, Color(Color("#e0b86e"), a))
-		root.draw_string(sc, Vector2(x, y - 3), c, HORIZONTAL_ALIGNMENT_LEFT, -1, 112, Color(Color("#f3dca0"), 0.35 * a))
-		x += cw + 14.0
+	for c in "SECRET OF DIABLO":
+		var cw := sc.get_string_size(c, HORIZONTAL_ALIGNMENT_LEFT, -1, 84).x
+		root.draw_string(sc, Vector2(x + 4, y + 5), c, HORIZONTAL_ALIGNMENT_LEFT, -1, 84, Color(0, 0, 0, 0.8 * a))
+		root.draw_string(sc, Vector2(x, y), c, HORIZONTAL_ALIGNMENT_LEFT, -1, 84, Color(Color("#e0b86e"), a))
+		root.draw_string(sc, Vector2(x, y - 3), c, HORIZONTAL_ALIGNMENT_LEFT, -1, 84, Color(Color("#f3dca0"), 0.35 * a))
+		x += cw + 8.0
 	root.draw_line(Vector2(152, y + 30), Vector2(152 + 90, y + 30), Color(MARROW, 0.8 * a), 2.0)
 	root.draw_string(fi, Vector2(152, y + 74), "The god is dead, and has not finished dying.", HORIZONTAL_ALIGNMENT_LEFT, -1, 27, Color(BONE_D, a))
 	if mode == "credits":
@@ -468,7 +473,7 @@ func _tick_main(dt: float) -> void:
 		d["y"] += d["v"] * dt
 	drops = drops.filter(func(d): return d["y"] < d["ty"])
 
-## GODMARROW cut across the top in stepped bronze, the rule with its eye, the lede, and the choices cast in bronze in
+## SECRET OF DIABLO cut across the top in stepped bronze, the rule with its eye, the lede, and the choices cast in bronze in
 ## the middle, floating on the blood; side veils stepped, not smooth
 func _draw_main(a: float) -> void:
 	var vs := root.get_viewport_rect().size
@@ -480,7 +485,7 @@ func _draw_main(a: float) -> void:
 	for y in 50:
 		root.draw_rect(Rect2(0, y * K, vs.x, K), Color(4 / 255.0, 3 / 255.0, 6 / 255.0, 0.55 * (1.0 - y / 50.0) * a))
 	var sc := U.font("sc")
-	var tt: Texture2D = bronze.cast("title", "GODMARROW", sc, int(22 * K), int(2 * K), "title", int(300 * K), int(34 * K), int(25 * K))
+	var tt: Texture2D = bronze.cast("title_sod", "SECRET OF DIABLO", sc, int(15 * K), int(1 * K), "title", int(300 * K), int(34 * K), int(25 * K))
 	if tt:
 		root.draw_texture(tt, Vector2(960.0 - 150.0 * K, 1.0 * K), Color(1, 1, 1, a))
 	# the rule under it, with an eye in the middle that opens and shuts

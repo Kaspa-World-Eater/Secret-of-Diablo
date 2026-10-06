@@ -64,7 +64,8 @@ const HUMANOIDS := {
 		["legs/pants/male/{a}.png", DARK], ["torso/clothes/longsleeve/longsleeve/male/{a}.png", DARK],
 		["cape/tattered/fg/{a}.png", DARK], ["head/heads/human/male_gaunt/{a}.png", PALE], ["hat/cloth/hood/adult/{a}.png", DARK]]},
 	# creatures
-	"lpc_zombie": {"attack": "slash", "layers": [["body/bodies/zombie/{a}/zombie.png", null], ["head/heads/zombie/adult/{a}.png", null]]},
+	"lpc_zombie": {"attack": "slash", "layers": [["body/bodies/zombie/{a}/zombie.png", [0.5, 0.56, 0.48, 0.6]],
+		["head/heads/zombie/adult/{a}.png", [0.5, 0.56, 0.48, 0.6]]]},
 	"lpc_drowned": {"attack": "slash", "layers": [["body/bodies/zombie/{a}/zombie.png", [0.45, 0.6, 0.62, 0.7]],
 		["head/heads/zombie/adult/{a}.png", [0.45, 0.6, 0.62, 0.7]]]},
 	"lpc_ashen": {"attack": "slash", "layers": [["body/bodies/zombie/{a}/zombie.png", [0.55, 0.53, 0.5, 0.8]],

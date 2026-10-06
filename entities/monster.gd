@@ -80,6 +80,8 @@ func setup(z: Zone, m: Dictionary) -> void:
 			sk = kind + "@" + rank
 	spr = AnimSprite.new(Data.sprite_set(sk))
 	add_child(spr)
+	# (Secret of Diablo) a lighter share of the land's grade, so creatures sit in the world (eased by the hour)
+	spr.material = load("res://world/topdown.gd").grade(zone, 0.22, 0.2)
 	_true_size()
 	spr.play("idle")
 	spr.t = randf()

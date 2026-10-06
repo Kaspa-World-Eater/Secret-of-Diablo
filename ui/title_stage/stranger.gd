@@ -57,13 +57,27 @@ var w_a := 0.0                 # how much of the whisper is still in the air
 var w_next := {}               # order -> the next line to say
 var drawn := {}                 # the drawn card: {o, t, tex}
 var back_tex: Texture2D
+var free_set: SpriteSet = null    # (Secret of Diablo) the free-art Stranger, when the painting is not here
+var fire_e: Dictionary = {}
+var fire_tex: Texture2D
+var free_t := 0.0
 
 func hint() -> String:
 	return "Or take a card from the Stranger's box."
 
 func _ready() -> void:
 	_glow = Lights.radial(128)
-	sheet = load("res://art/reading/stranger_sheet.webp")
+	if ResourceLoader.exists("res://art/reading/stranger_sheet.webp"):
+		sheet = load("res://art/reading/stranger_sheet.webp")
+	else:
+		# (Secret of Diablo) no painting: the hooded Stranger of the free art crouches by a free campfire
+		free_set = Data.sprite_set("npc_stranger")
+		var TD = load("res://world/topdown.gd")
+		TD._load()
+		var fires: Array = TD._props.get("campfire", [])
+		if not fires.is_empty():
+			fire_e = fires[0]
+			fire_tex = TD._tex["props"]
 	paint = Node2D.new()
 	paint.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	paint.draw.connect(_draw_paint)
@@ -147,6 +161,7 @@ func _process(dt: float) -> void:
 func _draw_paint() -> void:
 	paint.draw_rect(Rect2(0, 0, 1920, 1080), DARK)
 	if sheet == null:
+		_draw_free()
 		return
 	var f := sframe
 	var src := Rect2((f % 11) * FW, (f / 11) * FH, FW, FH)
@@ -154,6 +169,39 @@ func _draw_paint() -> void:
 	# its left edge goes down into the dark
 	for k in 40:
 		paint.draw_rect(Rect2(X0 + k * 8.0, 0, 8, 1080), Color(DARK, 1.0 - k / 40.0))
+
+## the free-art stand-in: the Stranger (LPC, hooded) at the fire's left, facing the box, and the campfire, both x4
+func _draw_free() -> void:
+	free_t += get_process_delta_time()
+	if fire_tex and not fire_e.is_empty():
+		var r: Array = fire_e["r"]
+		var foot: Array = fire_e["foot"]
+		var fk := SK * 0.8
+		var fat := Vector2(1740, 905)
+		paint.draw_texture_rect_region(fire_tex, Rect2(fat - Vector2(float(foot[0]), float(foot[1])) * fk, Vector2(r[2], r[3]) * fk), Rect2(r[0], r[1], r[2], r[3]))
+	# the box the cards lie on: an old lid of dark wood, its near edge catching the fire
+	paint.draw_rect(Rect2(745, 712, 560, 150), Color(0.13, 0.08, 0.06))
+	paint.draw_rect(Rect2(745, 712, 560, 8), Color(0.24, 0.15, 0.09))
+	paint.draw_rect(Rect2(745, 854, 560, 30), Color(0.07, 0.045, 0.04))
+	for k in 6:
+		paint.draw_rect(Rect2(745, 724 + k * 22, 560, 2), Color(0.09, 0.055, 0.045))
+	if free_set == null:
+		return
+	# mostly still, now and then a slow gesture over the cards
+	var gest := fmod(free_t, 9.0) > 7.2
+	var fr: Array = free_set.get_frames("cast" if gest else "idle", "side")
+	if fr.is_empty():
+		return
+	var i := int(free_t * (6.0 if gest else 1.5)) % fr.size()
+	var f: Array = fr[i]
+	var tex: AtlasTexture = f[0]
+	var off: Vector2 = f[1]
+	var at := Vector2(1540, 905)
+	var k := SK * 0.75
+	# facing left, toward the lid: mirrored about his feet
+	paint.draw_set_transform(at, 0.0, Vector2(-k, k))
+	paint.draw_texture(tex, off)
+	paint.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 
 func _card_xform(c: Dictionary) -> Transform2D:
 	var L: float = c["lift"]
@@ -171,6 +219,8 @@ func _draw_fx() -> void:
 		# lit from the fire at the right, more the nearer it lies
 		var near: float = clampf(1.0 - (c["at"] as Vector2).distance_to(FIRE) / 1300.0, 0.0, 1.0)
 		var lit: float = 0.42 + 0.3 * near + 0.1 * near * T._flick(c["ph"]) + 0.45 * L
+		if sheet == null:
+			lit += 0.45   # the free cards are dark-faced: more of the fire on them
 		var dim := 0.6 if (T.mode == "main" and T.fig_hover >= 0 and c["o"] != T.fig_hover) else 1.0
 		fx.draw_texture_rect(c["tex"], Rect2(-27, -42, 54, 84), false, Color(lit * dim * 1.05, lit * dim * 0.88, lit * dim * 0.72))
 		if L > 0.05:
