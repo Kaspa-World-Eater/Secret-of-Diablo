@@ -5,7 +5,8 @@ extends CanvasLayer
 ## world's flames (the nearest four also throw shadows), the pyres and ground fires, and every PointLight2D that other
 ## systems place (wisps, skills, objects), which is turned into a pool here and switched off so nothing is lit twice.
 
-const ISO_R := 25.456          # one yard across the screen, in web world px (TW * 0.7071)
+const ISO_R := 17.6            # one yard across the screen in web world px: Godmarrow's iso yard is 25.456; (Secret of
+                               # Diablo) a top-down tile is 64 px = 16 web px, a touch more so the pools keep their reach
 const RND := {2: 0.24, 3: 0.4, 9: 0.34}
 const SQ := {5: true, 7: true, 10: true}
 const DR := {"statue_saint": 0.32, "statue_angel": 0.34, "cage": 0.22, "cage2": 0.22, "tent": 0.75}
@@ -30,7 +31,8 @@ static func land_of(z: Zone) -> String:
 		return "wood"
 	return "moor" if z.d.get("outdoor", false) else "under"
 const MAXO := 128
-const SOD_POOL := 1.4         # (Secret of Diablo) the lantern's pool, wider for the top-down camera
+const SOD_POOL := 1.0         # (Secret of Diablo) the lantern's pool against the others (ISO_R sets the scale)
+const GLASS := 0.6            # the glow round the lantern's glass, scaled to our smaller figures
 
 const FlameK = preload("res://fx/flame.gd")
 const TopDown := preload("res://world/topdown.gd")
@@ -198,10 +200,10 @@ func _process(dt: float) -> void:
 			var k2 := maxf(0.5, 1.0 + (fl - 1.0) * 0.8 - Game.wind * 0.06) * lampk * mood * keep
 			var gl: Vector2 = xf * hero.lantern.glass_screen()
 			var gq: Vector2 = lp + Vector2(0, 4.0 * sc)
-			lights.append([gq, 64.0 * lampk / 1.5 * 4.0 * sc, minf(1.0, (0.17 + 0.15 * lnk) * k2 * 0.5), lrgb, 0, 1.0, -1])
-			lights.append([gl, 22.0 * 4.0 * sc, minf(1.0, (0.2 + 0.12 * lnk) * k2 * 0.5), lrgb, 0, 1.0, -1])
-			lights.append([(gq + gl) / 2.0, 26.0 * 4.0 * sc, minf(1.0, (0.1 + 0.08 * lnk) * k2 * 0.5), lrgb, 0, 1.0, -1])
-			lights.append([gl, 16.0 * 4.0 * sc, minf(1.0, 0.5 * k2 * 0.5), lrgb, 0, 1.0, -1])
+			lights.append([gq, 64.0 * lampk / 1.5 * 4.0 * sc * GLASS, minf(1.0, (0.17 + 0.15 * lnk) * k2 * 0.5), lrgb, 0, 1.0, -1])
+			lights.append([gl, 22.0 * 4.0 * sc * GLASS, minf(1.0, (0.2 + 0.12 * lnk) * k2 * 0.5), lrgb, 0, 1.0, -1])
+			lights.append([(gq + gl) / 2.0, 26.0 * 4.0 * sc * GLASS, minf(1.0, (0.1 + 0.08 * lnk) * k2 * 0.5), lrgb, 0, 1.0, -1])
+			lights.append([gl, 16.0 * 4.0 * sc * GLASS, minf(1.0, 0.5 * k2 * 0.5), lrgb, 0, 1.0, -1])
 		# the glow in the lantern's own glass
 		if hero.lantern and is_instance_valid(hero.lantern) and hero.lantern.visible:
 			holes.append([xf * hero.lantern.glass_screen(), 15.0 * 4.0 * sc * mood, 1.5, 0.3, 0.0, 0.6, rgb, 0.0, 0.0, 0.1, 1.0, 0.25, br * mood])

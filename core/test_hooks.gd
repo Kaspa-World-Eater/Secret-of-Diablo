@@ -69,6 +69,8 @@ static func run(g) -> void:
 		_show_collision(g)
 	if a.has("shot"):
 		_shot(g, a)
+	if a.has("brainlog"):   # --brainlog=S: every second for S seconds, each creature near the pilgrim: kind, ai, state
+		_brainlog(g, float(a["brainlog"]))
 	if a.has("arena"):
 		await _arena(g, a)
 	if a.has("boardtest") and g.hero.st.arc:
@@ -312,3 +314,18 @@ static func _forge_preview(g, a: Dictionary) -> void:
 			var nodes := PFFx.spawn_attachments(g.hero, set.fx_dir(fx_dir), set, "down", 1.0, 2)
 			g.hero.set_meta("forge_attachments", nodes)
 			print("FORGE attachments: ", nodes.size())
+
+
+## what every creature within 14 yards is doing, once a second (behaviour checks)
+static func _brainlog(g, secs: float) -> void:
+	var tree: SceneTree = g.get_tree()
+	for i in int(secs):
+		await tree.create_timer(1.0).timeout
+		if not is_instance_valid(g) or g.hero == null:
+			return
+		var row := []
+		for m in tree.get_nodes_in_group("monsters"):
+			if m.dead or m.tp.distance_to(g.hero.tp) > 14.0:
+				continue
+			row.append("%s/%s:%s" % [m.kind, m.ai, m.brain.state if m.brain else "-"])
+		print("BRAIN t=%d hero_hp=%d %s" % [i + 1, int(g.hero.st.hp), " ".join(row)])
