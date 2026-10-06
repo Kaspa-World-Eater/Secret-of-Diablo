@@ -33,6 +33,11 @@ func arrive(zone, hero, from: String) -> void:
 	boss_off = Vector2.ZERO
 	fall = 0.0
 	cam.zoom = Vector2.ONE * BASE_ZOOM
+	# (Secret of Diablo) the frame stops at the land's edge: no black past the map
+	cam.limit_left = 0
+	cam.limit_top = 0
+	cam.limit_right = int(float(zone.w) * Iso.S)
+	cam.limit_bottom = int(float(zone.h) * Iso.S)
 	arr_t = 0.0
 	if from == "" or from == "__lantern":
 		arr_from = Vector2(0, -150)
