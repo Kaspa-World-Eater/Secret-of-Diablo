@@ -22,7 +22,7 @@ func _process(_dt: float) -> void:
 	queue_redraw()
 
 static func S(tp: Vector2, z: float = 0.0) -> Vector2:
-	return Iso.to_screen(tp) + Vector2(0, -z * 4.0)
+	return Iso.to_screen(tp) + Vector2(0, -z * Iso.ZH)
 
 ## one cell of the art grid (1 web px = 4 px here), at a screen point
 func cell(p: Vector2, col: Color, cw: float = 1.0, ch: float = 1.0) -> void:

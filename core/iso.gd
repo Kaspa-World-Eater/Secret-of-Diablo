@@ -7,6 +7,9 @@ extends RefCounted
 
 const S := 64.0             # Godot units (screen px at zoom 1) per tile
 const WPX := 4.0            # Godot units per web world px (heights and offsets carried over from the web build)
+## (Secret of Diablo) heights: our free-art figures stand ~0.6 of Godmarrow's (94 px to its 155), so a thing lifted
+## z web px above the ground is drawn ZH screen px per web px, not WPX, to sit at the same place on the body
+const ZH := 2.5
 const HX := S
 const HY := S
 

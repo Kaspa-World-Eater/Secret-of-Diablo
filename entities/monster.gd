@@ -83,6 +83,7 @@ func setup(z: Zone, m: Dictionary) -> void:
 	# (Secret of Diablo) a lighter share of the land's grade, so creatures sit in the world (eased by the hour)
 	spr.material = load("res://world/topdown.gd").grade(zone, 0.22, 0.2)
 	_true_size()
+	spr_base = spr.scale
 	spr.play("idle")
 	spr.t = randf()
 	spr.face = 1 if randf() < 0.5 else -1
@@ -96,6 +97,7 @@ func setup(z: Zone, m: Dictionary) -> void:
 ## about two yards (the heroes, ~200 px). The browser's creature sprites were drawn about a quarter too small (a Husk
 ## ~1.25 yd, a Warden ~1.5): they are drawn at true size here. Bosses and the PixelForge sets (already true) keep theirs.
 const TRUE_SIZE := 1.3
+var spr_base := Vector2.ONE     # the sprite's own scale as made (corpses flatten from this)
 func _true_size() -> void:
 	if boss or spr.set == null:
 		return
@@ -277,7 +279,9 @@ func _physics_process(dt: float) -> void:
 		var rot := clampf((26.0 - corpse_t) / 20.0, 0.0, 1.0)
 		var br := 0.62 - 0.34 * rot
 		modulate = Color(br * (1.0 + 0.12 * rot), br * (1.0 + 0.04 * rot), br * (1.0 - 0.1 * rot), modulate.a)
-		spr.scale.y = absf(spr.scale.x) * (1.0 - 0.45 * rot)
+		# from the size it was made at (the sprite's motion layer scales on top of whatever is set here; reading its
+		# scale back would feed that into itself every frame)
+		spr.scale = Vector2(spr_base.x, spr_base.x * (1.0 - 0.45 * rot))
 		if corpse_t < 0.0:
 			modulate.a = maxf(0.0, modulate.a - dt * 0.2)
 			if modulate.a <= 0.0:

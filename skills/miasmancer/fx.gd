@@ -22,7 +22,7 @@ func _process(_dt: float) -> void:
 	queue_redraw()
 
 static func S(tp: Vector2, z: float = 0.0) -> Vector2:
-	return Iso.to_screen(tp) + Vector2(0, -z * 4.0)
+	return Iso.to_screen(tp) + Vector2(0, -z * Iso.ZH)
 
 func ell(c: Vector2, R: float, col: Color, w: float = 2.0, filled: bool = false) -> void:
 	var rx = R * Iso.HX * 1.414

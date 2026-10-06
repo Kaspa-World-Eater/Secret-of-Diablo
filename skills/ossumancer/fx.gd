@@ -53,7 +53,7 @@ func _process(dt: float) -> void:
 		spear_cv.queue_redraw()
 
 static func S(tp: Vector2, z: float = 0.0) -> Vector2:
-	return Iso.to_screen(tp) + Vector2(0, -z * 4.0)
+	return Iso.to_screen(tp) + Vector2(0, -z * Iso.ZH)
 
 func px(p: Vector2, col: Color, n: float = 1.0) -> void:
 	draw_rect(Rect2(Vector2(floorf(p.x / P) * P, floorf(p.y / P) * P), Vector2(P * n, P * n)), col)
@@ -99,10 +99,12 @@ func _draw() -> void:
 	for i in n:
 		var s := i * 2.399
 		var a := s + t * (0.35 + 0.04 * (i % 5)) * (1.0 if i % 2 else -1.0)
-		var r := 0.55 + 0.35 * fmod(s * 0.61, 1.0) + 0.1 * sin(t * 0.7 + s)
-		var z := 6.0 + 20.0 * fmod(s * 0.37, 1.0) + 2.0 * sin(t * 1.3 + s)
+		# (Secret of Diablo) seen from above the ring is round and wider than the body, the shards longer, so it reads
+		# as a mantle round him rather than a sparkle on him
+		var r := 0.75 + 0.45 * fmod(s * 0.61, 1.0) + 0.12 * sin(t * 0.7 + s)
+		var z := 4.0 + 16.0 * fmod(s * 0.37, 1.0) + 2.0 * sin(t * 1.3 + s)
 		var c: Vector2 = S(hero.tp + Vector2(cos(a), sin(a)) * r, z)
-		var d := Vector2(cos(a + 1.3), sin(a + 1.3) * 0.5) * 6.0
+		var d := Vector2(cos(a + 1.3), sin(a + 1.3)) * 9.0
 		sliver(c - d, c + d, BONE_M if i % 3 else BONE_D)
 	# shards flying in
 	for b in book.motes:

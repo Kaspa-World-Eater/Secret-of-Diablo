@@ -139,7 +139,7 @@ func _motion(dt: float) -> void:
 		"death", "death_back":
 			# a creature with no fall of its own slumps flat; one with a fall only gives at the knees
 			var k := minf(1.0, since / 0.35)
-			sq = Vector2(1.0 + 0.3 * k, 1.0 - 0.6 * k) if few else Vector2(1.0 + 0.05 * k, 1.0 - 0.05 * k)
+			sq = Vector2(1.0 + 0.15 * k, 1.0 - 0.55 * k) if few else Vector2(1.0, 1.0 - 0.05 * k)
 	_jo = nudge
 	_set = _ext * sq
 	scale = _set
