@@ -208,6 +208,10 @@ func _process(dt: float) -> void:
 		elif hero.class_lamp and is_instance_valid(hero.class_lamp) and hero.class_lamp.visible:
 			# the lamp in hand: its light lives inside it (zz_tune_v59.js:83-94, a spot r50 on the lamp)
 			holes.append([xf * hero.class_lamp.glass_screen(), 15.0 * 4.0 * sc * mood, 1.5, 0.3, 0.0, 0.6, rgb, 0.0, 0.0, 0.1, 1.0, 0.25, br * mood])
+	# (Secret of Diablo) by day the sun does the lighting: the lantern's glow fades to a faint warmth, so nothing near
+	# the pilgrim burns out white; it comes back through dusk
+	for li in lights:
+		li[2] *= 1.0 - 0.8 * dk * dk
 	# ---- the world's flames (the nearest four throw shadows)
 	var near: Array = []
 	for s in statics:

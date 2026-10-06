@@ -12,7 +12,8 @@ const F := 64          # LPC frame size
 const K := 2           # export scale (nearest): an LPC figure stands ~1.5 yards at 64 px a yard
 const ROW := {"up": 0, "left": 1, "down": 2, "right": 3}
 const VIEWS := {"down": "down", "up": "up", "side": "right"}
-const FRAMES := {"walk": 9, "slash": 6, "thrust": 8, "spellcast": 7, "shoot": 13, "hurt": 6}
+const FRAMES := {"walk": 9, "slash": 6, "thrust": 8, "spellcast": 7, "shoot": 13, "hurt": 6, "idle": 2, "combat_idle": 2,
+	"backslash": 13, "halfslash": 6, "run": 8}
 
 const PALE := [0.93, 0.9, 0.96, 0.65]
 const ROBE := [0.24, 0.19, 0.3, 1.0]
@@ -174,6 +175,22 @@ func _tint(img: Image, t) -> void:
 			img.set_pixel(x, y, p.lerp(Color(tc.r * k, tc.g * k, tc.b * k, p.a), mix))
 
 
+## every layer of the look has this animation (else a cape or a head would drop out of it)
+## (idle, the stance and the run can borrow a missing layer's walk frames, so only the body must have them)
+const BORROW := ["idle", "combat_idle", "run"]
+
+func _has_all(recipe: Dictionary, lpc_anim: String) -> bool:
+	if lpc_anim in BORROW:
+		for layer in recipe["layers"]:
+			if String(layer[0]).begins_with("body/") and FileAccess.file_exists(src + "/lpcgen/spritesheets/" + String(layer[0]).replace("{a}", lpc_anim)):
+				return true
+		return false
+	for layer in recipe["layers"]:
+		if not FileAccess.file_exists(src + "/lpcgen/spritesheets/" + String(layer[0]).replace("{a}", lpc_anim)):
+			return false
+	return true
+
+
 func _compose(recipe: Dictionary, lpc_anim: String) -> Image:
 	var n: int = FRAMES[lpc_anim]
 	var rows := 1 if lpc_anim == "hurt" else 4
@@ -181,6 +198,14 @@ func _compose(recipe: Dictionary, lpc_anim: String) -> Image:
 	comp.fill(Color(0, 0, 0, 0))
 	for layer in recipe["layers"]:
 		var img := _img(src + "/lpcgen/spritesheets/" + String(layer[0]).replace("{a}", lpc_anim))
+		if img == null and lpc_anim in BORROW:
+			var w := _img(src + "/lpcgen/spritesheets/" + String(layer[0]).replace("{a}", "walk"))
+			if w != null:
+				# standing: walk frame 0 in every column; running: walk frames 1..8
+				img = Image.create(n * F, rows * F, false, Image.FORMAT_RGBA8)
+				for i in n:
+					var col := 0 if lpc_anim != "run" else 1 + i % 8
+					img.blit_rect(w, Rect2i(col * F, 0, F, mini(w.get_height(), rows * F)), Vector2i(i * F, 0))
 		if img == null:
 			continue
 		_tint(img, layer[1])
@@ -245,33 +270,48 @@ func _humanoid(kind: String, r: Dictionary) -> void:
 	var hurt := _compose(r, "hurt")
 	var na: int = FRAMES[atk_name]
 	var half: int = max(1, na / 2)
+	# (smoothness pass) the real idle and fighting stance, the long backslash for heavy blows, the run for dodges
+	var idle := _compose(r, "idle") if _has_all(r, "idle") else null
+	var stance := _compose(r, "combat_idle") if _has_all(r, "combat_idle") else null
+	var back := _compose(r, "backslash") if atk_name == "slash" and _has_all(r, "backslash") else null
+	var run := _compose(r, "run") if _has_all(r, "run") else null
 	for view in VIEWS:
 		var row: int = ROW[VIEWS[view]]
-		b.add("idle", view, _frame(walk, 0, row, F, K))
+		if idle:
+			for i in FRAMES["idle"]:
+				b.add("idle", view, _frame(idle, i, row, F, K))
+		else:
+			b.add("idle", view, _frame(walk, 0, row, F, K))
 		for i in range(1, 9):
 			b.add("walk", view, _frame(walk, i, row, F, K))
-		for i in range(1, 9, 2):
-			b.add("dodge", view, _frame(walk, i, row, F, K))
-			b.add("roll", view, _frame(walk, i, row, F, K))
-		for i in half:
+		for i in FRAMES["run"] if run else range(1, 9):
+			var fr := _frame(run, i, row, F, K) if run else _frame(walk, i, row, F, K)
+			b.add("dodge", view, fr)
+			b.add("roll", view, fr)
+		for i in half + 1:
 			b.add("wind", view, _frame(atk, i, row, F, K))
-		for i in range(half, na):
+		for i in range(half - 1, na):
 			b.add("atk", view, _frame(atk, i, row, F, K))
-		for i in na:
-			b.add("heavy", view, _frame(atk, i, row, F, K))
+		if back:
+			for i in FRAMES["backslash"]:
+				b.add("heavy", view, _frame(back, i, row, F, K))
+		else:
+			for i in na:
+				b.add("heavy", view, _frame(atk, i, row, F, K))
 		for i in FRAMES["thrust"]:
 			b.add("atk2", view, _frame(thrust, i, row, F, K))
 		for i in FRAMES["spellcast"]:
 			b.add("cast", view, _frame(cast, i, row, F, K))
-		b.add("parry", view, _frame(atk, 0, row, F, K))
-	# LPC's hurt is one row: a fall. Hit = its first frames, death = the whole fall.
-	for i in 2:
-		b.add("hit", "down", _frame(hurt, i, 0, F, K))
+		b.add("parry", view, _frame(stance if stance else atk, 0, row, F, K))
+		# struck, in the facing it was struck in: the stance's two frames (the motion layer does the recoil)
+		for i in 2:
+			b.add("hit", view, _frame(stance if stance else walk, i if stance else 0, row, F, K))
+	# LPC's hurt is one row: a fall, used for death
 	for i in 6:
 		b.add("death", "down", _frame(hurt, i, 0, F, K))
 		b.add("death_back", "down", _frame(hurt, i, 0, F, K))
 	b.add("stun", "down", _frame(hurt, 1, 0, F, K))
-	b.save(kind, {"idle": 2.0, "walk": 10.0, "dodge": 16.0, "roll": 16.0, "wind": 8.0, "atk": 14.0, "heavy": 14.0,
+	b.save(kind, {"idle": 2.5, "walk": 10.0, "dodge": 18.0, "roll": 18.0, "wind": 8.0, "atk": 16.0, "heavy": 24.0,
 		"atk2": 18.0, "cast": 16.0, "parry": 1.0, "hit": 10.0, "death": 10.0, "death_back": 10.0, "stun": 1.0}, {"category": "lpc_humanoid"})
 	print("  ", kind)
 
@@ -292,7 +332,8 @@ func _sheet(kind: String, m: Dictionary) -> void:
 	var a: Array = m["attack"]
 	for view in VIEWS:
 		var row: int = rows[VIEWS[view]]
-		b.add("idle", view, _frame(img, w[0], row, s, k))
+		for i in range(w[0], w[1]):
+			b.add("idle", view, _frame(img, i, row, s, k))
 		for i in range(w[0], w[1]):
 			b.add("walk", view, _frame(img, i, row, s, k))
 			b.add("dodge", view, _frame(img, i, row, s, k))
@@ -303,9 +344,9 @@ func _sheet(kind: String, m: Dictionary) -> void:
 			b.add("cast", view, _frame(img, i, row, s, k))
 		b.add("hit", view, _frame(img, a[0], row, s, k))
 		b.add("parry", view, _frame(img, a[0], row, s, k))
-		b.add("death", view, _frame(img, a[1] - 1, row, s, k))
+		b.add("death", view, _frame(img, a[1] - 1, row, s, k))   # one frame: the motion layer slumps it flat
 		b.add("stun", view, _frame(img, w[0], row, s, k))
-	b.save(kind, {"idle": 2.0, "walk": 8.0, "dodge": 12.0, "wind": 6.0, "atk": 10.0, "heavy": 10.0, "cast": 10.0,
+	b.save(kind, {"idle": 4.0, "walk": 8.0, "dodge": 12.0, "wind": 6.0, "atk": 10.0, "heavy": 10.0, "cast": 10.0,
 		"hit": 8.0, "parry": 1.0, "death": 6.0, "stun": 1.0}, {"category": "lpc_creature"})
 	print("  ", kind)
 
