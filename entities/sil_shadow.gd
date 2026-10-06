@@ -14,6 +14,10 @@ const Flame = preload("res://fx/flame.gd")
 const A := 18.0              # half a tile across, web px
 const B := 9.0               # half a tile down
 const PPW := 25.4558         # sqrt(2) x A
+## (Secret of Diablo) seen from above, a shadow lies short and soft under the figure: Godmarrow's long iso wedges,
+## shortened and lightened (the lights still turn them)
+const SOD_LEN := 0.4
+const SOD_DARK := 0.55
 static var _src_zone: Object = null
 static var _src: Array = []  # this frame's lights: {tp, R (tiles), a, kind}
 
@@ -97,13 +101,11 @@ func _process(_dt: float) -> void:
 # ------------------------------------------------------------------ the hero's silhouettes
 ## a world direction on screen (web px)
 static func scr(d: Vector2) -> Vector2:
-	return Vector2((d.x - d.y) * A, (d.x + d.y) * B)
+	return d * PPW   # (Secret of Diablo) top-down: straight, not the iso diamond
 
 ## a screen vector in the world
 static func wld(s: Vector2) -> Vector2:
-	var u := s.x / A
-	var v := s.y / B
-	return Vector2((u + v) / 2.0, (v - u) / 2.0)
+	return s / PPW
 
 func _hero(zone) -> void:
 	var h = owner_node
@@ -148,6 +150,8 @@ func _cast(sp: Sprite2D, d: Vector2, len: float, al: float) -> void:
 		sp.visible = false
 		return
 	d = d.normalized()
+	len *= SOD_LEN * 1.3
+	al *= SOD_DARK * 1.2
 	var av := scr(d) / PPW * len
 	var bs := scr(Vector2(-d.y, d.x)) / PPW
 	if bs.x < 0.0:
@@ -203,10 +207,10 @@ func _draw() -> void:
 		var v := fp - lp
 		var vl := maxf(0.0001, v.length())
 		v /= vl
-		var ln := minf(150.0, minf(72.0, maxf(20.0, vl * (1.6 if s["kind"] in ["candles", "fire"] else 1.25))) * sc)
+		var ln := minf(150.0, minf(72.0, maxf(20.0, vl * (1.6 if s["kind"] in ["candles", "fire"] else 1.25))) * sc) * SOD_LEN
 		var w0 := 7.0 * minf(wk, 2.4)
 		var n := Vector2(-v.y, v.x)
-		var al := minf(1.0, 1.1 * pow(1.0 - d / (s["R"] * 0.95), 0.5) * minf(1.0, s["a"]))
+		var al := minf(1.0, 1.1 * pow(1.0 - d / (s["R"] * 0.95), 0.5) * minf(1.0, s["a"])) * SOD_DARK
 		var e := Vector2(v.x * ln, v.y * ln * 0.9)
 		var b0 := n * Vector2(w0 * 0.8, w0 * 0.5) - v * 1.5
 		var b1 := -n * Vector2(w0 * 0.8, w0 * 0.5) - v * 1.5

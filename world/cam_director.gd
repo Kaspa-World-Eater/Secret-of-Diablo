@@ -8,6 +8,9 @@ extends RefCounted
 ## - when you fall it pushes in slowly on the body, and lets go when the lantern gives you back.
 ## The shake (Game.shake) rides on top of all of it.
 
+## (Secret of Diablo) Secret of Mana's framing: closer in than Godmarrow's, about 19 x 11 tiles on screen
+const BASE_ZOOM := 1.5
+
 var main: Node
 var cam: Camera2D
 var lead := Vector2.ZERO
@@ -29,7 +32,7 @@ func arrive(zone, hero, from: String) -> void:
 	last_pos = hero.position
 	boss_off = Vector2.ZERO
 	fall = 0.0
-	cam.zoom = Vector2.ONE
+	cam.zoom = Vector2.ONE * BASE_ZOOM
 	arr_t = 0.0
 	if from == "" or from == "__lantern":
 		arr_from = Vector2(0, -150)
@@ -96,6 +99,6 @@ func update(dt: float, hero, boss, zone = null) -> Vector2:
 	# 5. the fall: a slow push in on the body; the frame drifts down to the ground where you lie
 	fall = clampf(fall + (dt / 3.0 if hero.dead else -dt * 2.0), 0.0, 1.0)
 	var fk := fall * fall * (3.0 - 2.0 * fall)
-	cam.zoom = Vector2.ONE * (1.0 + 0.12 * fk)
+	cam.zoom = Vector2.ONE * BASE_ZOOM * (1.0 + 0.12 * fk)
 	var fo := Vector2(0, 30.0 * fk)
 	return hero.position + Vector2(0, -40) + lead * (1.0 - fk) + arr + (boss_off + poi) * (1.0 - fk) + fo
